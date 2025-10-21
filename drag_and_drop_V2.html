@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tree Drag & Drop Example</title>
+  <style>
+    .archetypeTree-node {
+      border: 1px solid #ccc;
+      margin: 6px 0 6px 20px;
+      padding: 8px;
+      background: #f9f9f9;
+      border-radius: 4px;
+      cursor: grab;
+      transition: background 0.2s;
+      min-width: 120px;
+      position: relative;
+    }
+    .archetypeTree-node.drag-over {
+      background: #d0eaff;
+      border-color: #3399ff;
+    }
+    .archetypeTree-node.dragging {
+      opacity: 0.5;
+    }
+    .node-children {
+      margin-left: 20px;
+    }
+    .label {
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h2>Drag & Drop Tree Example</h2>
+  <p>Drag any node and drop it onto another node to make it a child.<br>
+  You cannot drop a node onto itself or its descendants.</p>
+  <div id="tree-root"></div>
+  <script>
+    // Example tree data
+    const treeData = [
+      {
+        id: 'A',
+        label: 'A',
+        children: [
+          { id: 'B', label: 'Child B', children: [] },
+          { id: 'C', label: 'Child C', children: [
+            { id: 'D', label: 'Child D', children: []},
+            {id: 'E', label: 'Child E', children: []}
+          ] }
+        ]
+      }
+    ];
+
+    // Render tree recursively
+    function renderTree(nodes) {
+        console.log(treeData)
+      let html = '';
+      nodes.forEach(node => {
+        html += `<div class="archetypeTree-node" draggable="true" data-id="${node.id}">
+          <div class="label">${node.label}</div>
+          <div class="node-children">${renderTree(node.children)}</div>
+        </div>`;
+      });
+      return html;
+    }
+
+    // Initial render
+    function renderAndAttach() {
+      document.getElementById('tree-root').innerHTML = renderTree(treeData);
+      addTreeDnDListeners();
+    }
+
+    // Drag & drop logic
+    let draggedNodeId = null;
+
+    function addTreeDnDListeners() {
+      document.querySelectorAll('.archetypeTree-node').forEach(node => {
+        node.addEventListener('dragstart', function (e) {
+          e.stopPropagation();
+          draggedNodeId = this.dataset.id;
+          console.log(draggedNodeId)
+          this.classList.add('dragging');
+        });
+        
+        node.addEventListener('dragend', function () {
+          this.classList.remove('dragging');
+          document.querySelectorAll('.archetypeTree-node').forEach(n => n.classList.remove('drag-over'));
+        });
+        
+        node.addEventListener('dragover', function (e) {
+          e.preventDefault();
+          if (this.dataset.id !== draggedNodeId) this.classList.add('drag-over');
+        });
+        
+        node.addEventListener('dragleave', function () {
+          this.classList.remove('drag-over');
+        });
+        
+       
+        node.addEventListener('drop', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          this.classList.remove('drag-over');
+          if (
+            this.dataset.id !== draggedNodeId &&
+            !isDescendant(draggedNodeId, this.dataset.id)
+          ) {
+            console.log(draggedNodeId, this.dataset.id)
+            moveNodeAsChild(draggedNodeId, this.dataset.id);
+            renderAndAttach();
+          }
+        });
+      });
+    }
+
+    // Prevent moving a node into itself or its descendants
+    function isDescendant(parentId, childId) {
+      function search(node) {
+        if (node.id === parentId) {
+          return containsId(node, childId);
+        }
+        for (let c of node.children) {
+          if (search(c)) return true;
+        }
+        return false;
+      }
+      function containsId(node, id) {
+        if (node.id === id) return true;
+        for (let c of node.children) {
+          if (containsId(c, id)) return true;
+        }
+        return false;
+      }
+      for (let n of treeData) {
+        if (search(n)) return true;
+      }
+      return false;
+    }
+
+    // Move node in data structure
+    function moveNodeAsChild(nodeId, newParentId) {
+      let node;
+      function findAndRemove(arr) {
+        for (let i = 0; i < arr.length; i++) {
+          if (arr[i].id === nodeId) {
+            node = arr.splice(i, 1)[0];
+            return true;
+          }
+          if (findAndRemove(arr[i].children)) return true;
+        }
+        return false;
+      }
+      findAndRemove(treeData);
+      
+
+      function findAndAdd(arr) {
+        for (let n of arr) {
+          if (n.id === newParentId) {
+            n.children.push(node);
+            return true;
+          }
+          if (findAndAdd(n.children)) return true;
+        }
+        return false;
+      }
+      findAndAdd(treeData);
+    }
+
+    renderAndAttach();
+  </script>
+</body>
+</html>
