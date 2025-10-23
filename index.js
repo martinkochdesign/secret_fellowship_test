@@ -274,10 +274,41 @@ if (stored) {
 }
 else {
   // load existing archetypes into list item array
+  resetAll();
+  wholeProject = {
+    project: {
+      title: "",
+      description: "",
+      author: "",
+      copyright: "",
+      contact: ""
+
+    },
+    software_version: "",
+    db_source: "",
+    db_update: "",
+    checklist: "",
+    existing_nodes: "",
+    new_nodes: "",
+    show_splash_on_start: false,
+    color_theme_changes: false
+  };
+
+  document.getElementById('project_name').value = 'My new project';
+  document.getElementById('project_description').value = '';
+  document.getElementById('project_author').value = '';
+  document.getElementById('project_copyright').value = '';
+  document.getElementById('project_contact').value = '';
+  archetypeTree = initArchetypeTree();
+  updateTreeView();
   createArchetypeListItems();
   updateLists();
   renderEditor();
   renderViewer();
+
+  createProjectFile();
+  //save the project data to local storage
+  localStorage.setItem('ArchetypeExplorerProject', JSON.stringify(wholeProject));
 }
 
 if (!document.getElementById('dont_show_splash').checked) {
@@ -2191,7 +2222,7 @@ function createNewProject() {
         existing_nodes: "",
         new_nodes: "",
         show_splash_on_start: false,
-        color_theme_changes: true
+        color_theme_changes: false
       };
 
       document.getElementById('project_name').value = 'My new project';
