@@ -302,7 +302,7 @@ else {
   document.getElementById('project_contact').value = '';
   archetypeTree = initArchetypeTree();
   updateTreeView();
-  createArchetypeListItems();
+  //createArchetypeListItems();
   createProjectFile();
 
   updateLists();
@@ -372,12 +372,10 @@ window.addEventListener('beforeunload', function (e) {
     selectedListItem = null;
     //create the wholeProject variable
     createProjectFile();
-    //save the project data to local storage
-    
-    
-    //localStorage.setItem('ArchetypeExplorerProject', JSON.stringify(wholeProject));
-    
-    
+    //save the project data to local storage  
+  
+    localStorage.setItem('ArchetypeExplorerProject', JSON.stringify(wholeProject));
+       
     e.preventDefault();
     e.returnValue = ''; // Required by some browsers
   }
@@ -423,6 +421,7 @@ document.getElementById('clear_storage').onclick = function () {
 // get the information of the exsting archetypes (allNodes) and create li items for  archetypeListItems
 function createArchetypeListItems() {
   //console.log('createArchetypeListItems()')
+  archetypeListItems = [];
   allNodes
     .forEach(item => {
       const li = document.createElement('li');
