@@ -273,7 +273,7 @@ if (stored) {
   renderViewer();
 }
 else {
-  // load existing archetypes into list item array
+  // reset everything and load existing archetypes into list item array
   resetAll();
   wholeProject = {
     project: {
@@ -295,6 +295,7 @@ else {
   };
 
   document.getElementById('project_name').value = 'My new project';
+  document.getElementById('main_view_project_name').innerHTML = document.getElementById('project_name').value;
   document.getElementById('project_description').value = '';
   document.getElementById('project_author').value = '';
   document.getElementById('project_copyright').value = '';
@@ -302,11 +303,12 @@ else {
   archetypeTree = initArchetypeTree();
   updateTreeView();
   createArchetypeListItems();
+  createProjectFile();
+
   updateLists();
   renderEditor();
   renderViewer();
-
-  createProjectFile();
+  
   //save the project data to local storage
   localStorage.setItem('ArchetypeExplorerProject', JSON.stringify(wholeProject));
 }
@@ -371,7 +373,11 @@ window.addEventListener('beforeunload', function (e) {
     //create the wholeProject variable
     createProjectFile();
     //save the project data to local storage
-    localStorage.setItem('ArchetypeExplorerProject', JSON.stringify(wholeProject));
+    
+    
+    //localStorage.setItem('ArchetypeExplorerProject', JSON.stringify(wholeProject));
+    
+    
     e.preventDefault();
     e.returnValue = ''; // Required by some browsers
   }

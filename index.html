@@ -18,7 +18,7 @@
 <body>
     <div id="top">
         <div id="top_container">
-            <div id="logo"><img src="images/logo.png" alt="logo" height="45"></div>
+            <div id="logo"><img src="images/logo.png" alt="logo" height="45" onclick="localStorage.removeItem('ArchetypeExplorerProject');"></div>
 
             <div id="main_view_project_name">
             </div>
@@ -594,7 +594,7 @@
 
                 <div style="display: flex; justify-content: left; margin-top: 10px;">
                     <label style="display: flex; align-items: left;">
-                        <input type="checkbox" id="apply_theme_changes" style="margin-right: 8px;" onchange=updateHeaderGradientForHoliday() checked>
+                        <input type="checkbox" id="apply_theme_changes" style="margin-right: 8px;" onchange=updateHeaderGradientForHoliday()>
                         Change color theme throughout the year
                     </label>
                 </div>
