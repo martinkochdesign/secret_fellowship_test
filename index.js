@@ -86,7 +86,7 @@ function updateHeaderGradientForHoliday() {
 
 
 //INITIATE CONSTANTS and GLOBAL VARIABLES *****************************************************************************************
-const version = '0.47.0-alpha';
+const version = '0.48.0-alpha';
 
 let newNodes = []
 
@@ -708,44 +708,118 @@ function sortList(ul) {
 
 //filters the existing archetype list by the term introduced in the search bar
 
+function tokenize(query) {
+  const regex = /"([^"]+)"|(\()|(\))|(\bAND\b|\bOR\b|\bNOT\b)|(\S+)/gi;
+  const tokens = [];
+  let match;
+  while ((match = regex.exec(query)) !== null) {
+    if (match[1]) tokens.push(match[1]); // Quoted phrase
+    else if (match[2]) tokens.push('(');
+    else if (match[3]) tokens.push(')');
+    else if (match[4]) tokens.push(match[4].toUpperCase());
+    else if (match[5]) tokens.push(match[5]);
+  }
+  return tokens;
+}
 
-
-
+function buildBooleanExpr(tokens) {
+  return tokens.map(token => {
+    if (token === 'AND') return '&&';
+    if (token === 'OR') return '||';
+    if (token === 'NOT') return '!';
+    if (token === '(' || token === ')') return token;
+    // Escape quotes in token
+    const safe = token.replace(/"/g, '\\"').toLowerCase();
+    return `text.includes("${safe}")`;
+  }).join(' ');
+}
 
 function filterList(ul) {
-  const filterText = document.getElementById("searchInput").value;
-
+  const filterText = document.getElementById("searchInput").value.trim();
   const filterClass = document.getElementById("filter_class").value;
   const my_ul = document.getElementById(ul);
   const li = my_ul.getElementsByTagName('li');
 
-  // Escape regex special characters except *
-  function escapeRegex(str) {
-    return str.replace(/[-\/\\^$+?.()|[\]{}]/g, '\\$&').replace(/\*/g, '.*');
+  // --- Parentheses & Boolean Search ---
+  function tokenize(query) {
+    const regex = /"([^"]+)"|(\()|(\))|(\bAND\b|\bOR\b|\bNOT\b)|(\S+)/gi;
+    const tokens = [];
+    let match;
+    while ((match = regex.exec(query)) !== null) {
+      if (match[1]) tokens.push(match[1]);
+      else if (match[2]) tokens.push('(');
+      else if (match[3]) tokens.push(')');
+      else if (match[4]) tokens.push(match[4].toUpperCase());
+      else if (match[5]) tokens.push(match[5]);
+    }
+    return tokens;
   }
 
-  const lowerFilter = filterText.toLowerCase();
+  function buildBooleanExpr(tokens) {
+    return tokens.map(token => {
+      if (token === 'AND') return '&&';
+      if (token === 'OR') return '||';
+      if (token === 'NOT') return '!';
+      if (token === '(' || token === ')') return token;
+      const safe = token.replace(/"/g, '\\"').toLowerCase();
+      return `text.includes("${safe}")`;
+    }).join(' ');
+  }
+
+  function matchesBooleanQuery(text, filterText) {
+    
+
+    
+    if (!filterText) return true;
+    const tokens = tokenize(filterText);
+    const expr = buildBooleanExpr(tokens);
+    try {
+      // eslint-disable-next-line no-new-func
+      return Function('text', `return ${expr}`)(text.toLowerCase());
+    } catch (e) {
+      // Invalid expression, fallback to simple includes
+      return text.includes(filterText.toLowerCase());
+    }
+  }
+
+  function matchesBooleanQueryList(textList, filterText) {
+    
+    if (!filterText) return true;
+    const tokens = tokenize(filterText);  
+    const expr = buildBooleanExpr(tokens);
+
+    try {
+      // Create a function that checks if ANY text in the list matches the boolean query
+      // For each text, evaluate the boolean expression
+      return textList.some(text =>
+        Function('text', `return ${expr}`)(text.toLowerCase())
+      );
+    } catch (e) {
+      // Fallback: check if any text includes the filterText
+      return textList.some(text =>
+        text.toLowerCase().includes(filterText.toLowerCase())
+      );
+    }
+  }
+  // --- End Boolean Search ---
+
   const lowerClass = filterClass.toLowerCase();
+  const classRegex = lowerClass ? new RegExp('^' + lowerClass.replace(/[-\/\\^$+?.()|[\]{}]/g, '\\$&') + '$', 'i') : null;
 
-  // Convert wildcard search to regex
-  const filterRegex = lowerFilter ? new RegExp('^.*' + escapeRegex(lowerFilter) + '.*$', 'i') : null;
-  const classRegex = lowerClass ? new RegExp('^' + escapeRegex(lowerClass) + '$', 'i') : null;
-
-  if (lowerFilter !== "" || lowerClass !== "") {
-
+  if (filterText !== "" || lowerClass !== "") {
     for (let i = 0; i < li.length; i++) {
       let ID = '';
       let name = '';
       let purpose = '';
       let keywords = '';
-      let items = '';
+      //let items = '';
       let className = '';
       let inclusions = '';
+      let itemStrings = [];
 
       if (document.getElementById('includeID').checked) {
         ID = String(getNodeAttributeById(li[i].id, 'archetype_id'));
       }
-
       if (document.getElementById('includeName').checked) {
         name = String(getNodeAttributeById(li[i].id, 'concept_name'));
       }
@@ -756,45 +830,51 @@ function filterList(ul) {
         keywords = JSON.stringify(getNodeAttributeById(li[i].id, 'keywords'));
       }
       if (document.getElementById('includeItems').checked) {
-        items = JSON.stringify(getNodeAttributeById(li[i].id, 'items'));
+        //items = JSON.stringify(getNodeAttributeById(li[i].id, 'items'));
+        const itemsArray = getNodeAttributeById(li[i].id, 'items');
+        itemStrings = itemsArray.map(item => JSON.stringify(item).toLowerCase())
+
       }
       if (document.getElementById('includeInclusions').checked) {
         inclusions = JSON.stringify(getNodeAttributeById(li[i].id, 'include'));
       }
-      if (document.getElementById('filter_class').value != '') {
+      if (filterClass != '') {
         className = String(getNodeAttributeById(li[i].id, 'class'));
       }
 
-      // Check if any field matches the filter regex
-      const matchesFilter =
-        !filterRegex ||
-        filterRegex.test(ID.toLowerCase()) ||
-        filterRegex.test(name.toLowerCase()) ||
-        filterRegex.test(purpose.toLowerCase()) ||
-        filterRegex.test(keywords.toLowerCase()) ||
-        filterRegex.test(items.toLowerCase()) ||
-        filterRegex.test(inclusions.toLowerCase());
+      // Combine all searchable fields into one string
+      /*
+      const searchable = [
+        ID, name, purpose, keywords, items, inclusions
+      ].join(' ').toLowerCase();
+      */
+      
+      let searchableList = []
+      searchableList.push(ID.toLowerCase());
+      searchableList.push(name.toLowerCase());
+      searchableList.push(purpose.toLowerCase());
+      searchableList.push(keywords.toLowerCase());
+      searchableList = searchableList.concat(itemStrings);
+      searchableList.push(inclusions.toLowerCase());
 
-      const matchesClass =
-        !classRegex || classRegex.test(className.toLowerCase());
+      // Boolean search with parentheses
+      //const matchesFilter = matchesBooleanQuery(searchable, filterText);
+      const matchesListFilter = matchesBooleanQueryList(searchableList, filterText);
 
-      if (matchesFilter && matchesClass) {
+      const matchesClass = !classRegex || classRegex.test(className.toLowerCase());
+
+      if (matchesListFilter && matchesClass) {
         li[i].style.display = "";
       } else {
         li[i].style.display = "none";
       }
     }
-  }
-  if (lowerFilter == "" && lowerClass == "") {
+  } else {
     for (let i = 0; i < li.length; i++) {
       li[i].style.display = "";
     }
   }
-
 }
-
-
-
 
 //This formats existing node information for HTML
 function formatNodeItemAsHTML(item) {
@@ -917,87 +997,62 @@ function loadExistingArchetypeData(item) {
   //createCurrentNodesAndEdges(item);
 }
 
-/*
-function highlightArchetypeText() {
-  //console.log('highlightArchetypeText()')
-  const searchInput = document.getElementById('searchInput');
-  const archetypeDiv = document.getElementById('archetype_info');
-  const originalHTML = archetypeDiv.innerHTML; // Save original content
-  //console.log(originalHTML)
-  const originalText = archetypeDiv.innerText; // Save original content
-  const searchTerm = searchInput.value.trim();
-  if (!searchTerm) {
-      archetypeDiv.innerHTML = originalHTML;
-      return;
-  }
-  // Escape special regex characters in searchTerm
-  const escapedTerm = searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const regex = new RegExp(escapedTerm, 'gi');
-  // Replace matches with highlighted span
-  archetypeDiv.innerHTML = originalHTML.replace(regex, match =>
-`<span class="texthighlight">${match}</span>`);
-}*/
 
-/*
+
 function highlightArchetypeText() {
   const searchInput = document.getElementById('searchInput');
-  const archetypeDiv = document.getElementById('archetype_info');
+  
   const searchTerm = searchInput.value.trim();
-  // Remove previous highlights
-  function removeHighlights(node) {
-    if (node.nodeType === 1) { // Element
-      // Remove highlight spans
-      Array.from(node.querySelectorAll('span.texthighlight')).forEach(span => {
-        span.replaceWith(...span.childNodes);
-      });
-      // Recursively clean children
-      node.childNodes.forEach(removeHighlights);
-    }
-  }
-  removeHighlights(archetypeDiv);
 
-  if (!searchTerm) return;
-
-  // Escape regex special chars
-  const escapedTerm = searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const regex = new RegExp(escapedTerm, 'gi');
-
-  function highlight(node) {
-    if (node.nodeType === 3) { // Text node
-      const matches = node.data.match(regex);
-      if (matches) {
-        const frag = document.createDocumentFragment();
-        let lastIndex = 0;
-        node.data.replace(regex, (match, offset) => {
-          // Text before match
-          if (offset > lastIndex) {
-            frag.appendChild(document.createTextNode(node.data.slice(lastIndex, offset)));
-          }
-          // Highlighted match
-          const span = document.createElement('span');
-          span.className = 'texthighlight';
-          span.textContent = match;
-          frag.appendChild(span);
-          lastIndex = offset + match.length;
-        });
-        // Remaining text
-        if (lastIndex < node.data.length) {
-          frag.appendChild(document.createTextNode(node.data.slice(lastIndex)));
+    // --- Boolean Search Parsing ---
+    function parseBooleanQuery(query) {
+      // Split by spaces, but keep quoted phrases together
+      const tokens = [];
+      let current = '';
+      let inQuotes = false;
+      for (let i = 0; i < query.length; i++) {
+        const c = query[i];
+        if (c === '"') {
+          inQuotes = !inQuotes;
+          continue;
         }
-        node.replaceWith(frag);
+        if (!inQuotes && c === ' ') {
+          if (current) tokens.push(current);
+          current = '';
+        } else {
+          current += c;
+        }
       }
-    } else if (node.nodeType === 1 && node.childNodes) {
-      node.childNodes.forEach(highlight);
+      if (current) tokens.push(current);
+  
+      // Parse tokens into terms and operators
+      const terms = [];
+      let lastOp = 'AND';
+      for (let t of tokens) {
+        const upper = t.toUpperCase();
+        if (upper === 'AND' || upper === 'OR' || upper === 'NOT') {
+          lastOp = upper;
+        } else {
+          terms.push({ op: lastOp, term: t });
+          lastOp = 'AND';
+        }
+      }
+      return terms;
     }
-  }
-  highlight(archetypeDiv);
-}
-  */
+  
+    function getHighlightTerms(terms) {
+      // Only terms, not operators, and ignore NOT terms for highlighting
+      return terms.filter(t => t.op !== 'NOT').map(t => t.term).filter(Boolean);
+    }
 
-function highlightArchetypeText() {
-  const searchInput = document.getElementById('searchInput');
-  const archetypeDiv = document.getElementById('archetype_info');
-  const searchTerm = searchInput.value.trim();
+    const archetypeDiv = document.getElementById('archetype_info');
+    const filterText = document.getElementById("searchInput").value.trim();
+    const booleanTerms = filterText ? parseBooleanQuery(filterText) : [];
+    const highlightTerms = getHighlightTerms(booleanTerms);
+  
+  
+
+
 
   // Remove previous highlights
   function removeHighlights(node) {
@@ -1017,7 +1072,7 @@ function highlightArchetypeText() {
     return str.replace(/[-\/\\^$+?.()|[\]{}]/g, '\\$&').replace(/\*/g, '.*');
   }
   const regex = new RegExp(escapeRegex(searchTerm), 'gi');
-
+/*
   function highlight(node) {
     if (node.nodeType === 3) { // Text node
       const matches = node.data.match(regex);
@@ -1043,7 +1098,53 @@ function highlightArchetypeText() {
       node.childNodes.forEach(highlight);
     }
   }
-  highlight(archetypeDiv);
+  */
+    function generateLightColors(count) {
+      const colors = [];
+      for (let i = 0; i < count; i++) {
+        // Evenly distribute hues, keep saturation and lightness high for pastel colors
+        const hue = Math.round((360 * i) / count);
+        colors.push(`hsl(${hue}, 80%, 85%)`);
+      }
+      return colors;
+    }
+
+    const highlightColors = generateLightColors(highlightTerms.length);
+
+    const termColorMap = {};
+    highlightTerms.forEach((term, i) => {
+      termColorMap[term.toLowerCase()] = highlightColors[i];
+    });
+
+
+  function highlightBoolean(node) {
+    if (node.nodeType === 3) { // Text node
+      const regex = new RegExp('(' + highlightTerms.map(escapeRegex).join('|') + ')', 'gi');
+      const parts = node.data.split(regex);
+      if (parts.length > 1) {
+        const frag = document.createDocumentFragment();
+        parts.forEach(part => {
+          if (highlightTerms.some(term => part.toLowerCase() === term.toLowerCase())) {
+            const span = document.createElement('span');
+            span.className = 'texthighlight';
+            const matchedTerm = highlightTerms.find(term => part.toLowerCase() === term.toLowerCase());
+            span.style.backgroundColor = termColorMap[matchedTerm.toLowerCase()];;
+            span.textContent = part;
+            frag.appendChild(span);
+          } else {
+            frag.appendChild(document.createTextNode(part));
+          }
+        });
+        node.replaceWith(frag);
+      }
+    } else if (node.nodeType === 1 && node.childNodes) {
+      // Convert NodeList to Array to avoid issues when replacing nodes
+      Array.from(node.childNodes).forEach(highlightBoolean);
+    }
+  }
+  
+  highlightBoolean(archetypeDiv);
+
 }
 
 // LEFT SIDE LISTS - EVENT HANDLERS ***********************************************************************************
