@@ -86,7 +86,7 @@ function updateHeaderGradientForHoliday() {
 
 
 //INITIATE CONSTANTS and GLOBAL VARIABLES *****************************************************************************************
-const version = '0.48.0-alpha';
+const version = '0.51.0-alpha';
 
 let newNodes = []
 
@@ -100,6 +100,9 @@ let checkList = [];
 let wholeProject = {};
 
 let show_collection_items = true;
+
+let filterSet = {};
+resetfilterSet();
 
 let nodes = [];
 let links = [];
@@ -126,6 +129,74 @@ const NODE_COMPATIBILITY = {
   "": []
 };
 
+function loadFilterData(){
+  const filterID = document.getElementById('filter_set_select').value;
+  if (filterSet[filterID]){
+    document.getElementById('searchInput').value = filterSet[filterID].text;
+    document.getElementById('includeID').checked = filterSet[filterID].id;
+    document.getElementById('includeName').checked = filterSet[filterID].name;
+    document.getElementById('includePurpose').checked = filterSet[filterID].purpose;
+    document.getElementById('includeUse').checked = filterSet[filterID].use;
+    document.getElementById('includeKeywords').checked = filterSet[filterID].keywords;
+    document.getElementById('includeItems').checked = filterSet[filterID].items;
+    document.getElementById('includeInclusions').checked = filterSet[filterID].inclusions;
+    updateLists();
+    //console.log(filterSet)
+  }
+
+}
+
+function setFilterData(){
+  const filterID = document.getElementById('filter_set_select').value;
+  if (!filterSet[filterID]){
+    filterSet[filterID] = {};
+  }
+  filterSet[filterID].text = document.getElementById('searchInput').value;
+  filterSet[filterID].id = document.getElementById('includeID').checked;
+  filterSet[filterID].name = document.getElementById('includeName').checked;
+  filterSet[filterID].purpose = document.getElementById('includePurpose').checked;
+  filterSet[filterID].use = document.getElementById('includeUse').checked;
+  filterSet[filterID].keywords = document.getElementById('includeKeywords').checked;
+  filterSet[filterID].items = document.getElementById('includeItems').checked;
+  filterSet[filterID].inclusions = document.getElementById('includeInclusions').checked;
+}
+
+function resetfilterSet(){
+  filterSet = { '1':
+    {
+    'text': '',
+    'id': true,
+    'name': true,
+    'purpose': false,
+    'use': false,
+    'keywords': false,
+    'items': false,
+    'inclusions': false
+    },
+    '2':
+    {
+    'text': '',
+    'id': false,
+    'name': false,
+    'purpose': false,
+    'use': false,
+    'keywords': false,
+    'items': false,
+    'inclusions': false
+    },
+    '3':
+    {
+      'text': '',
+      'id': false,
+      'name': false,
+      'purpose': false,
+      'use': false,
+      'keywords': false,
+      'items': false,
+      'inclusions': false
+      }
+  }
+}
 
 function toggleViewCollectionItems() {
   const show_collection_sidebar_button = document.getElementById('show_collection_sidebar_button');
@@ -160,7 +231,7 @@ let TEMPLATEPLANNERWIDTH = '900px';
 
 //open page with standard window configuration
 set_window_configuration_1();
-
+loadFilterData();
 
 const visualization_element = document.getElementById("visualization");
 
@@ -258,7 +329,7 @@ anyArchetype = {
   "keyword_synonyms": [],
   "similar": []
 }
-allNodes.push(anyArchetype);
+//allNodes.push(anyArchetype);
 
 //check if there is stored data....
 const stored = localStorage.getItem('ArchetypeExplorerProject');
@@ -291,7 +362,8 @@ else {
     existing_nodes: "",
     new_nodes: "",
     show_splash_on_start: false,
-    color_theme_changes: false
+    color_theme_changes: false,
+    filterSet: {}
   };
 
   document.getElementById('project_name').value = 'My new project';
@@ -464,6 +536,9 @@ function getNodeAttributeById(id, attribute) {
 //update the archetype lists (existing and collection)
 function updateLists() {
 
+  //write the current search to the filterSet
+  setFilterData();
+
   //console.log('updateLists()')
   const available_list = document.getElementById('archetype_list');
   let temp_available_list = []
@@ -558,42 +633,57 @@ function updateLists() {
     if (selectedListItem.classList.contains('new')) {
       document.getElementById('delete_new_archetype_button').style.display = 'block';
       document.getElementById('remove_from_collection_button').style.display = 'none';
+      document.getElementById('remove_from_collection_button_info').style.display = 'none';
       document.getElementById('remove_from_collection_sidebar_button').style.display = 'none';
       document.getElementById('new_archetype_edit_button').style.display = 'block';
       document.getElementById('add_to_collection_button').style.display = 'none';
+      document.getElementById('add_to_collection_button_info').style.display = 'none';
       document.getElementById('add_to_collection_sidebar_button').style.display = 'none';
     } else if (selectedListItem.classList.contains('existing') && selectedListItem.classList.contains('collection')) {
       document.getElementById('delete_new_archetype_button').style.display = 'none';
       document.getElementById('remove_from_collection_button').style.display = 'block';
+      document.getElementById('remove_from_collection_button_info').style.display = 'block';
       document.getElementById('remove_from_collection_sidebar_button').style.display = 'block';
       document.getElementById('new_archetype_edit_button').style.display = 'none';
       document.getElementById('add_to_collection_button').style.display = 'none';
+      document.getElementById('add_to_collection_button_info').style.display = 'none';
       document.getElementById('add_to_collection_sidebar_button').style.display = 'none';
     } else if (selectedListItem.classList.contains('existing') && selectedListItem.classList.contains('available')) {
       document.getElementById('delete_new_archetype_button').style.display = 'none';
       document.getElementById('remove_from_collection_button').style.display = 'none';
+      document.getElementById('remove_from_collection_button_info').style.display = 'none';
       document.getElementById('remove_from_collection_sidebar_button').style.display = 'none';
       document.getElementById('new_archetype_edit_button').style.display = 'none';
       document.getElementById('add_to_collection_button').style.display = 'block';
+      document.getElementById('add_to_collection_button_info').style.display = 'block';
       document.getElementById('add_to_collection_sidebar_button').style.display = 'block';
     } else {
       document.getElementById('delete_new_archetype_button').style.display = 'none';
       document.getElementById('remove_from_collection_button').style.display = 'none';
+      document.getElementById('remove_from_collection_button_info').style.display = 'none';
       document.getElementById('remove_from_collection_sidebar_button').style.display = 'none';
       document.getElementById('new_archetype_edit_button').style.display = 'none';
       document.getElementById('add_to_collection_button').style.display = 'none';
+      document.getElementById('add_to_collection_button_info').style.display = 'none';
       document.getElementById('add_to_collection_sidebar_button').style.display = 'none';
     }
   } else {
     document.getElementById('delete_new_archetype_button').style.display = 'none';
     document.getElementById('remove_from_collection_button').style.display = 'none';
+    document.getElementById('remove_from_collection_button_info').style.display = 'none';
     document.getElementById('remove_from_collection_sidebar_button').style.display = 'none';
     document.getElementById('new_archetype_edit_button').style.display = 'none';
     document.getElementById('add_to_collection_button').style.display = 'none';
+    document.getElementById('add_to_collection_button_info').style.display = 'none';
     document.getElementById('add_to_collection_sidebar_button').style.display = 'none';
   }
 
-  if (document.getElementById("searchInput").value != '' || document.getElementById("filter_class").value != '') {
+  let combinedFilterText = '';
+  for (key in filterSet){
+    combinedFilterText += filterSet[key].text.trim();
+  }
+
+  if (document.getElementById("searchInput").value != '' || document.getElementById("filter_class").value != '' || combinedFilterText != '') {
     //show the delete filter icon
     document.getElementById('delete_filter_button').style.display = 'block';
     document.getElementById('delete_filter_sidebar_button').style.display = 'block';
@@ -603,11 +693,14 @@ function updateLists() {
     document.getElementById('delete_filter_sidebar_button').style.display = 'none';
   }
 
-
-  if (document.getElementById("searchInput").value != "") {
+  //highlight the archetype_info search terms
+  if (document.getElementById("searchInput").value != "" || combinedFilterText != '') {
     highlightArchetypeText();
   }
 
+  //reset scroll of archetype_info
+  var myDiv = document.getElementById('archetype_info');
+  myDiv.scrollTop = 0;
 
 }
 
@@ -643,10 +736,15 @@ function resetListFilter(ul) {
 
 function clearSearchFilter() {
   //console.log('clearSearchFilter()')
+  document.getElementById('filter_set_select').value = '1';
+  //REMEMBER TO DELETE THE FILTERSET VARIABLE!!!
+  resetfilterSet();
+
   document.getElementById("searchInput").value = '';
   document.getElementById('includeID').checked = true;
-  document.getElementById('includeName').checked = false;
+  document.getElementById('includeName').checked = true;
   document.getElementById('includePurpose').checked = false;
+  document.getElementById('includeUse').checked = false;
   document.getElementById('includeKeywords').checked = false;
   document.getElementById('includeItems').checked = false;
   document.getElementById('includeInclusions').checked = false;
@@ -740,6 +838,11 @@ function filterList(ul) {
   const my_ul = document.getElementById(ul);
   const li = my_ul.getElementsByTagName('li');
 
+  let combinedFilterText = ''
+  for (key in filterSet){
+    combinedFilterText += filterSet[key].text.trim();
+  }
+
   // --- Parentheses & Boolean Search ---
   function tokenize(query) {
     const regex = /"([^"]+)"|(\()|(\))|(\bAND\b|\bOR\b|\bNOT\b)|(\S+)/gi;
@@ -766,10 +869,9 @@ function filterList(ul) {
     }).join(' ');
   }
 
-  function matchesBooleanQuery(text, filterText) {
-    
+  /*
 
-    
+  function matchesBooleanQuery(text, filterText) {    
     if (!filterText) return true;
     const tokens = tokenize(filterText);
     const expr = buildBooleanExpr(tokens);
@@ -781,6 +883,7 @@ function filterList(ul) {
       return text.includes(filterText.toLowerCase());
     }
   }
+    */
 
   function matchesBooleanQueryList(textList, filterText) {
     
@@ -806,13 +909,69 @@ function filterList(ul) {
   const lowerClass = filterClass.toLowerCase();
   const classRegex = lowerClass ? new RegExp('^' + lowerClass.replace(/[-\/\\^$+?.()|[\]{}]/g, '\\$&') + '$', 'i') : null;
 
-  if (filterText !== "" || lowerClass !== "") {
+  if (combinedFilterText !== "" || lowerClass !== "") {  //ONLY DO THIS IF THERE IS A SEARCH TERM!!
     for (let i = 0; i < li.length; i++) {
+      let matchesListFilter = true; 
+      for (key in filterSet){
+
+        const filterText = filterSet[key].text;
+        if (filterText.trim()!==''){
+          let ID = '';
+          let name = '';
+          let purpose = '';
+          let keywords = '';
+          let use = '';
+          let inclusions = '';
+          let itemStrings = [];
+    
+          if (filterSet[key].id) {
+            ID = String(getNodeAttributeById(li[i].id, 'archetype_id'));
+          }
+          if (filterSet[key].name) {
+            name = String(getNodeAttributeById(li[i].id, 'concept_name'));
+          }
+          if (filterSet[key].purpose) {
+            purpose = JSON.stringify(getNodeAttributeById(li[i].id, 'purpose'));
+          }
+          if (filterSet[key].use) {
+            use = JSON.stringify(getNodeAttributeById(li[i].id, 'use'));
+          }
+          if (filterSet[key].keywords) {
+            keywords = JSON.stringify(getNodeAttributeById(li[i].id, 'keywords'));
+          }
+          if (filterSet[key].items) {
+            const itemsArray = getNodeAttributeById(li[i].id, 'items');
+            itemStrings = itemsArray.map(item => JSON.stringify(item).toLowerCase())
+    
+          }
+          if (filterSet[key].inclusions) {
+            inclusions = JSON.stringify(getNodeAttributeById(li[i].id, 'include'));
+          }
+          
+    
+          // Combine all searchable fields into one string    
+          let searchableList = []
+          searchableList.push(ID.toLowerCase());
+          searchableList.push(name.toLowerCase());
+          searchableList.push(purpose.toLowerCase());
+          searchableList.push(use.toLowerCase());
+          searchableList.push(keywords.toLowerCase());
+          searchableList = searchableList.concat(itemStrings);
+          searchableList.push(inclusions.toLowerCase());
+          if (filterSet[key].id || filterSet[key].name || filterSet[key].purpose || filterSet[key].use || filterSet[key].keywords || filterSet[key].items || filterSet[key].inclusions){
+          // Boolean search with parentheses
+          //console.log(key, matchesBooleanQueryList(searchableList, filterText));
+            matchesListFilter = matchesListFilter && matchesBooleanQueryList(searchableList, filterText);
+          }
+        }
+
+      }
+      
+      /*
       let ID = '';
       let name = '';
       let purpose = '';
       let keywords = '';
-      //let items = '';
       let className = '';
       let inclusions = '';
       let itemStrings = [];
@@ -830,7 +989,6 @@ function filterList(ul) {
         keywords = JSON.stringify(getNodeAttributeById(li[i].id, 'keywords'));
       }
       if (document.getElementById('includeItems').checked) {
-        //items = JSON.stringify(getNodeAttributeById(li[i].id, 'items'));
         const itemsArray = getNodeAttributeById(li[i].id, 'items');
         itemStrings = itemsArray.map(item => JSON.stringify(item).toLowerCase())
 
@@ -842,13 +1000,7 @@ function filterList(ul) {
         className = String(getNodeAttributeById(li[i].id, 'class'));
       }
 
-      // Combine all searchable fields into one string
-      /*
-      const searchable = [
-        ID, name, purpose, keywords, items, inclusions
-      ].join(' ').toLowerCase();
-      */
-      
+      // Combine all searchable fields into one string    
       let searchableList = []
       searchableList.push(ID.toLowerCase());
       searchableList.push(name.toLowerCase());
@@ -858,8 +1010,13 @@ function filterList(ul) {
       searchableList.push(inclusions.toLowerCase());
 
       // Boolean search with parentheses
-      //const matchesFilter = matchesBooleanQuery(searchable, filterText);
       const matchesListFilter = matchesBooleanQueryList(searchableList, filterText);
+      */
+      let className = '';
+
+      if (filterClass != '') {
+        className = String(getNodeAttributeById(li[i].id, 'class'));
+      }
 
       const matchesClass = !classRegex || classRegex.test(className.toLowerCase());
 
@@ -939,6 +1096,8 @@ function formatNodeItemAsHTML(item) {
       <p><strong>Keywords:</strong> ${formatString(item.keywords.join(', '))}</p>
       <p><strong>Parent:</strong> ${formatString(item.parent)}</p>
       <p><strong>Children:</strong> ${formatRecommendationArray(item.children)}</p>
+      <p style="border-radius: 5px; background-color: #E7FEE9;"><strong>Use:</strong> ${formatString(item.use)}</p>
+      <p style="border-radius: 5px; background-color: #FEEBE7;"><strong>Misuse:</strong> ${formatString(item.misuse)}</p>
     </div>
     <div id="info_body_right">
       <strong>Items</strong>
@@ -1000,10 +1159,14 @@ function loadExistingArchetypeData(item) {
 
 
 function highlightArchetypeText() {
-  const searchInput = document.getElementById('searchInput');
-  
-  const searchTerm = searchInput.value.trim();
+  //const searchInput = document.getElementById('searchInput');
+  //const searchTerm = searchInput.value.trim();
+  let searchTerm = '';
 
+    for (key in filterSet){
+      searchTerm += filterSet[key].text.trim();
+    }
+  
     // --- Boolean Search Parsing ---
     function parseBooleanQuery(query) {
       // Split by spaces, but keep quoted phrases together
@@ -1046,7 +1209,15 @@ function highlightArchetypeText() {
     }
 
     const archetypeDiv = document.getElementById('archetype_info');
-    const filterText = document.getElementById("searchInput").value.trim();
+    //const filterText = document.getElementById("searchInput").value.trim();
+    let filterText = '';
+
+    for (key in filterSet){
+      filterText += filterSet[key].text.trim();
+      filterText += ' AND '
+    }
+
+
     const booleanTerms = filterText ? parseBooleanQuery(filterText) : [];
     const highlightTerms = getHighlightTerms(booleanTerms);
   
@@ -1071,7 +1242,7 @@ function highlightArchetypeText() {
   function escapeRegex(str) {
     return str.replace(/[-\/\\^$+?.()|[\]{}]/g, '\\$&').replace(/\*/g, '.*');
   }
-  const regex = new RegExp(escapeRegex(searchTerm), 'gi');
+  //const regex = new RegExp(escapeRegex(searchTerm), 'gi');
 /*
   function highlight(node) {
     if (node.nodeType === 3) { // Text node
@@ -1178,7 +1349,9 @@ document.getElementById('includePurpose').addEventListener('change', function ()
 document.getElementById('includeKeywords').addEventListener('change', function () {
   updateLists();
 });
-
+document.getElementById('includeUse').addEventListener('change', function () {
+  updateLists();
+});
 document.getElementById('includeItems').addEventListener('change', function () {
   updateLists();
 });
@@ -2068,6 +2241,8 @@ function createProjectFile() {
 
     wholeProject.archetype_tree_data = archetypeTree;
 
+    //wholeProject.filterSet = filterSet;
+    //loadFilterData();
   }
 }
 
@@ -2150,6 +2325,9 @@ function populateProject() {
   document.getElementById('dont_show_splash2').checked = document.getElementById('dont_show_splash').checked;
 
   document.getElementById('apply_theme_changes').checked = wholeProject.color_theme_changes;
+
+  //filterSet = wholeProject.filterSet;
+
   newNodes = wholeProject.new_nodes;
   if (wholeProject.archetype_tree_data) {
     archetypeTree = wholeProject.archetype_tree_data;
@@ -2740,20 +2918,24 @@ function focusNode(nodeId) {
       }
     });
 
+    /*
     if (selectedListItem.classList.contains('collection')) {
       document.getElementById('add_to_collection_button').style.display = 'none';
       document.getElementById('add_to_collection_sidebar_button').style.display = 'none';
       if (selectedListItem.classList.contains('new')) {
         document.getElementById('delete_new_archetype_button').style.display = 'block';
         document.getElementById('remove_from_collection_button').style.display = 'none';
+        document.getElementById('remove_from_collection_button_info').style.display = 'none';
         document.getElementById('remove_from_collection_sidebar_button').style.display = 'none';
         document.getElementById('new_archetype_edit_button').style.display = 'block';
       } else {
         document.getElementById('delete_new_archetype_button').style.display = 'none';
         document.getElementById('remove_from_collection_button').style.display = 'block';
+        document.getElementById('remove_from_collection_button_info').style.display = 'block';
         document.getElementById('new_archetype_edit_button').style.display = 'none';
       }
     }
+      */
 
 
     //reset links and nodes
@@ -3036,6 +3218,7 @@ function focusNode(nodeId) {
             tempNode.size = 10;
             tempNode.stroke = 'black';
             tempNode.fx = visualization_element.offsetWidth / 2 + 600;
+            tempNode.y = visualization_element.offsetHeight / 2 + sectionCounter * increment;
             nodes.push(tempNode);
             //add link
             links.push({
@@ -5268,3 +5451,41 @@ document.querySelectorAll('.archetypeTree-node').forEach(node => {
   });
 });
 */
+
+
+
+function addListenersToTooltip(tooltip_id, text){
+  const tooltip = document.getElementById(tooltip_id);
+  const tooltipText = document.getElementById('myTooltipText');
+
+  tooltip.addEventListener('mouseenter', function(e) {
+    // Clone tooltip text and append to body
+    const rect = tooltip.getBoundingClientRect();
+    tooltipText.style.display = 'block';
+    tooltipText.style.position = 'absolute';
+    tooltipText.style.left = (rect.left + window.scrollX) + 'px';
+    tooltipText.style.top = (rect.bottom + window.scrollY) + 'px';
+    tooltipText.style.zIndex = 290;
+    tooltipText.innerHTML = text;
+    reset_dragabbles_z_index();
+    document.body.appendChild(tooltipText);
+  });
+
+  tooltip.addEventListener('mouseleave', function(e) {
+    tooltipText.style.display = 'none';
+    tooltipText.style.zIndex = 29;
+    tooltip.appendChild(tooltipText); // Move it back
+  });
+}
+
+addListenersToTooltip('tooltip_searchbar', `Search terms are not case sensitive.<br />
+Use quotation marks to search for exact phrases.<br />
+<span style="color:gray;">Example: "electronic address"</span><br /><br />
+
+Boolean operators:<br />
+<b>AND</b>: openEHR AND summary<br />
+<b>OR</b>: composition OR section<br />
+<b>NOT</b>: composition AND NOT v0<br />
+<b>Parentheses</b>: location AND (anatomical OR geo)<br />`)
+
+//addListenersToTooltip('tooltip_topbar', 'HELLO SQUIRREL FRIENDS!')

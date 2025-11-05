@@ -157,7 +157,47 @@ small{
 
 
 
+/* Tooltip container */
+.tooltip {
 
+    display: inline-block;
+    border-bottom: 1px dotted black; /* Add dots under the hoverable text */
+    cursor: pointer;
+  }
+  
+  /* Tooltip text */
+  
+  /*
+  .tooltiptext {
+    visibility: hidden; 
+    width: 300px;
+    background-color: black;
+    color: white;
+    text-align: left;
+    padding: 5px 0;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 10; 
+  }
+  */
+  .tooltiptext {
+    display: none;
+    position: absolute;
+    width: 400px;
+    background:rgb(240,240,255);
+    color: black;
+    padding: 10px;
+    border-radius: 6px;
+    border: 2px solid blue;
+    z-index: 9999;
+  }
+  
+  /* Show the tooltip text on hover */
+  /*
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }
+    */
 
 
 
@@ -172,7 +212,7 @@ small{
 .about-content {
     /*position:relative;*/
     /*top:10px;*/
-    height: calc(100% - var(--TOPBARHEIGHT));
+    height: calc(100% - var(--TOPBARHEIGHT) - 23px);
     background: white;
     padding-left: 20px;
     padding-right: 20px;
@@ -257,6 +297,8 @@ input[type="checkbox"] {
     min-height: 20pt;
     width:280px;
   }
+
+  
 
 
 /* network visusalization*/
@@ -541,7 +583,7 @@ label{
     display: flex;
     width: 100%;
     align-items: center;
-    gap: 15px;
+    gap: 8px;
     margin-left: 10px;
     margin-bottom: 10px;
     justify-content: left; /* This centers content horizontally */

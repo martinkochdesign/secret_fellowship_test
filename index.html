@@ -266,6 +266,10 @@
 
             <img src="images/270F_color.png" alt="Edit" height="35" onclick="show_new_archetype_editor()" style="position:absolute; top: 30px; right:20px; cursor: pointer;" title="Edit new archetype" id="new_archetype_edit_button">
 
+            <img src="images/star_add.png" alt="Add to collection" height="25" onclick="addArchetypeToCollection()" style="position:absolute; top: 30px; right:30px; cursor: pointer;" title="Add to collection" id="add_to_collection_button_info">
+
+            <img src="images/star_delete.png" alt="Remove archetype from collection" height="25" onclick="removeArchetypeFromCollection()" style="position:absolute; top: 30px; right:30px; cursor: pointer;" title="Remove from collection" id="remove_from_collection_button_info">
+
             <div id="archetype_info">Archetype info is displayed here!</div>
         </div>
 
@@ -402,8 +406,22 @@
             <img src="images/E201_color.png" alt="Exit" height="44" onclick="exit_extended_search()" style="position:absolute; top: 20px; right:0px; cursor: pointer;" title="Exit">
             -->
 
+            <div style="border: 1px solid darkgray; border-radius: 5px; margin: 5px; margin-right:50px;">
+
             <div id="searchbar_section">
+                <label for="filter_set_select" style="background:hotpink;">
+                    <select id="filter_set_select" onchange="loadFilterData()" style="appearance: none; width:20px; height:20px; background: rgb(240,240,255); text-align: center;
+                    font-weight: 600; color: blue;">
+                        <option value="1" selected>1</option>
+                        <option value="2" >2</option>
+                        <option value="3" >3</option>
+                 </select>
+                </label>
+
+
                 <input type="text" id="searchInput" placeholder="Filter existing archetypes..." autocomplete="off"/>
+
+                <div class="tooltip" id="tooltip_searchbar"><strong>?</strong></div>
 
                 <!--Number of found archetypes-->
                 <div id="N_of_N_found">2/10</div>
@@ -421,10 +439,14 @@
                 <label id="checkBoxID" class="checkboxLabel"><input type="checkbox" id="includeID" checked/>ID</label>
                  <label id="checkBoxName" class="checkboxLabel"><input type="checkbox" id="includeName"/>Name</label>
                  <label id="checkBoxPurpose" class="checkboxLabel"><input type="checkbox" id="includePurpose" />Purpose</label>
+                 <label id="checkBoxUse" class="checkboxLabel"><input type="checkbox" id="includeUse" />Use</label>
                  <label id="checkBoxKeywords" class="checkboxLabel"><input type="checkbox" id="includeKeywords" />Keywords</label>
                  <label id="checkBoxItems" class="checkboxLabel"><input type="checkbox" id="includeItems" />Items</label>
                  <label id="checkBoxInclusions" class="checkboxLabel"><input type="checkbox" id="includeInclusions"/>Inclusions</label>
             </div>
+
+            </div>
+
             <div id="filter_section">
                  <select id="filter_class" onchange="updateLists()">
                     <option value="" selected>-- Select class --</option>
@@ -433,13 +455,13 @@
 
 
             <div id="existing_list">     
-                <img src="images/star_add.png" alt="Add to collection" height="25" onclick="addArchetypeToCollection()" style="position:absolute; top: 90px; right:20px; cursor: pointer;" title="Add to collection" id="add_to_collection_button">
+                <img src="images/star_add.png" alt="Add to collection" height="25" onclick="addArchetypeToCollection()" style="position:absolute; top: 140px; right:20px; cursor: pointer;" title="Add to collection" id="add_to_collection_button">
 
-                <img src="images/star_delete.png" alt="Remove archetype from collection" height="25" onclick="removeArchetypeFromCollection()" style="position:absolute; top: 90px; right:20px; cursor: pointer;" title="Remove from collection" id="remove_from_collection_button">
+                <img src="images/star_delete.png" alt="Remove archetype from collection" height="25" onclick="removeArchetypeFromCollection()" style="position:absolute; top: 140px; right:20px; cursor: pointer;" title="Remove from collection" id="remove_from_collection_button">
 
-                <img src="images/hide_collection_items.png" alt="Hide collection items" height="25" onclick="toggleViewCollectionItems()" style="position:absolute; top: 125px; right:20px; cursor: pointer;" title="Hide collection items" id="hide_collection_button">
+                <img src="images/hide_collection_items.png" alt="Hide collection items" height="25" onclick="toggleViewCollectionItems()" style="position:absolute; top: 175px; right:20px; cursor: pointer;" title="Hide collection items" id="hide_collection_button">
 
-                <img src="images/show_collection_items.png" alt="show collection items" height="25" onclick="toggleViewCollectionItems()" style="position:absolute; top: 125px; right:20px; cursor: pointer; display: none;" title="Show collection items" id="show_collection_button">
+                <img src="images/show_collection_items.png" alt="show collection items" height="25" onclick="toggleViewCollectionItems()" style="position:absolute; top: 175px; right:20px; cursor: pointer; display: none;" title="Show collection items" id="show_collection_button">
 
                         <ul id="archetype_list">
                             
@@ -607,12 +629,6 @@
             <div id="project_buttons">
                 <div id="project_buttons_left">
                     <button id="new_project_button">NEW</button>
-                    <!--<button id="load_project_button">LOAD</button>-->
-                    <!--<label for="load_project" class="custom-file-upload">
-                        📤LOAD
-                    </label>-->
-                    
-
                     <button id="download_project_button">DOWNLOAD</button>
                 </div>
                 <div id="project_buttons_right">
@@ -975,12 +991,20 @@
 
 
 
+          
+            <div class="tooltiptext" id="myTooltipText">
+                Add tooltip text here!
+            </div>
+        
+
+
 
 
 
     <!-- JAVASCRIPT CODE-->
     <script src="dataset.js"></script>
     <script src="index.js"></script>
+    <script src="glossary_data.js"></script>
     <script src="glossary_functions.js"></script>
   
     

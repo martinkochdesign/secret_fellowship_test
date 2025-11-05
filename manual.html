@@ -176,6 +176,20 @@
 			}
 		}
 
+	.video-gallery {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 24px;
+	}
+	.video-gallery figure {
+	margin: 0;
+	width: 500px;
+	}
+	.video-gallery figcaption {
+	font-weight: bold;
+	margin-bottom: 8px;
+	text-align: center;
+	}
 
 	</style>
 </head>
@@ -198,7 +212,7 @@
 				<br>
 				<em><strong>Copyright:</strong> 2025, CatSalut. Servei Català de la Salut</em>
 				<br>
-				<em><strong>Version:</strong> 0.3 (Last updated: 2025-10-16)</em>
+				<em><strong>Version:</strong> 0.4 (Last updated: 2025-10-29)</em>
 			</p>
 			
 			<p style="text-align: center; line-height: 250%;">
@@ -229,6 +243,71 @@
 			<p>
 				<strong>Plan archetypes and template projects</strong> - Using the collection feature, you can organise archetypes, pre-plan new archetypes, interconnect them, and assign them to previously defined data elements of your project.
 			</p>
+
+
+			<section id="video-tutorials">
+				<h2>Video Tutorials</h2>
+				<div class="video-gallery">
+				  <figure>
+					<figcaption>GUI Tutorial</figcaption>
+					<video controls width="480">
+					  <source src="videos/tutorial - GUI.webm" type="video/webm">
+					  Your browser does not support the video tag.
+					</video>
+				  </figure>
+				  <figure>
+					<figcaption>Project Tutorial</figcaption>
+					<video controls width="480">
+					  <source src="videos/tutorial - Project.webm" type="video/webm">
+					  Your browser does not support the video tag.
+					</video>
+				  </figure>
+				  <figure>
+					<figcaption>Checklist Tutorial</figcaption>
+					<video controls width="480">
+					  <source src="videos/tutorial - checklist.webm" type="video/webm">
+					  Your browser does not support the video tag.
+					</video>
+				  </figure>
+				  <figure>
+					<figcaption>Search Tutorial Part 1</figcaption>
+					<video controls width="480">
+					  <source src="videos/tutorial - search part 1.webm" type="video/webm">
+					  Your browser does not support the video tag.
+					</video>
+				  </figure>
+				  <figure>
+					<figcaption>Search Syntax Tutorial</figcaption>
+					<video controls width="480">
+					  <source src="videos/tutorial - search syntax.webm" type="video/webm">
+					  Your browser does not support the video tag.
+					</video>
+				  </figure>
+				  <figure>
+					<figcaption>Search Tutorial Part 2</figcaption>
+					<video controls width="480">
+					  <source src="videos/tutorial - search part 2.webm" type="video/webm">
+					  Your browser does not support the video tag.
+					</video>
+				  </figure>
+				  <figure>
+					<figcaption>Archetype Placeholder Tutorial</figcaption>
+					<video controls width="480">
+					  <source src="videos/tutorial - archetype placeholder.webm" type="video/webm">
+					  Your browser does not support the video tag.
+					</video>
+				  </figure>
+				  <figure>
+					<figcaption>Template Planner Tutorial</figcaption>
+					<video controls width="480">
+					  <source src="videos/tutorial - template planner.webm" type="video/webm">
+					  Your browser does not support the video tag.
+					</video>
+				  </figure>
+				</div>
+			  </section>
+
+
 			
 			<h2>A brief overview of the interface</h2>
 			<p>
@@ -531,15 +610,54 @@
 </div>
 
 <p>
-	To make your search more effective, you can use wildcards (*) as part of your search term. Also, to make it more obvious where the term was found, there are highlights in the archetype information window.
+	You can add multiple filters at the same time. For example, you can search for one term in the archetype name and a different term in the purpose. Select the filter by clicking on the number to the left of the searchbar.
 </p>
 <div style="text-align: center;">
-<img src="images/tut_arc_search_wildcards_highlights.png" width="900">
-<br>
-<small>
-	You can use wildcards (*) in the search bar. Note that the found search term is highlighted in the archetype info window.
-</small>
+	<img src="images/tut_arch_stack_filters.png" width="400">
+	<br>
+	<small>
+		Select another filter to stack them.
+	</small>
 </div>
+
+
+
+<h4>Archetype Companion: Search Syntax Guide</h4>
+<p>
+  This section explains the search syntax used in the Archetype Companion. Searching for archetypes supports basic Boolean operators, such as <strong>AND</strong>, <strong>OR</strong>, and <strong>NOT</strong>.
+</p>
+
+<h5>General Considerations</h5>
+<ul>
+  <li>
+    <strong>Single Term Search:</strong> Type a term (e.g., <code>Location</code>) into the search bar. The search is not case sensitive, except for Boolean operators, which must be in uppercase.
+  </li>
+  <li>
+    <strong>Highlighting:</strong> The searched term is highlighted in the archetype information.
+  </li>
+  <li>
+    <strong>Multiple Terms:</strong> Add another term (e.g., <code>Geographic</code>). Both terms will be highlighted separately.
+  </li>
+  <li>
+    <strong>Phrase Search:</strong> To search for an exact phrase, enclose the terms in quotation marks (e.g., <code>"Geographic Location"</code>). Only the exact phrase will be highlighted.
+  </li>
+</ul>
+
+<h5>Using Boolean Operators</h5>
+<ul>
+  <li>
+    <strong>AND Operator:</strong> To find archetypes containing both terms, add <code>AND</code> between them (e.g., <code>Geographic AND Location</code>). This works the same as putting a space between two terms.
+  </li>
+  <li>
+    <strong>OR Operator:</strong> To find archetypes containing either term, use <code>OR</code> (e.g., <code>Geographic OR Anatomical</code>).
+  </li>
+  <li>
+    <strong>Combining Operators:</strong> To combine searches, use parentheses. For example: <code>(Geographic OR Anatomical) AND Location</code>. Ensure there is a space before and after the parentheses for correct operation.
+  </li>
+  <li>
+    <strong>NOT Operator:</strong> To exclude drafts (version zero), add <code>AND NOT v0</code> to the search bar. All version zero drafts will be excluded from the results.
+  </li>
+</ul>
 
 <p>
 	You can select which attributes of the archetype to search (archetype ID, name, purpose, keywords,
@@ -633,11 +751,76 @@
 	<strong>How to choose?</strong>
 	<ul>
 	  <li>Match the <code>ENTRY</code> type to your data's context.</li>
-	  <li>Do not pick an <code>ENTRY</code> just because it contains your data element—context matters!</li>
+	
+
+  <table border="1" cellpadding="6" cellspacing="0">
+	<thead>
+	  <tr>
+		<th>Archetype Class</th>
+		<th>Definition</th>
+		<th>Type of Document</th>
+		<th>Example Clinical Document/Data</th>
+	  </tr>
+	</thead>
+	<tbody>
+	  <tr>
+		<td><b>COMPOSITION</b></td>
+		<td>The top-level container for a clinical document or event, grouping all related content for a clinical encounter or record entry.</td>
+		<td></td>
+		<td>Discharge summary, consultation note, progress note</td>
+	  </tr>
+	  <tr>
+		<td><b>SECTION</b></td>
+		<td>A logical grouping of ENTRYs within a COMPOSITION, often used to structure documents into headings or chapters.</td>
+		<td></td>
+		<td>“History of Present Illness” section, “Medications” section</td>
+	  </tr>
+		  <tr>
+		<td><b>CLUSTER</b></td>
+		<td>A reusable structure for grouping related data elements, often used as a building block within ENTRYs or other CLUSTERs.</td>
+		<td></td>
+		<td>Blood pressure measurement (systolic/diastolic), address details, device details</td>
+	  </tr>
+	  <tr>
+		<td><b>OBSERVATION</b></td>
+		<td>Records data resulting from an observation or measurement made about the patient, often with a time series.</td>
+		<td>snapshot, history, examination, measurements, test results, scores, scales</td>
+		<td>Vital signs chart, laboratory test result, blood pressure reading</td>
+	  </tr>
+	  <tr>
+		<td><b>EVALUATION</b></td>
+		<td>Represents a clinical opinion, assessment, or summary, typically not directly measured but inferred or concluded.</td>
+		<td>opinion, synthesis, summary</td>
+		<td>Diagnosis note, risk assessment, problem list entry</td>
+	  </tr>
+	  <tr>
+		<td><b>INSTRUCTION</b></td>
+		<td>Specifies what should be done for the patient, including orders, plans, or requests for future actions.</td>
+		<td>services, therapeutics</td>
+		<td>Medication order, care plan, referral request</td>
+	  </tr>
+	  <tr>
+		<td><b>ACTION</b></td>
+		<td>Records actions that have been performed, usually as a result of an INSTRUCTION.</td>
+		<td>services, therapeutics</td>
+		<td>Medication administration record, procedure performed</td>
+	  </tr>
+	  <tr>
+		<td><b>ADMIN_ENTRY</b></td>
+		<td>Captures administrative or non-clinical information about the patient or encounter.</td>
+		<td>administrative</td>
+		<td>Admission note, discharge summary, demographic update</td>
+	  </tr>
+  
+	</tbody>
+  </table>
+
+  <li>Do not pick an <code>ENTRY</code> just because it contains your data element—context matters!</li>
 	  <li>If you cannot find a perfect fit, consider requesting a new archetype or discussing changes in the openEHR community.</li>
 	  <li><strong>Always prefer published archetypes over drafts!</strong></li>
 	</ul>
   </p>
+
 </div>
 <div class="step">
   <h4>5. Expand Details: <code>CLUSTER</code> Archetypes</h4>
