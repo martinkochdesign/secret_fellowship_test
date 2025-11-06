@@ -86,7 +86,7 @@ function updateHeaderGradientForHoliday() {
 
 
 //INITIATE CONSTANTS and GLOBAL VARIABLES *****************************************************************************************
-const version = '0.51.0-alpha';
+const version = '0.52.0-alpha';
 
 let newNodes = []
 
