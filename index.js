@@ -1,3 +1,120 @@
+//INITIATE CONSTANTS and GLOBAL VARIABLES *****************************************************************************************
+const version = '0.53.0-beta';
+
+let newNodes = []
+
+let archetypeListItems = []
+let selectedListItem = null;
+let existingEdges = [];
+let existingNodes = [];
+
+let checkList = [];
+
+let wholeProject = {};
+
+let show_collection_items = true;
+
+let filterSet = {};
+resetfilterSet();
+
+let nodes = [];
+let links = [];
+let allLinks = [];
+let lastIds = []; //Array of visited IDs
+let archetype_collection_data = [];
+
+// Initial root node for archetype tree
+let archetypeTree = {};
+archetypeTree = initArchetypeTree();
+
+const NODE_COMPATIBILITY = {
+  "composition": [
+    "action", "admin_entry", "evaluation", "instruction", "observation", "section", "cluster", "element"
+  ],
+  "action": ["cluster"],
+  "admin_entry": ["cluster"],
+  "evaluation": ["cluster"],
+  "instruction": ["cluster"],
+  "observation": ["cluster"],
+  "section": [
+    "action", "admin_entry", "evaluation", "instruction", "observation", "section"
+  ],
+  "cluster": ["cluster", "element"],
+  "element": [],
+  "": []
+};
+
+//Window width variables
+let CHECKLISTWIDTH = '350px';
+let ARCHETYPELISTWIDTH = '300px';
+let CLEDITORWIDTH = '750px';
+let EXTSEARCHWIDTH = '600px';
+let TEMPLATEPLANNERWIDTH = '900px';
+
+//open page with standard window configuration
+set_window_configuration_1();
+loadFilterData();
+
+const visualization_element = document.getElementById("visualization");
+
+//get a list of classes and add them as a search option
+const svg = d3.select('svg g');
+const uniqueClasses = [...new Set(allNodes.map(obj => obj.class))].sort();
+const select = document.getElementById('filter_class');
+uniqueClasses.forEach(className => {
+  const option = document.createElement('option');
+  option.value = className;
+  option.text = className;
+  select.appendChild(option);
+});
+
+let lines = svg
+  .selectAll('line')
+  .data(links)
+  .enter()
+  .append('line')
+  .attr('stroke', (link) => link.color || 'black')
+  .attr('marker-start', (link) => link.marker_start || 'None')
+  .attr('marker-start', (link) => link.marker_end || 'None')
+  .attr('stroke-width', 1)
+  .attr('stroke-dasharray', (link) => link.dash);
+
+let circles = svg
+  .selectAll('circle')
+  .data(nodes)
+  .enter()
+  .append('circle')
+  .attr('fill', (node) => node.color || 'gray')
+  .attr('stroke-width', 3)
+  .attr('stroke', (node) => node.stroke || 'transparent')
+  .attr('r', (node) => node.size || 10)
+  .on("click", (event, d) => {
+    focusNode(d.id);
+  });
+
+let text = svg
+  .selectAll('text')
+  .data(nodes)
+  .enter()
+  .append('text')
+  .attr('text-anchor', 'middle')
+  .attr('alignment-baseline', 'middle')
+  .style('pointer-events', 'none')
+  .text((node) => node.archetype_id);
+
+//Simulation, circles, links, text
+let simulation = d3.forceSimulation(nodes)
+  .force('charge', d3.forceManyBody().strength(-1000))
+  .force('link', d3.forceLink(links).id(function (d) {
+    return d.id;
+  }).distance(150))
+  ;
+
+let myZoom = d3.zoom()
+  .on('zoom', handleZoom);
+
+
+// FUNCTIONS  **************************************************************************************************
 
 // Change colors to holiday/seasonal/international theme
 function updateHeaderGradientForHoliday() {
@@ -11,7 +128,6 @@ function updateHeaderGradientForHoliday() {
   let color = 'black';
 
   wholeProject.color_theme_changes = document.getElementById('apply_theme_changes').checked;
-
 
   if (!wholeProject.color_theme_changes) {
     //apply standard colors
@@ -84,54 +200,9 @@ function updateHeaderGradientForHoliday() {
   });
 }
 
-
-//INITIATE CONSTANTS and GLOBAL VARIABLES *****************************************************************************************
-const version = '0.52.0-alpha';
-
-let newNodes = []
-
-let archetypeListItems = []
-let selectedListItem = null;
-let existingEdges = [];
-let existingNodes = [];
-
-let checkList = [];
-
-let wholeProject = {};
-
-let show_collection_items = true;
-
-let filterSet = {};
-resetfilterSet();
-
-let nodes = [];
-let links = [];
-let allLinks = [];
-let lastIds = []; //Array of visited IDs
-let archetype_collection_data = [];
-// Initial root node for archetype tree
-let archetypeTree = {};
-archetypeTree = initArchetypeTree();
-const NODE_COMPATIBILITY = {
-  "composition": [
-    "action", "admin_entry", "evaluation", "instruction", "observation", "section", "cluster", "element"
-  ],
-  "action": ["cluster"],
-  "admin_entry": ["cluster"],
-  "evaluation": ["cluster"],
-  "instruction": ["cluster"],
-  "observation": ["cluster"],
-  "section": [
-    "action", "admin_entry", "evaluation", "instruction", "observation", "section"
-  ],
-  "cluster": ["cluster", "element"],
-  "element": [],
-  "": []
-};
-
-function loadFilterData(){
+function loadFilterData() {
   const filterID = document.getElementById('filter_set_select').value;
-  if (filterSet[filterID]){
+  if (filterSet[filterID]) {
     document.getElementById('searchInput').value = filterSet[filterID].text;
     document.getElementById('includeID').checked = filterSet[filterID].id;
     document.getElementById('includeName').checked = filterSet[filterID].name;
@@ -141,14 +212,13 @@ function loadFilterData(){
     document.getElementById('includeItems').checked = filterSet[filterID].items;
     document.getElementById('includeInclusions').checked = filterSet[filterID].inclusions;
     updateLists();
-    //console.log(filterSet)
   }
 
 }
 
-function setFilterData(){
+function setFilterData() {
   const filterID = document.getElementById('filter_set_select').value;
-  if (!filterSet[filterID]){
+  if (!filterSet[filterID]) {
     filterSet[filterID] = {};
   }
   filterSet[filterID].text = document.getElementById('searchInput').value;
@@ -161,28 +231,29 @@ function setFilterData(){
   filterSet[filterID].inclusions = document.getElementById('includeInclusions').checked;
 }
 
-function resetfilterSet(){
-  filterSet = { '1':
+function resetfilterSet() {
+  filterSet = {
+    '1':
     {
-    'text': '',
-    'id': true,
-    'name': true,
-    'purpose': false,
-    'use': false,
-    'keywords': false,
-    'items': false,
-    'inclusions': false
+      'text': '',
+      'id': true,
+      'name': true,
+      'purpose': false,
+      'use': false,
+      'keywords': false,
+      'items': false,
+      'inclusions': false
     },
     '2':
     {
-    'text': '',
-    'id': false,
-    'name': false,
-    'purpose': false,
-    'use': false,
-    'keywords': false,
-    'items': false,
-    'inclusions': false
+      'text': '',
+      'id': false,
+      'name': false,
+      'purpose': false,
+      'use': false,
+      'keywords': false,
+      'items': false,
+      'inclusions': false
     },
     '3':
     {
@@ -194,7 +265,7 @@ function resetfilterSet(){
       'keywords': false,
       'items': false,
       'inclusions': false
-      }
+    }
   }
 }
 
@@ -219,76 +290,6 @@ function toggleViewCollectionItems() {
   }
   updateLists();
 }
-
-const svg = d3.select('svg g');
-
-//Window width variables
-let CHECKLISTWIDTH = '350px';
-let ARCHETYPELISTWIDTH = '300px';
-let CLEDITORWIDTH = '750px';
-let EXTSEARCHWIDTH = '600px';
-let TEMPLATEPLANNERWIDTH = '900px';
-
-//open page with standard window configuration
-set_window_configuration_1();
-loadFilterData();
-
-const visualization_element = document.getElementById("visualization");
-
-//get a list of classes and add them as a search option
-const uniqueClasses = [...new Set(allNodes.map(obj => obj.class))].sort();
-const select = document.getElementById('filter_class');
-uniqueClasses.forEach(className => {
-  const option = document.createElement('option');
-  option.value = className;
-  option.text = className;
-  select.appendChild(option);
-});
-
-let lines = svg
-  .selectAll('line')
-  .data(links)
-  .enter()
-  .append('line')
-  .attr('stroke', (link) => link.color || 'black')
-  .attr('marker-start', (link) => link.marker_start || 'None')
-  .attr('marker-start', (link) => link.marker_end || 'None')
-  .attr('stroke-width', 1)
-  .attr('stroke-dasharray', (link) => link.dash);
-
-let circles = svg
-  .selectAll('circle')
-  .data(nodes)
-  .enter()
-  .append('circle')
-  .attr('fill', (node) => node.color || 'gray')
-  .attr('stroke-width', 3)
-  .attr('stroke', (node) => node.stroke || 'transparent')
-  .attr('r', (node) => node.size || 10)
-  .on("click", (event, d) => {
-    focusNode(d.id);
-  });
-
-let text = svg
-  .selectAll('text')
-  .data(nodes)
-  .enter()
-  .append('text')
-  .attr('text-anchor', 'middle')
-  .attr('alignment-baseline', 'middle')
-  .style('pointer-events', 'none')
-  .text((node) => node.archetype_id);
-
-//Simulation, circles, links, text
-let simulation = d3.forceSimulation(nodes)
-  .force('charge', d3.forceManyBody().strength(-1000))
-  .force('link', d3.forceLink(links).id(function (d) {
-    return d.id;
-  }).distance(150))
-  ;
-
-let myZoom = d3.zoom()
-  .on('zoom', handleZoom);
 
 //WORKFLOW AT FIRST EXECUTION *********************************************************************************
 
@@ -329,14 +330,13 @@ anyArchetype = {
   "keyword_synonyms": [],
   "similar": []
 }
-//allNodes.push(anyArchetype);
+//allNodes.push(anyArchetype); //add a placeholder for "any archetype" inclusions or exclusions
 
 //check if there is stored data....
 const stored = localStorage.getItem('ArchetypeExplorerProject');
 if (stored) {
   //load whole project variable
   wholeProject = JSON.parse(stored);
-
   //populate the loaded data into the project    
   populateProject();
   updateLists();
@@ -353,7 +353,6 @@ else {
       author: "",
       copyright: "",
       contact: ""
-
     },
     software_version: "",
     db_source: "",
@@ -374,13 +373,11 @@ else {
   document.getElementById('project_contact').value = '';
   archetypeTree = initArchetypeTree();
   updateTreeView();
-  //createArchetypeListItems();
   createProjectFile();
-
   updateLists();
   renderEditor();
   renderViewer();
-  
+
   //save the project data to local storage
   localStorage.setItem('ArchetypeExplorerProject', JSON.stringify(wholeProject));
 }
@@ -397,7 +394,6 @@ if (document.getElementById('apply_theme_changes').checked) {
 // ONGOING UPDATES VIA OBSERVER *****************************************************************************************
 
 function debounce(fn, delay) {
-  //console.log('debounce(fn, delay)')
   let timeout;
   return (...args) => {
     clearTimeout(timeout);
@@ -406,7 +402,6 @@ function debounce(fn, delay) {
 }
 
 const debouncedUpdate = debounce(() => {
-  //console.log('Debouncing!')
   document.getElementById('main_view_project_name').innerHTML = document.getElementById('project_name').value;
   createProjectFile();
 }, 500);
@@ -430,8 +425,7 @@ elementIds.forEach(id => {
   }
 });
 
-// ON WINDOW OPEN AND CLOSE **********************************************************************************
-
+// ON WINDOW CLOSE **********************************************************************************
 
 // when closing the window
 window.addEventListener('beforeunload', function (e) {
@@ -445,9 +439,7 @@ window.addEventListener('beforeunload', function (e) {
     //create the wholeProject variable
     createProjectFile();
     //save the project data to local storage  
-  
     localStorage.setItem('ArchetypeExplorerProject', JSON.stringify(wholeProject));
-       
     e.preventDefault();
     e.returnValue = ''; // Required by some browsers
   }
@@ -457,13 +449,11 @@ window.addEventListener('beforeunload', function (e) {
 // GENERAL - FUNCTIONS ***********************************************************************************************
 
 function uuidv4() {
-  //console.log('uuidv4()')
   return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
     (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16));
 }
 
 function resetAll() {
-  //console.log('resetAll()')
   wholeProject = [];
   checkList = [];
   newNodes = [];
@@ -474,7 +464,6 @@ function resetAll() {
   updateLists();
   renderEditor();
   renderViewer();
-
 }
 
 
@@ -492,7 +481,6 @@ document.getElementById('clear_storage').onclick = function () {
 // LEFT SIDE LISTS - FUNCTIONS ****************************************************************************************
 // get the information of the exsting archetypes (allNodes) and create li items for  archetypeListItems
 function createArchetypeListItems() {
-  //console.log('createArchetypeListItems()')
   archetypeListItems = [];
   allNodes
     .forEach(item => {
@@ -519,7 +507,6 @@ function createArchetypeListItems() {
 
 //from archetypeListItems  search for an archetype and return an attribute (for example the "archetype_ID")
 function getTextContentFromLiItemList(id) {
-  //console.log('getTextContentFromLiItemList(id)')
   const foundItem = archetypeListItems.find(item => item.id.toLowerCase() === id.toLowerCase());
   const value = foundItem.textContent;
   return value;
@@ -527,7 +514,6 @@ function getTextContentFromLiItemList(id) {
 
 // from allNodes search for an archetype and return an attribute (for example the "purpose")
 function getNodeAttributeById(id, attribute) {
-  //console.log('getNodeAttributeById(id, attribute)')
   const foundItem = allNodes.find(item => item.id.toLowerCase() === id.toLowerCase());
   const value = foundItem ? foundItem[attribute] : undefined;
   return value;
@@ -538,8 +524,6 @@ function updateLists() {
 
   //write the current search to the filterSet
   setFilterData();
-
-  //console.log('updateLists()')
   const available_list = document.getElementById('archetype_list');
   let temp_available_list = []
   available_list.innerHTML = '';
@@ -554,8 +538,6 @@ function updateLists() {
         temp_available_list.push(li);
 
       } else if (li.classList.contains('collection') && li.classList.contains('existing') && show_collection_items) {
-        //collection_list.appendChild(li);
-        //li.textContent = li.id;
         const liClone = li.cloneNode(true);
         liClone.textContent = '⭐ ' + li.id;
         available_list.appendChild(liClone);
@@ -679,7 +661,7 @@ function updateLists() {
   }
 
   let combinedFilterText = '';
-  for (key in filterSet){
+  for (key in filterSet) {
     combinedFilterText += filterSet[key].text.trim();
   }
 
@@ -706,7 +688,6 @@ function updateLists() {
 
 
 function updateVisitedHistory() {
-  //console.log('updateVisitedHistory() ')
   //update the lastIDs list
   document.getElementById('search_history_list').innerHTML = '';
   const ul = document.createElement('ul');
@@ -714,7 +695,6 @@ function updateVisitedHistory() {
     const li = document.createElement('li');
     li.id = id;
     li.textContent = getTextContentFromLiItemList(id);
-    //li.textContent = id;
     li.onclick = function () {
       focusNode(li.id);
       updateLists();
@@ -726,7 +706,6 @@ function updateVisitedHistory() {
 }
 
 function resetListFilter(ul) {
-  //console.log('resetListFilter(ul)')
   const my_ul = document.getElementById(ul);
   const li = my_ul.getElementsByTagName('li');
   for (i = 0; i < li.length; i++) {
@@ -735,7 +714,7 @@ function resetListFilter(ul) {
 }
 
 function clearSearchFilter() {
-  //console.log('clearSearchFilter()')
+
   document.getElementById('filter_set_select').value = '1';
   //REMEMBER TO DELETE THE FILTERSET VARIABLE!!!
   resetfilterSet();
@@ -759,24 +738,11 @@ function clearSearchFilter() {
 
 
 function populateNewNodeInclSelection() {
-  //console.log('populateNewNodeInclSelection()')
-  //get the collection ids
-  //const collection = document.getElementById('archetype_collection_list');
-  //const liArray = Array.from(collection.getElementsByTagName("li"));
-
   //get the selector
   const options = document.getElementById("new_archetype_listArchetypes");
   //clear all options
   options.innerHTML = "<option value='' selected>-- Select archetype --</option>";
   //add all options
-  /*
-  liArray.forEach(li => {
-      const option = document.createElement("option");
-      option.text = li.textContent;
-      option.value = li.id; 
-      options.add(option);
-  });
-*/
   archetypeListItems
     .forEach(item => {
       if (item.classList.contains('collection')) {
@@ -786,15 +752,10 @@ function populateNewNodeInclSelection() {
         options.appendChild(option);
       }
     });
-
-
-
-
 }
 
 //sorting a ul list in alphabetical order
 function sortList(ul) {
-  //console.log('sortList(ul)')
   var my_ul = document.getElementById(ul);
   const liArray = Array.from(my_ul.getElementsByTagName("li"));
   if (liArray.length > 0) {
@@ -839,7 +800,7 @@ function filterList(ul) {
   const li = my_ul.getElementsByTagName('li');
 
   let combinedFilterText = ''
-  for (key in filterSet){
+  for (key in filterSet) {
     combinedFilterText += filterSet[key].text.trim();
   }
 
@@ -869,26 +830,10 @@ function filterList(ul) {
     }).join(' ');
   }
 
-  /*
+  function matchesBooleanQueryList(textList, filterText) {
 
-  function matchesBooleanQuery(text, filterText) {    
     if (!filterText) return true;
     const tokens = tokenize(filterText);
-    const expr = buildBooleanExpr(tokens);
-    try {
-      // eslint-disable-next-line no-new-func
-      return Function('text', `return ${expr}`)(text.toLowerCase());
-    } catch (e) {
-      // Invalid expression, fallback to simple includes
-      return text.includes(filterText.toLowerCase());
-    }
-  }
-    */
-
-  function matchesBooleanQueryList(textList, filterText) {
-    
-    if (!filterText) return true;
-    const tokens = tokenize(filterText);  
     const expr = buildBooleanExpr(tokens);
 
     try {
@@ -911,11 +856,11 @@ function filterList(ul) {
 
   if (combinedFilterText !== "" || lowerClass !== "") {  //ONLY DO THIS IF THERE IS A SEARCH TERM!!
     for (let i = 0; i < li.length; i++) {
-      let matchesListFilter = true; 
-      for (key in filterSet){
+      let matchesListFilter = true;
+      for (key in filterSet) {
 
         const filterText = filterSet[key].text;
-        if (filterText.trim()!==''){
+        if (filterText.trim() !== '') {
           let ID = '';
           let name = '';
           let purpose = '';
@@ -923,7 +868,7 @@ function filterList(ul) {
           let use = '';
           let inclusions = '';
           let itemStrings = [];
-    
+
           if (filterSet[key].id) {
             ID = String(getNodeAttributeById(li[i].id, 'archetype_id'));
           }
@@ -942,13 +887,13 @@ function filterList(ul) {
           if (filterSet[key].items) {
             const itemsArray = getNodeAttributeById(li[i].id, 'items');
             itemStrings = itemsArray.map(item => JSON.stringify(item).toLowerCase())
-    
+
           }
           if (filterSet[key].inclusions) {
             inclusions = JSON.stringify(getNodeAttributeById(li[i].id, 'include'));
           }
-          
-    
+
+
           // Combine all searchable fields into one string    
           let searchableList = []
           searchableList.push(ID.toLowerCase());
@@ -958,60 +903,14 @@ function filterList(ul) {
           searchableList.push(keywords.toLowerCase());
           searchableList = searchableList.concat(itemStrings);
           searchableList.push(inclusions.toLowerCase());
-          if (filterSet[key].id || filterSet[key].name || filterSet[key].purpose || filterSet[key].use || filterSet[key].keywords || filterSet[key].items || filterSet[key].inclusions){
-          // Boolean search with parentheses
-          //console.log(key, matchesBooleanQueryList(searchableList, filterText));
+          if (filterSet[key].id || filterSet[key].name || filterSet[key].purpose || filterSet[key].use || filterSet[key].keywords || filterSet[key].items || filterSet[key].inclusions) {
+            // Boolean search with parentheses
             matchesListFilter = matchesListFilter && matchesBooleanQueryList(searchableList, filterText);
           }
         }
 
       }
       
-      /*
-      let ID = '';
-      let name = '';
-      let purpose = '';
-      let keywords = '';
-      let className = '';
-      let inclusions = '';
-      let itemStrings = [];
-
-      if (document.getElementById('includeID').checked) {
-        ID = String(getNodeAttributeById(li[i].id, 'archetype_id'));
-      }
-      if (document.getElementById('includeName').checked) {
-        name = String(getNodeAttributeById(li[i].id, 'concept_name'));
-      }
-      if (document.getElementById('includePurpose').checked) {
-        purpose = JSON.stringify(getNodeAttributeById(li[i].id, 'purpose'));
-      }
-      if (document.getElementById('includeKeywords').checked) {
-        keywords = JSON.stringify(getNodeAttributeById(li[i].id, 'keywords'));
-      }
-      if (document.getElementById('includeItems').checked) {
-        const itemsArray = getNodeAttributeById(li[i].id, 'items');
-        itemStrings = itemsArray.map(item => JSON.stringify(item).toLowerCase())
-
-      }
-      if (document.getElementById('includeInclusions').checked) {
-        inclusions = JSON.stringify(getNodeAttributeById(li[i].id, 'include'));
-      }
-      if (filterClass != '') {
-        className = String(getNodeAttributeById(li[i].id, 'class'));
-      }
-
-      // Combine all searchable fields into one string    
-      let searchableList = []
-      searchableList.push(ID.toLowerCase());
-      searchableList.push(name.toLowerCase());
-      searchableList.push(purpose.toLowerCase());
-      searchableList.push(keywords.toLowerCase());
-      searchableList = searchableList.concat(itemStrings);
-      searchableList.push(inclusions.toLowerCase());
-
-      // Boolean search with parentheses
-      const matchesListFilter = matchesBooleanQueryList(searchableList, filterText);
-      */
       let className = '';
 
       if (filterClass != '') {
@@ -1035,7 +934,6 @@ function filterList(ul) {
 
 //This formats existing node information for HTML
 function formatNodeItemAsHTML(item) {
-  //console.log('formatNodeItemAsHTML(item)')
   // Helper to format arrays of objects
   function formatItemArray(arr) {
     if (!arr || arr.length === 0)
@@ -1148,82 +1046,72 @@ function formatNodeItemAsHTML(item) {
 
 //if you click on an existing archetype, node information gets displayed
 function loadExistingArchetypeData(item) {
-  //console.log('loadExistingArchetypeData(item) ')
   //get the info field and display the raw node data
   const list = document.getElementById('archetype_info');
   list.innerText = '';
   list.innerHTML = formatNodeItemAsHTML(item);
-  //createCurrentNodesAndEdges(item);
 }
 
 
 
 function highlightArchetypeText() {
-  //const searchInput = document.getElementById('searchInput');
-  //const searchTerm = searchInput.value.trim();
   let searchTerm = '';
 
-    for (key in filterSet){
-      searchTerm += filterSet[key].text.trim();
-    }
-  
-    // --- Boolean Search Parsing ---
-    function parseBooleanQuery(query) {
-      // Split by spaces, but keep quoted phrases together
-      const tokens = [];
-      let current = '';
-      let inQuotes = false;
-      for (let i = 0; i < query.length; i++) {
-        const c = query[i];
-        if (c === '"') {
-          inQuotes = !inQuotes;
-          continue;
-        }
-        if (!inQuotes && c === ' ') {
-          if (current) tokens.push(current);
-          current = '';
-        } else {
-          current += c;
-        }
+  for (key in filterSet) {
+    searchTerm += filterSet[key].text.trim();
+  }
+
+  // --- Boolean Search Parsing ---
+  function parseBooleanQuery(query) {
+    // Split by spaces, but keep quoted phrases together
+    const tokens = [];
+    let current = '';
+    let inQuotes = false;
+    for (let i = 0; i < query.length; i++) {
+      const c = query[i];
+      if (c === '"') {
+        inQuotes = !inQuotes;
+        continue;
       }
-      if (current) tokens.push(current);
-  
-      // Parse tokens into terms and operators
-      const terms = [];
-      let lastOp = 'AND';
-      for (let t of tokens) {
-        const upper = t.toUpperCase();
-        if (upper === 'AND' || upper === 'OR' || upper === 'NOT') {
-          lastOp = upper;
-        } else {
-          terms.push({ op: lastOp, term: t });
-          lastOp = 'AND';
-        }
+      if (!inQuotes && c === ' ') {
+        if (current) tokens.push(current);
+        current = '';
+      } else {
+        current += c;
       }
-      return terms;
     }
-  
-    function getHighlightTerms(terms) {
-      // Only terms, not operators, and ignore NOT terms for highlighting
-      return terms.filter(t => t.op !== 'NOT').map(t => t.term).filter(Boolean);
+    if (current) tokens.push(current);
+
+    // Parse tokens into terms and operators
+    const terms = [];
+    let lastOp = 'AND';
+    for (let t of tokens) {
+      const upper = t.toUpperCase();
+      if (upper === 'AND' || upper === 'OR' || upper === 'NOT') {
+        lastOp = upper;
+      } else {
+        terms.push({ op: lastOp, term: t });
+        lastOp = 'AND';
+      }
     }
+    return terms;
+  }
 
-    const archetypeDiv = document.getElementById('archetype_info');
-    //const filterText = document.getElementById("searchInput").value.trim();
-    let filterText = '';
+  function getHighlightTerms(terms) {
+    // Only terms, not operators, and ignore NOT terms for highlighting
+    return terms.filter(t => t.op !== 'NOT').map(t => t.term).filter(Boolean);
+  }
 
-    for (key in filterSet){
-      filterText += filterSet[key].text.trim();
-      filterText += ' AND '
-    }
+  const archetypeDiv = document.getElementById('archetype_info');
+  let filterText = '';
 
+  for (key in filterSet) {
+    filterText += filterSet[key].text.trim();
+    filterText += ' AND '
+  }
 
-    const booleanTerms = filterText ? parseBooleanQuery(filterText) : [];
-    const highlightTerms = getHighlightTerms(booleanTerms);
-  
-  
-
-
+  const booleanTerms = filterText ? parseBooleanQuery(filterText) : [];
+  const highlightTerms = getHighlightTerms(booleanTerms);
 
   // Remove previous highlights
   function removeHighlights(node) {
@@ -1242,50 +1130,23 @@ function highlightArchetypeText() {
   function escapeRegex(str) {
     return str.replace(/[-\/\\^$+?.()|[\]{}]/g, '\\$&').replace(/\*/g, '.*');
   }
-  //const regex = new RegExp(escapeRegex(searchTerm), 'gi');
-/*
-  function highlight(node) {
-    if (node.nodeType === 3) { // Text node
-      const matches = node.data.match(regex);
-      if (matches) {
-        const frag = document.createDocumentFragment();
-        let lastIndex = 0;
-        node.data.replace(regex, (match, offset) => {
-          if (offset > lastIndex) {
-            frag.appendChild(document.createTextNode(node.data.slice(lastIndex, offset)));
-          }
-          const span = document.createElement('span');
-          span.className = 'texthighlight';
-          span.textContent = match;
-          frag.appendChild(span);
-          lastIndex = offset + match.length;
-        });
-        if (lastIndex < node.data.length) {
-          frag.appendChild(document.createTextNode(node.data.slice(lastIndex)));
-        }
-        node.replaceWith(frag);
-      }
-    } else if (node.nodeType === 1 && node.childNodes) {
-      node.childNodes.forEach(highlight);
+ 
+  function generateLightColors(count) {
+    const colors = [];
+    for (let i = 0; i < count; i++) {
+      // Evenly distribute hues, keep saturation and lightness high for pastel colors
+      const hue = Math.round((360 * i) / count);
+      colors.push(`hsl(${hue}, 80%, 85%)`);
     }
+    return colors;
   }
-  */
-    function generateLightColors(count) {
-      const colors = [];
-      for (let i = 0; i < count; i++) {
-        // Evenly distribute hues, keep saturation and lightness high for pastel colors
-        const hue = Math.round((360 * i) / count);
-        colors.push(`hsl(${hue}, 80%, 85%)`);
-      }
-      return colors;
-    }
 
-    const highlightColors = generateLightColors(highlightTerms.length);
+  const highlightColors = generateLightColors(highlightTerms.length);
 
-    const termColorMap = {};
-    highlightTerms.forEach((term, i) => {
-      termColorMap[term.toLowerCase()] = highlightColors[i];
-    });
+  const termColorMap = {};
+  highlightTerms.forEach((term, i) => {
+    termColorMap[term.toLowerCase()] = highlightColors[i];
+  });
 
 
   function highlightBoolean(node) {
@@ -1313,7 +1174,7 @@ function highlightArchetypeText() {
       Array.from(node.childNodes).forEach(highlightBoolean);
     }
   }
-  
+
   highlightBoolean(archetypeDiv);
 
 }
@@ -1334,13 +1195,6 @@ const debouncedUpdateLists = debounceSearchInput(updateLists, 200); // 300ms del
 
 //look for search input
 document.getElementById('searchInput').addEventListener('input', debouncedUpdateLists);
-
-
-/*
-document.getElementById('searchInput').addEventListener('input', function () {
-  updateLists();
-});
-*/
 
 //listen to search options
 document.getElementById('includePurpose').addEventListener('change', function () {
@@ -1368,9 +1222,7 @@ document.getElementById('includeInclusions').addEventListener('change', function
 });
 
 //listen for add to collection
-
 function addArchetypeToCollection() {
-  //console.log('addArchetypeToCollection()')
   if (selectedListItem) {
     selectedListItem.classList.remove('available');
     selectedListItem.classList.add('collection');
@@ -1382,7 +1234,6 @@ function addArchetypeToCollection() {
 
 //listen to delete from collection
 function removeArchetypeFromCollection() {
-  //console.log('removeArchetypeFromCollection()')
   if (selectedListItem) {
     if (selectedListItem.classList.contains('existing')) {
       selectedListItem.classList.add('available');
@@ -1397,13 +1248,11 @@ function removeArchetypeFromCollection() {
 // CHECKLIST **************************************************************************************************
 // CHECKLIST - FUNCTIONS **************************************************************************************
 function updateArchetypeSelect() {
-  //console.log('updateArchetypeSelect()')
   // use archetypeListItems
   const selectFields = document.getElementsByClassName('mySelect');
 
   Array.from(selectFields)
     .forEach(select => {
-
       const selectValue = select.value;
       select.innerHTML = '<option value="">Select archetype from collection</option>';
 
@@ -1435,7 +1284,6 @@ function updateArchetypeSelect() {
 
 //FUNCTIONS FOR THE CHECKLIST EDITOR
 function addSection() {
-  //console.log('addSection()')
   checkList.push({
     name: `Section ${checkList.length + 1}`,
     elements: []
@@ -1445,7 +1293,6 @@ function addSection() {
 }
 
 function addElement(sectionIndex) {
-  //console.log('addElement(sectionIndex)')
   checkList[sectionIndex].elements.push({
     approved: false,
     name: `Element ${sectionIndex + 1}.${checkList[sectionIndex].elements.length + 1}`,
@@ -1455,25 +1302,21 @@ function addElement(sectionIndex) {
 
   renderEditor();
   renderViewer();
-  //updateArchetypeSelect();
 }
 
 function deleteSection(index) {
-  //console.log('deleteSection(index)')
   checkList.splice(index, 1);
   renderEditor();
   renderViewer();
 }
 
 function deleteElement(sectionIndex, elementIndex) {
-  //console.log('deleteElement(sectionIndex, elementIndex) ')
   checkList[sectionIndex].elements.splice(elementIndex, 1);
   renderEditor();
   renderViewer();
 }
 
 function moveElement(sectionIndex, elementIndex, direction) {
-  //console.log('moveElement(sectionIndex, elementIndex, direction)')
   const currentElement = checkList[sectionIndex].elements[elementIndex];
 
   if (direction === 'up') {
@@ -1498,34 +1341,23 @@ function moveElement(sectionIndex, elementIndex, direction) {
 }
 
 function updateElement(sectionIndex, elementIndex, key, value) {
-  //console.log('updateElement(sectionIndex, elementIndex, key, value)')
   checkList[sectionIndex].elements[elementIndex][key] = value;
   renderViewer();
 
-  //getAssignedElements(document.getElementById('new_archetype_uuid').value);
   if (selectedListItem) {
     if (selectedListItem.classList.contains('new')) {
       getAssignedElements(selectedListItem.id);
     }
     focusNode(selectedListItem.id);
   }
-
-  //update the archetype_collection_data and updateTreeView()
-  /*
-  archetype_collection_data = compileCollectionDataForPlanner();
-  //console.log(archetype_collection_data)
-  updateTreeView();
-*/
 }
 
 function updateSectionName(sectionIndex, value) {
-  //console.log('updateSectionName(sectionIndex, value)')
   checkList[sectionIndex].name = value;
   renderViewer();
 }
 
 function moveSection(index, direction) {
-  //console.log('moveSection(index, direction)')
   if (direction === 'up' && index > 0) {
     [checkList[index - 1], checkList[index]] = [checkList[index], checkList[index - 1]];
   } else if (direction === 'down' && index < checkList.length - 1) {
@@ -1536,11 +1368,7 @@ function moveSection(index, direction) {
 }
 
 
-
-
 function renderEditor() {
-  //console.log('renderEditor()')
-  //console.log(checkList)
   const container = document.getElementById('checklistSections');
   container.innerHTML = '';
   checkList.forEach((section, i) => {
@@ -1614,8 +1442,6 @@ function renderEditor() {
 }
 
 function renderViewer() {
-  //console.log(checkList)
-  //console.log('renderViewer()')
   const container = document.getElementById('checklistView');
   container.innerHTML = '';
   checkList.forEach((section) => {
@@ -1650,9 +1476,7 @@ function renderViewer() {
           ${el.description ? `<br><small style="color:blue;font-style: italic;margin-left:20px;">${el.description}</small>` : ''}
           ${archetype_text ? `<br><span style="margin-left:20px;">${archetype_text}</span>` : ''}</small>
           `
-
         ;
-
       secDiv.appendChild(line);
     });
     container.appendChild(secDiv);
@@ -1663,7 +1487,6 @@ function renderViewer() {
 }
 
 function downloadExcel() {
-  //console.log('downloadExcel()')
   const flatList = [];
   checkList.forEach((section) => {
     section.elements.forEach((el) => {
@@ -1692,19 +1515,15 @@ function downloadExcel() {
 
   // Build filename
   const filename = `${formatted}_${projectName}_checklist.xlsx`;
-
+  //write dfile
   XLSX.writeFile(wb, filename);
-
-  //XLSX.writeFile(wb, 'structured_list.xlsx');
 }
 
 function triggerFileInput() {
-  //console.log('triggerFileInput()')
   document.getElementById('uploadExcel').click();
 }
 
 function loadFromExcel(event) {
-  //console.log('loadFromExcel(event)')
   const file = event.target.files[0];
   if (!file)
     return;
@@ -1734,7 +1553,6 @@ function loadFromExcel(event) {
         description: row.Description || ''
       });
     });
-    //console.log(checkList)
     renderEditor();
     renderViewer();
   };
@@ -1745,7 +1563,6 @@ function loadFromExcel(event) {
 // CHECKLIST - EVENT HANDLER **********************************************************************************
 
 function clearchecklist(event) {
-  //console.log('clearchecklist(event)')
   const confirmed = confirm('Are you sure you want to delete the checklist?');
   if (!confirmed) {
     event.preventDefault(); // Prevents the deletion if user cancels
@@ -1761,7 +1578,6 @@ function clearchecklist(event) {
 // NEW ARCHETYPES *********************************************************************************************
 // NEW ARCHETYPES - FUNCTIONS *********************************************************************************
 function addNewArchetypesListItems() {
-  //console.log('addNewArchetypesListItems()')
   //delete all new archetype items from the archetypeListItems array
 
   archetypeListItems = archetypeListItems.filter(item => !item.classList.contains('new'));
@@ -1795,12 +1611,8 @@ function addNewArchetypesListItems() {
     });
 }
 
-
-
 function createNewArchetypeObject() {
-  //console.log('createNewArchetypeObject() ')
   let newObject = {
-    //"id": document.getElementById('new_archetype_id').value,
     "id": uuidv4(),
     "archetype_id": document.getElementById('new_archetype_id').value,
     "class": "",
@@ -1828,10 +1640,6 @@ function compileCollectionDataForPlanner() {
 
   archetypeListItems
     .forEach(item => {
-      //console.log(item.id)
-      //console.log(item.textContent)
-      //console.log(item.classList)
-
       if (item.classList.contains('collection')) {
         node = {};
         let archetype_class = '';
@@ -1860,7 +1668,6 @@ function compileCollectionDataForPlanner() {
               .forEach(item => {
                 atcode_items.push('[' + item.code + '] ' + item.label + ' ' + item.type)
               });
-            //atcode_items = []; //prepare list here!!!!
           }
         }
         node['archetype_class'] = archetype_class;
@@ -1876,7 +1683,6 @@ function compileCollectionDataForPlanner() {
         archetypeCollectionForPlanner.push(node);
       }
     })
-  //console.log(archetypeCollectionForPlanner)
   return archetypeCollectionForPlanner
 }
 
@@ -1885,7 +1691,6 @@ function compileCollectionDataForPlanner() {
 
 
 function getNewNodeData() {
-  //console.log('getNewNodeData()')
   const foundItem = newNodes.find(item => item.id.toLowerCase() === selectedListItem.id.toLowerCase());
   const value = foundItem ? foundItem.id : undefined;
 
@@ -1918,8 +1723,6 @@ function getNewNodeData() {
   filteredInclList
     .forEach(item => {
       //search for the node id in the archetype collection
-      //let archetype_id = collectionItems.find(c => c.id.toLowerCase() === item.toLowerCase()).textContent;
-
       let archetype_id = archetypeListItems.find(c => c.id.toLowerCase() === item.toLowerCase()).textContent;
 
       //create  a new list item
@@ -1934,8 +1737,6 @@ function getNewNodeData() {
   foundItem.includeNames = includedArchetypeIds;
 
   document.getElementById('archetype_info').innerHTML = formatNewNodeItemAsHTML(foundItem);
-
-  //getAssignedElements(document.getElementById('new_archetype_id').value);
   getAssignedElements(getAttributefromObject(foundItem, 'id'));
 
   let target = document.getElementById("info_body_right_assigned_elements");
@@ -1945,7 +1746,6 @@ function getNewNodeData() {
 }
 
 function formatNewNodeItemAsHTML(item) {
-  //console.log('formatNewNodeItemAsHTML(item)')
   // Helper to format arrays of objects
   function formatItemArray(arr) {
     if (!arr || arr.length === 0)
@@ -2011,7 +1811,6 @@ function formatNewNodeItemAsHTML(item) {
 }
 
 function getAssignedElements(archetype_id) {
-  //console.log('getAssignedElements(archetype_id)')
   // Flatten all elements from all sections and filter
   const matchingNames = checkList
     .flatMap(section =>
@@ -2035,19 +1834,16 @@ function getAssignedElements(archetype_id) {
 }
 
 function getAttributefromObject(object, attribute) {
-  //console.log('getAttributefromObject(object, attribute)')
   const value = object ? object[attribute] : undefined;
   return value
 }
 
 function setNewNodeData() {
-  //console.log(' setNewNodeData()')
   const foundItem = newNodes.find(item => item.id.toLowerCase() === selectedListItem.id.toLowerCase());
   const value = foundItem ? foundItem.id : undefined;
 
   //change all object data into the corresponding object
   foundItem.archetype_id = document.getElementById('new_archetype_id').value;
-  //foundItem.archetype = document.getElementById('new_archetype_id').value;
   foundItem.concept_name = document.getElementById('new_archetype_concept_name').value;
   foundItem.class = document.getElementById('new_archetype_class').value;
   foundItem.archetype_keywords = document.getElementById('new_archetype_keywords').value;
@@ -2057,9 +1853,6 @@ function setNewNodeData() {
   const currentListItems = Array.from(document.getElementById('new_archetype_inclusions_ul').getElementsByTagName("li"));
   foundItem.include = currentListItems.map(li => li.id);
 
-  //selectedListItem.id = foundItem.id;
-  //selectedListItem.textContent = foundItem.archetype_id;
-
   //if we chage the archetype id of a new archetype, we want to cahnge the assignment in the checklist
   checkList.forEach((section) => {
     section.elements.forEach((el) => {
@@ -2068,17 +1861,17 @@ function setNewNodeData() {
       }
     });
   });
-
+ 
   addNewArchetypesListItems();
   updateLists();
   updateArchetypeSelect();
+  populateNewNodeInclSelection();
 }
 
 // NEW ARCHETYPES - EVENT LISTENERS ***************************************************************************
 
 //add an item to the inclusded archetypes list
 function addArchetypeToNewArchetypeInclusionList() {
-  //console.log('addArchetypeToNewArchetypeInclusionList()')
 
   const select = document.getElementById('new_archetype_listArchetypes');
   const listItemID = select.value;
@@ -2111,7 +1904,6 @@ function addArchetypeToNewArchetypeInclusionList() {
 }
 
 function removeArchetypeToNewArchetypeInclusionList() {
-  //console.log('removeArchetypeToNewArchetypeInclusionList()')
   const listItem = document.getElementById('new_archetype_listArchetypes').value;
   const my_ul = document.getElementById('new_archetype_inclusions_ul');
   // Get current list items
@@ -2126,7 +1918,6 @@ function removeArchetypeToNewArchetypeInclusionList() {
 };
 
 function createNewArchetype() {
-  //console.log('createNewArchetype()')
   //create a unique name
   let allArchetypeNames = []
   archetypeListItems
@@ -2162,7 +1953,6 @@ function createNewArchetype() {
 }
 
 function deleteNewArchetype(event) {
-  //console.log('deleteNewArchetype(event)')
   const confirmed = confirm('Are you sure you want to delete this archetype?');
   if (!confirmed) {
     event.preventDefault(); // Prevents the deletion if user cancels
@@ -2186,7 +1976,6 @@ function deleteNewArchetype(event) {
 // PROJECT - FUNCTIONS *********************************************************************************
 
 function triggerProjectDownload() {
-  //console.log('triggerProjectDownload()')
   createProjectFile();
 
   // Get and sanitize the project name
@@ -2214,7 +2003,6 @@ function triggerProjectDownload() {
 }
 
 function createProjectFile() {
-  //console.log('createProjectFile()')
   if (wholeProject != [] && wholeProject != {}) {
     wholeProject.project.title = document.getElementById('project_name').value;
     wholeProject.project.description = document.getElementById('project_description').value;
@@ -2238,22 +2026,18 @@ function createProjectFile() {
     document.getElementById('dont_show_splash2').checked = document.getElementById('dont_show_splash').checked
 
     wholeProject.color_theme_changes = document.getElementById('apply_theme_changes').checked;
-
     wholeProject.archetype_tree_data = archetypeTree;
-
-    //wholeProject.filterSet = filterSet;
-    //loadFilterData();
   }
 }
 
 function triggerNoSplashCheckSync() {
-  //console.log('triggerNoSplashCheckSync()')
+ 
   document.getElementById('dont_show_splash').checked = document.getElementById('dont_show_splash2').checked;
   createProjectFile();
 }
 
 function saveArchetypeListItems() {
-  //console.log('saveArchetypeListItems()')
+
   const items = []
   archetypeListItems
     .forEach(item => {
@@ -2268,7 +2052,6 @@ function saveArchetypeListItems() {
 }
 
 function restituteArchetypeListItem(list_items) {
-  //console.log('restituteArchetypeListItem(list_items)')
   const arLiIt = [];
   list_items
     .forEach(item => {
@@ -2314,7 +2097,6 @@ function restituteArchetypeListItem(list_items) {
 }
 
 function populateProject() {
-  //console.log('populateProject()')
   document.getElementById('project_name').value = wholeProject.project.title;
   document.getElementById('project_description').value = wholeProject.project.description;
   document.getElementById('project_author').value = wholeProject.project.author;
@@ -2325,9 +2107,6 @@ function populateProject() {
   document.getElementById('dont_show_splash2').checked = document.getElementById('dont_show_splash').checked;
 
   document.getElementById('apply_theme_changes').checked = wholeProject.color_theme_changes;
-
-  //filterSet = wholeProject.filterSet;
-
   newNodes = wholeProject.new_nodes;
   if (wholeProject.archetype_tree_data) {
     archetypeTree = wholeProject.archetype_tree_data;
@@ -2459,12 +2238,10 @@ document.getElementById('load_project_button').addEventListener('change', functi
 
 
 function triggerProjectFileInput() {
-  //console.log('triggerProjectFileInput()')
   document.getElementById('load_project_button').click();
 }
 
 function loadProjectFromJSON(e) {
-  //console.log('loadProjectFromJSON(e)')
   const file = e.target.files[0];
   if (!file)
     return;
@@ -2484,8 +2261,6 @@ function loadProjectFromJSON(e) {
 }
 
 function createNewProject() {
-  //console.log('createNewProject()')
-
   if (document.getElementById('project_name').value != '') {
     if (confirm("Are you sure you want to clear all project data? This cannot be undone.")) {
       localStorage.removeItem('ArchetypeExplorerProject');
@@ -2554,12 +2329,10 @@ function handleZoom(e) {
 }
 
 function initZoom() {
-  //console.log('initZoom()')
   d3.select('svg').call(myZoom);
 }
 
 function resetZoom() {
-  //console.log('resetZoom()')
   d3.select('svg')
     .transition()
     .duration(500)
@@ -2570,8 +2343,6 @@ function resetZoom() {
 
 
 function redraw() {
-  //console.log('redraw()')
-
   d3.selectAll("svg g > *").remove(); //remove everything from the svg
 
 
@@ -2582,8 +2353,6 @@ function redraw() {
   if (defs.empty()) {
     defs = svg.append('defs');
   }
-
-  //console.log('LOOKATME',defs)
 
   uniqueColors.forEach(color => {
     defs.append('marker')
@@ -2610,9 +2379,6 @@ function redraw() {
       .attr('points', '10 0, 0 3.5, 10 7')
       .attr('fill', color);
   });
-
-  //console.log('LOOKATME',defs)
-
 
   // Rebind data to links
 
@@ -2660,7 +2426,6 @@ function redraw() {
 }
 
 function getConnectedNodesforNewNode(nodeId) {
-  //console.log('getConnectedNodesforNewNode(nodeId) ')
   if (nodeId != lastIds[lastIds.length - 1]) {
     lastIds.push(nodeId); //add IDs to the array of last visited IDs.
     updateVisitedHistory();
@@ -2669,7 +2434,6 @@ function getConnectedNodesforNewNode(nodeId) {
 
   if (sel_view === 'ARCHETYPE' || sel_view === 'COMBINATION') {
     //get selected item from newNode array
-    //selected = newNodes.find(n => n.id === nodeId);
     selected = newNodes.find(n => n.id === nodeId);
     selected.color = 'red';
     selected.size = 10;
@@ -2679,7 +2443,6 @@ function getConnectedNodesforNewNode(nodeId) {
     //add child nodes (there are none by now)
     //add parent  (there is non featured by now)
 
-    //add included
     //add included nodes
     includedIds = [];
     includedObjects = getAttributefromObject(selected, 'include');
@@ -2723,7 +2486,6 @@ function getConnectedNodes(nodeId) {
 
   // Create a Set to store connected node IDs
   let connectedIds = new Set();
-  //lastIds.push(nodeId); //add IDs to the array of last visited IDs.
 
   // Loop through each link to find connections
   links = [];
@@ -2918,26 +2680,6 @@ function focusNode(nodeId) {
       }
     });
 
-    /*
-    if (selectedListItem.classList.contains('collection')) {
-      document.getElementById('add_to_collection_button').style.display = 'none';
-      document.getElementById('add_to_collection_sidebar_button').style.display = 'none';
-      if (selectedListItem.classList.contains('new')) {
-        document.getElementById('delete_new_archetype_button').style.display = 'block';
-        document.getElementById('remove_from_collection_button').style.display = 'none';
-        document.getElementById('remove_from_collection_button_info').style.display = 'none';
-        document.getElementById('remove_from_collection_sidebar_button').style.display = 'none';
-        document.getElementById('new_archetype_edit_button').style.display = 'block';
-      } else {
-        document.getElementById('delete_new_archetype_button').style.display = 'none';
-        document.getElementById('remove_from_collection_button').style.display = 'block';
-        document.getElementById('remove_from_collection_button_info').style.display = 'block';
-        document.getElementById('new_archetype_edit_button').style.display = 'none';
-      }
-    }
-      */
-
-
     //reset links and nodes
     links = [];
     nodes = [];
@@ -2966,14 +2708,6 @@ function focusNode(nodeId) {
     if (sel_view === 'COLLECTION') {
 
       //get all IDs for collection items from archetypeListItems
-      /*let collectionIds= [];
-      archetypeListItems
-      .forEach(item => {
-        if(item.classList.contains('collection')){
-          collectionIds.push(item.id);
-        }
-      });*/
-
       const collectionIds = archetypeListItems
         .filter(item => item.classList.contains('collection'))
         .map(item => item.id);
@@ -3275,10 +3009,8 @@ function focusNode(nodeId) {
         }
 
         nodes.push({
-          //node_uid: node.node_uid,
           id: node.node_uid,
           archetype_id: tempname,
-          //id: node.id,
           type: node.type,
           mode: node.mode,
           element_value: node.element_value,
@@ -3301,85 +3033,6 @@ function focusNode(nodeId) {
       }
 
       nodes = collectNodes(archetypeTree);
-      //console.log(links)
-      /*
-                    checkList.forEach(section => {
-                        //create nodes for the sections
-                        const tempNode = {};
-                        tempNode.id = section.name;
-                        tempNode.archetype_id = section.name;
-                        tempNode.color = 'hotpink';
-                        tempNode.size = 10;
-                        tempNode.stroke = 'black';
-                        tempNode.fy =  visualization_element.offsetHeight / 2 + sectionCounter * increment;
-                        tempNode.fx = visualization_element.offsetWidth / 2 + 0;
-                        nodes.push(tempNode);
-          
-                        //add element nodes for every section
-                        section.elements.forEach(element => {
-                            let tempNode = {};
-                            tempNode.id = section.name + element.name;
-                            element.id = tempNode.id;
-                            tempNode.archetype_id = element.name;
-                            tempNode.color = 'lime';
-                            tempNode.size = 10;
-                            tempNode.stroke = 'black';
-                            tempNode.fy = sectionCounter * increment;
-                            tempNode.fx = visualization_element.offsetWidth / 2 + 300;
-                            sectionCounter += 1;
-                            nodes.push(tempNode);
-                            //add a link from section to element
-                            links.push({
-                                'source': section.name,
-                                'target': tempNode.id,
-                                'dash': "5,5",
-                                'color': 'gray',
-                                'marker_start': 'None',
-                                'marker_end': 'None'
-                            });
-                            //add the corresponding archetype
-                            if (element.archetype != '') {
-                                tempNode = {};
-                                tempNode.id = element.archetype;
-                                if(element.archetype_id){
-                                tempNode.archetype_id = element.archetype_id;}
-                                else{
-                                  tempNode.archetype_id = element.archetype;
-                                };
-          
-                                let temp_existing_node = allNodes.find(n => n.id === tempNode.archetype_id);
-                                if (temp_existing_node) {
-                                  tempNode.color = 'Yellow';
-                                } else {
-                                  tempNode.color = 'Blue';
-                                } //End of IF statement
-                                
-                                tempNode.size = 10;
-                                tempNode.stroke = 'black';
-                                tempNode.fx = visualization_element.offsetWidth / 2 + 600;
-                                nodes.push(tempNode);
-                                //add link
-                                links.push({
-                                    'source': element.id,
-                                    'target': tempNode.id,
-                                    'dash': "5,5",
-                                    'color': 'gray',
-                                    'marker_start': 'None',
-                                    'marker_end': 'None'
-                                });
-                            } // END of if statement
-          
-                        }); // END OF ELEMENTS
-          
-                        
-                        
-                    
-                      }); //END OF CHECKLIST ITEMS
-          
-                    //get rid of duplicated archetype nodes
-                    nodes = Array.from(
-                            new Map(nodes.map(obj => [obj.id, obj])).values());
-                  */
     } // END OF CREATE TEMPLATE PLANNER VIEW
 
     // if the view is ARCHETYPE, SIMILAR or COMBINATION, set all nodes to be free to move and the selected node to the middle
@@ -3432,24 +3085,6 @@ draggables.forEach(draggable => {
     const offsetX = e.clientX - draggable.offsetLeft;
     const offsetY = e.clientY - draggable.offsetTop;
 
-    /*
-    //set all windows to background
-      const zIndexes = Array.from(draggables).map(d => d.style.zIndex);
-      // Get sorted unique zIndexes
-      const sortedUnique = Array.from(new Set(zIndexes)).sort((a, b) => a - b);
-      // Map old zIndex to new normalized zIndex
-      const zIndexMap = Object.fromEntries(sortedUnique.map((z, i) => [z, i]));
-      draggables.forEach(d => {
-        const oldZ = parseInt(d.style.zIndex) || 0;
-        d.style.zIndex = zIndexMap[oldZ];
-      });
-
-    //let maxZ = Math.max(...Array.from(document.querySelectorAll('.movable-div')).map(d => parseInt(d.style.zIndex) || 0));
-    let maxZ = sortedUnique[sortedUnique.length - 1];
-
-    draggable.style.zIndex = String(maxZ+1);
-    */
-
     function mouseMoveHandler(e) {
       document.body.classList.add('unselectable');
       const parent = document.getElementById('main'); // Assuming 'main' is the ID of your parent div
@@ -3489,9 +3124,7 @@ draggables.forEach(draggable => {
       d.style.zIndex = zIndexMap[oldZ];
     });
 
-    //let maxZ = Math.max(...Array.from(document.querySelectorAll('.movable-div')).map(d => parseInt(d.style.zIndex) || 0));
     let maxZ = sortedUnique[sortedUnique.length - 1];
-
     draggable.style.zIndex = String(maxZ + 1);
 
   });
@@ -3499,7 +3132,6 @@ draggables.forEach(draggable => {
 
 // Minimize function
 function minimize(button) {
-  //console.log(' minimize(button)')
   const div = button.closest('.movable-div');
   div.style.display = 'none';
 }
@@ -3547,8 +3179,6 @@ document.querySelectorAll('.movable-div').forEach(div => {
   div.querySelectorAll('.resize-handle').forEach(handle => {
     handle.addEventListener('mousedown', function (e) {
       //set all windows to background
-
-
       document.body.classList.add('unselectable');
       e.stopPropagation();
       direction = [...handle.classList].find(cls => ['top', 'right', 'bottom', 'left'].includes(cls));
@@ -3754,7 +3384,6 @@ function show_warning_page(warningHTML) {
   wdw_warning.style.width = '600px';
   wdw_warning.style.height = '500px';
   wdw_warning.style.border = '1px solid black';
-  //wdw_warning.style.backgroundColor = 'rgb(235,190,180)';
   wdw_warning.style.backgroundColor = 'white';
   wdw_warning.style.boxShadow = '0 2px 16px rgba(0,0,0,0.2)';
   wdw_warning.style.zIndex = reset_dragabbles_z_index();
@@ -3780,7 +3409,6 @@ function show_glossary_page() {
   wdw_glossary.style.width = '900px';
   wdw_glossary.style.height = '500px';
   wdw_glossary.style.border = '1px solid black';
-  //wdw_warning.style.backgroundColor = 'rgb(235,190,180)';
   wdw_glossary.style.backgroundColor = 'white';
   wdw_glossary.style.boxShadow = '0 2px 16px rgba(0,0,0,0.2)';
   wdw_glossary.style.zIndex = reset_dragabbles_z_index();
@@ -3903,17 +3531,6 @@ function set_window_configuration_1() {
   wdw_template_planner.style.display = 'none';
 
   show_button_bar();
-  /*
-  const wdw_button_bar = document.getElementById("wdw_button_bar");
-  wdw_button_bar.style.position = 'absolute';
-  wdw_button_bar.style.left = 'calc(100% - 35px)';
-  wdw_button_bar.style.top = '0px';
-  wdw_button_bar.style.width = '35px';
-  wdw_button_bar.style.height = '100%';
-  wdw_button_bar.style.display = 'inline';
-  wdw_button_bar.style.backgroundColor = 'rgb(240,240,255)';
-  */
-
 };
 
 function set_window_configuration_2() {
@@ -4072,139 +3689,6 @@ function set_window_configuration_3() {
   show_button_bar();
 };
 
-/*
-function set_window_configuration_4() {
-  
-  const wdw_archetype_list = document.getElementById("wdw_archetype_list");
-  wdw_archetype_list.style.position = 'absolute'; // or 'relative', 'fixed', etc., depending on your layout needs
-  wdw_archetype_list.style.left = '0px'; // Set the desired left position
-  wdw_archetype_list.style.top = '0px'; // Set the desired top position
-  wdw_archetype_list.style.width = ARCHETYPELISTWIDTH; // Set the desired width
-  wdw_archetype_list.style.height = '60%'; // Set the desired height
-  wdw_archetype_list.style.display = 'inline';
-  wdw_archetype_list.style.boxShadow = 'none';
-
-  const wdw_archetype_collection = document.getElementById("wdw_archetype_collection");
-  wdw_archetype_collection.style.position = 'absolute'; // or 'relative', 'fixed', etc., depending on your layout needs
-  wdw_archetype_collection.style.left = '0px'; // Set the desired left position
-  wdw_archetype_collection.style.top = '60%'; // Set the desired top position
-  wdw_archetype_collection.style.width = ARCHETYPELISTWIDTH; // Set the desired width
-  wdw_archetype_collection.style.height = '40%'; // Set the desired height
-  wdw_archetype_collection.style.display = 'inline';
-  wdw_archetype_collection.style.boxShadow = 'none';
-
-  const wdw_visualization = document.getElementById("wdw_visualization");
-  wdw_visualization.style.display = 'none';
-
-  const wdw_archetype_info = document.getElementById("wdw_archetype_info");
-  wdw_archetype_info.style.position = 'absolute';
-  wdw_archetype_info.style.left = ARCHETYPELISTWIDTH;
-  wdw_archetype_info.style.top = '0';
-  wdw_archetype_info.style.width = 'calc(100% - ' + CHECKLISTWIDTH + ' - ' + ARCHETYPELISTWIDTH + ')';
-  wdw_archetype_info.style.height = '100%';
-  wdw_archetype_info.style.display = 'inline';
-  wdw_archetype_info.style.boxShadow = 'none';
-
-  const wdw_checklist = document.getElementById("wdw_checklist");
-  wdw_checklist.style.position = 'absolute';
-  wdw_checklist.style.left = 'calc(100% - ' + CHECKLISTWIDTH + ')';
-  wdw_checklist.style.top = '0px';
-  wdw_checklist.style.width = 'calc(' + CHECKLISTWIDTH+' - 35px)';
-  wdw_checklist.style.height = '100%';
-  wdw_checklist.style.display = 'inline';
-  wdw_checklist.style.boxShadow = 'none';
-
-  const wdw_checklist_editor = document.getElementById("wdw_checklist_editor");
-  wdw_checklist_editor.style.display = 'none';
-
-  const wdw_extended_search = document.getElementById("wdw_extended_search");
-  wdw_extended_search.style.display = 'none';
-
-  const wdw_new_archetype_editor = document.getElementById("wdw_new_archetype_editor");
-  wdw_new_archetype_editor.style.display = 'none';
-
-  const wdw_about = document.getElementById("wdw_about");
-  wdw_about.style.display = 'none';
-
-  const wdw_project_options = document.getElementById("wdw_project_options");
-  wdw_project_options.style.display = 'none';
-
-  const wdw_search_history = document.getElementById("wdw_search_history");
-  wdw_search_history.style.display = 'none';
-
-  const wdw_template_planner = document.getElementById("wdw_template_planner");
-  wdw_template_planner.style.display = 'none';
-
-  show_button_bar();
-};
-*/
-
-/*
-function set_window_configuration_5() {
-  const wdw_archetype_list = document.getElementById("wdw_archetype_list");
-  wdw_archetype_list.style.display = 'none';
-
-  const wdw_archetype_collection = document.getElementById("wdw_archetype_collection");
-  wdw_archetype_collection.style.display = 'none';
-
-  const wdw_visualization = document.getElementById("wdw_visualization");
-  wdw_visualization.style.position = 'absolute';
-  wdw_visualization.style.left = EXTSEARCHWIDTH;
-  wdw_visualization.style.top = '0px';
-  wdw_visualization.style.width = 'calc(100% - ' + EXTSEARCHWIDTH + ' - ' + CLEDITORWIDTH + ')';
-  wdw_visualization.style.height = '60%';
-  wdw_visualization.style.display = 'inline';
-  wdw_visualization.style.boxShadow = 'none';
-
-  const wdw_archetype_info = document.getElementById("wdw_archetype_info");
-  wdw_archetype_info.style.position = 'absolute';
-  wdw_archetype_info.style.left = EXTSEARCHWIDTH;
-  wdw_archetype_info.style.top = '60%';
-  wdw_archetype_info.style.width = 'calc(100% - ' + EXTSEARCHWIDTH + ' - ' + CLEDITORWIDTH + ')';
-  wdw_archetype_info.style.height = '40%';
-  wdw_archetype_info.style.display = 'inline';
-  wdw_visualization.style.boxShadow = 'none';
-
-  const wdw_checklist = document.getElementById("wdw_checklist");
-  wdw_checklist.style.display = 'none';
-
-  const wdw_checklist_editor = document.getElementById("wdw_checklist_editor");
-  wdw_checklist_editor.style.position = 'absolute';
-  wdw_checklist_editor.style.left = 'calc(100% - ' + CLEDITORWIDTH + ' - 35px)';
-  wdw_checklist_editor.style.top = '0px';
-  wdw_checklist_editor.style.width = CLEDITORWIDTH;
-  wdw_checklist_editor.style.height = '100%';
-  wdw_checklist_editor.style.display = 'inline';
-  wdw_visualization.style.boxShadow = 'none';
-
-  const wdw_extended_search = document.getElementById("wdw_extended_search");
-  wdw_extended_search.style.display = 'inline';
-  wdw_extended_search.style.position = 'absolute';
-  wdw_extended_search.style.left = '0px';
-  wdw_extended_search.style.top = '0px';
-  wdw_extended_search.style.width = EXTSEARCHWIDTH;
-  wdw_extended_search.style.height = '100%';
-  wdw_visualization.style.boxShadow = 'none';
-
-  const wdw_new_archetype_editor = document.getElementById("wdw_new_archetype_editor");
-  wdw_new_archetype_editor.style.display = 'none';
-
-  const wdw_about = document.getElementById("wdw_about");
-  wdw_about.style.display = 'none';
-
-  const wdw_project_options = document.getElementById("wdw_project_options");
-  wdw_project_options.style.display = 'none';
-
-  const wdw_search_history = document.getElementById("wdw_search_history");
-  wdw_search_history.style.display = 'none';
-
-  const wdw_template_planner = document.getElementById("wdw_template_planner");
-  wdw_template_planner.style.display = 'none';
-
-  show_button_bar();
-};
-*/
-
 //template tree standard view
 function set_window_configuration_6() {
   const standard_view_button = document.getElementById("standard_view_button");
@@ -4223,19 +3707,6 @@ function set_window_configuration_6() {
 
   const wdw_archetype_collection = document.getElementById("wdw_archetype_collection");
   wdw_archetype_collection.style.display = 'none';
-
-  /*
-  const wdw_visualization = document.getElementById("wdw_visualization");
-  wdw_visualization.style.position = 'absolute';
-  wdw_visualization.style.left = TEMPLATEPLANNERWIDTH;
-  wdw_visualization.style.top = '0px';
-  wdw_visualization.style.width = 'calc(100% - ' + TEMPLATEPLANNERWIDTH + ' - ' + CHECKLISTWIDTH + ')';
-  wdw_visualization.style.height = '100%';
-  wdw_visualization.style.display = 'inline';
-
-  const wdw_archetype_info = document.getElementById("wdw_archetype_info");
-  wdw_archetype_info.style.display = 'none';
-  */
 
   const wdw_visualization = document.getElementById("wdw_visualization");
   wdw_visualization.style.position = 'absolute';
@@ -4299,62 +3770,6 @@ function set_window_configuration_6() {
 
 
 //template tree standard view with checklist editor open
-/*
-function set_window_configuration_7() {
-  const wdw_archetype_list = document.getElementById("wdw_archetype_list");
-   wdw_archetype_list.style.display = 'none';
-
-  const wdw_archetype_collection = document.getElementById("wdw_archetype_collection");
-  wdw_archetype_collection.style.display = 'none';
-
-  const wdw_visualization = document.getElementById("wdw_visualization");
-  wdw_visualization.style.display = 'none';
-
-  const wdw_archetype_info = document.getElementById("wdw_archetype_info");
-  wdw_archetype_info.style.display = 'none';
-
-  const wdw_checklist = document.getElementById("wdw_checklist");
-  wdw_checklist.style.display = 'none';
-
-  const wdw_checklist_editor = document.getElementById("wdw_checklist_editor");
-  wdw_checklist_editor.style.position = 'absolute';
-  wdw_checklist_editor.style.left = 'calc(100% - ' + CLEDITORWIDTH + ' - 35px)';
-  wdw_checklist_editor.style.top = '0px';
-  wdw_checklist_editor.style.width = '40%';
-  wdw_checklist_editor.style.height = '100%';
-  wdw_checklist_editor.style.display = 'inline';
-  .style.boxShadow = 'none';
-
-  const wdw_extended_search = document.getElementById("wdw_extended_search");
-  wdw_extended_search.style.display = 'none';
-
-  const wdw_new_archetype_editor = document.getElementById("wdw_new_archetype_editor");
-  wdw_new_archetype_editor.style.display = 'none';
-
-  const wdw_about = document.getElementById("wdw_about");
-  wdw_about.style.display = 'none';
-
-  const wdw_project_options = document.getElementById("wdw_project_options");
-  wdw_project_options.style.display = 'none';
-
-  const wdw_search_history = document.getElementById("wdw_search_history");
-  wdw_search_history.style.display = 'none';
-
-
-
-  const wdw_template_planner = document.getElementById("wdw_template_planner");
-  wdw_template_planner.style.position = 'absolute';
-  wdw_template_planner.style.left = '0px';
-  wdw_template_planner.style.top = '0px';
-  wdw_template_planner.style.width = '40%';
-  wdw_template_planner.style.height = '100%';
-  wdw_template_planner.style.display = 'inline';
-  wdw_template_planner.style.boxShadow = 'none';
-
-  show_button_bar();
-};
-*/
-
 function enter_extended_search() {
   if (document.getElementById("wdw_checklist_editor").style.display == 'none') {
     set_window_configuration_3();
@@ -4667,7 +4082,6 @@ function createReport() {
   const win = window.open('', '_blank');
   win.document.write(html);
   win.document.close();
-  //win.print();
   downloadHtmlFile(html);
 }
 
@@ -4718,23 +4132,9 @@ function reset_dragabbles_z_index() {
     const oldZ = parseInt(d.style.zIndex) || 0;
     d.style.zIndex = zIndexMap[oldZ];
   });
-
-  //let maxZ = Math.max(...Array.from(document.querySelectorAll('.movable-div')).map(d => parseInt(d.style.zIndex) || 0));
   let maxZ = sortedUnique[sortedUnique.length - 1];
-
   return String(maxZ + 1);
-  /*
-    const draggables = document.querySelectorAll('.movable-div');
-    draggables.forEach(draggable => {
-            draggable.style.zIndex = "0";
-    });
-    const wdw_button_bar = document.getElementById("wdw_button_bar");
-    wdw_button_bar.style.zIndex = "6";
-    */
 }
-
-
-
 
 
 function downloadSVG(svgId, filename = 'visualization.svg') {
@@ -4748,9 +4148,6 @@ function downloadSVG(svgId, filename = 'visualization.svg') {
     stamp.setAttribute('y', svg.viewBox.baseVal.height ? svg.viewBox.baseVal.height - 5 : svg.height.baseVal.value - 5);
     svg.appendChild(stamp);
   }
-
-
-  //console.log("downloadSVG(svgId, filename = 'visualization.svg')")
 
   const svg = document.getElementById(svgId);
   if (!svg) {
@@ -4826,8 +4223,6 @@ function downloadSVG(svgId, filename = 'visualization.svg') {
   document.body.removeChild(a);
   setTimeout(() => URL.revokeObjectURL(url), 10);
 }
-
-
 
 // **************** TEMPLATE PLANNER FUNCTIONS *************************
 
@@ -5005,7 +4400,6 @@ function renderTree(node, parent) {
 
     if (parent && parent.id) {
       const parentArchetype = archetype_collection_data.find(a => a.id === parent.id);
-      //const assignedElements = parentArchetype ? parentArchetype.assigned_elements : [];
       const atcodeItems = parentArchetype ? parentArchetype.atcode_items : [];
       html += `
       <select onchange="updateNodeElementEquivalentValue('${node.node_uid}', this.value)">
@@ -5037,11 +4431,6 @@ function renderTree(node, parent) {
       if (assignedElements.indexOf(node.element_value) === -1 || node.element_value === "") {
         html += `<input type="text" placeholder="Element name" value="${node.element_value}" onchange="updateNodeElementValue('${node.node_uid}', this.value)">`;
       }
-      /*
-            if (assignedElements.indexOf(node.element_value) === -1 || node.element_value === "") {
-              html += `<input type="text" placeholder="Element name" value="${node.element_value && node.element_value !== "__custom__" ? node.element_value : ''}" onchange="updateNodeElementValue('${node.node_uid}', "this.value")">`;
-            }
-      */
 
     } else {
       // No assigned elements, just free text
@@ -5124,7 +4513,6 @@ function showNodeComment(commentID, uid) {
     }
 
   }
-  //updateTreeView();
 }
 
 
@@ -5137,7 +4525,6 @@ function addTreeDnDListeners() {
     node.addEventListener('dragstart', function (e) {
       e.stopPropagation();
       draggedNodeId = this.id;
-      //console.log(draggedNodeId)
       this.classList.add('dragging');
     });
 
@@ -5173,19 +4560,8 @@ function addTreeDnDListeners() {
   });
 }
 
-/*
-// Prevent moving a node into itself or its descendants
-function isDescendant(parentId, childId) {
 
-  for (let n of [archetypeTree]) {
-    return false;
-    //if (search(n)) return true;
-  }
-
-  return false;
-}
-*/
-function isElementTreeNode(treeRoot, elementId){
+function isElementTreeNode(treeRoot, elementId) {
   function findNodeById(node, id) {
     if (node.node_uid === id) return node;
     if (!node.children) return null;
@@ -5197,8 +4573,8 @@ function isElementTreeNode(treeRoot, elementId){
   }
 
   const myNode = findNodeById(treeRoot, elementId);
-  if (myNode && myNode.mode=='element') {return true}
-  else {return false};
+  if (myNode && myNode.mode == 'element') { return true }
+  else { return false };
 
 }
 
@@ -5212,7 +4588,7 @@ function isDescendant(parentId, childId, treeRoot) {
     }
     return null;
   }
-  
+
   function containsId(node, id) {
     if (!node.children) return false;
     for (let child of node.children) {
@@ -5221,7 +4597,7 @@ function isDescendant(parentId, childId, treeRoot) {
     }
     return false;
   }
-  
+
 
   const parentNode = findNodeById(treeRoot, parentId);
   if (!parentNode) return false;
@@ -5251,7 +4627,7 @@ function moveNodeAsChild(nodeId, newParentId) {
   function removeTreeNode(node, uid) {
     if (!node.children || node.children.length === 0) return;
     // Find the index of the child with the matching uid
-    const index = node.children.findIndex(child => child.node_uid === uid);    
+    const index = node.children.findIndex(child => child.node_uid === uid);
 
     if (index !== -1) {
       // Remove the child from the array
@@ -5266,7 +4642,7 @@ function moveNodeAsChild(nodeId, newParentId) {
 
   function addTreeNode(root_node, insert_node, parentId) {
 
-    if (parentId === archetypeTree.node_uid){
+    if (parentId === archetypeTree.node_uid) {
       archetypeTree.children.push(insert_node);
       return;
     }
@@ -5298,27 +4674,10 @@ function moveNodeAsChild(nodeId, newParentId) {
 
 // Render the planner
 function updateTreeView() {
-  //console.log(archetype_collection_data)
   document.getElementById('template_planner').innerHTML = renderTree(archetypeTree, null);
   addTreeDnDListeners();
-  //document.getElementById('result').innerText = JSON.stringify(archetypeTree, null, 2);
-  //document.getElementById('tree-container').innerHTML = archetypeTreeToHTML(archetypeTree);
   updateLists();
 }
-
-/*
-// Download as JSON
-function downloadTemplateTreeJSON() {
-  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(archetypeTree, null, 2));
-  const dlAnchor = document.createElement('a');
-  dlAnchor.setAttribute("href", dataStr);
-  dlAnchor.setAttribute("download", "openEHR_template_plan.json");
-  document.body.appendChild(dlAnchor);
-  dlAnchor.click();
-  document.body.removeChild(dlAnchor);
-}
-*/
-
 
 function archetypeTreeToHTML(node) {
   // Helper to display node details
@@ -5345,14 +4704,6 @@ function archetypeTreeToHTML(node) {
       if (n.mode) details += `<br><em><small>${n.mode}</small></em>`;
     }
     if (n.comment) details += `<br><em><small style="color:blue;">${n.comment}</small></em>`;
-
-    /*
-    let details = `<strong>${n.name || '(no name)'}</strong>`;
-    if (n.id) details += `<br><span style="color: #888;">${n.id}</span>`;
-    if (n.type) details += `<br><em>Type:</em> ${n.type}`;
-    if (n.mode) details += `<br><em>Mode:</em> ${n.mode}`;
-    if (n.element_value) details += `<br><em>Element:</em> ${n.element_value}`;
-    */
     return details;
   }
 
@@ -5397,7 +4748,6 @@ window.addTreeBranch = addTreeBranch;
 window.deleteTreeNode = deleteTreeNode;
 window.moveTreeNode = moveTreeNode;
 window.toggleNodeMode = toggleNodeMode;
-//window.downloadTemplateTreeJSON = downloadTemplateTreeJSON;
 
 function clearArchetypeTree(event) {
 
@@ -5415,50 +4765,11 @@ function clearArchetypeTree(event) {
 
 }
 
-
-/*
-// Drag & Drop logic for flat tree
-let draggedNode = null;
-
-document.querySelectorAll('.archetypeTree-node').forEach(node => {
-  node.addEventListener('dragstart', function (e) {
-    draggedNode = this;
-    e.dataTransfer.effectAllowed = 'move';
-    setTimeout(() => this.style.display = 'none', 0); // Hide while dragging
-  });
-
-  node.addEventListener('dragend', function () {
-    this.style.display = '';
-    document.querySelectorAll('.archetypeTree-node').forEach(n => n.classList.remove('drag-over'));
-  });
-
-  node.addEventListener('dragover', function (e) {
-    e.preventDefault();
-    if (this !== draggedNode) this.classList.add('drag-over');
-  });
-
-  node.addEventListener('dragleave', function () {
-    this.classList.remove('drag-over');
-  });
-
-  node.addEventListener('drop', function (e) {
-    e.preventDefault();
-    if (this !== draggedNode) {
-      this.classList.remove('drag-over');
-      const parent = this.parentNode;
-      parent.insertBefore(draggedNode, this);
-    }
-  });
-});
-*/
-
-
-
-function addListenersToTooltip(tooltip_id, text){
+function addListenersToTooltip(tooltip_id, text) {
   const tooltip = document.getElementById(tooltip_id);
   const tooltipText = document.getElementById('myTooltipText');
 
-  tooltip.addEventListener('mouseenter', function(e) {
+  tooltip.addEventListener('mouseenter', function (e) {
     // Clone tooltip text and append to body
     const rect = tooltip.getBoundingClientRect();
     tooltipText.style.display = 'block';
@@ -5471,7 +4782,7 @@ function addListenersToTooltip(tooltip_id, text){
     document.body.appendChild(tooltipText);
   });
 
-  tooltip.addEventListener('mouseleave', function(e) {
+  tooltip.addEventListener('mouseleave', function (e) {
     tooltipText.style.display = 'none';
     tooltipText.style.zIndex = 29;
     tooltip.appendChild(tooltipText); // Move it back
@@ -5480,8 +4791,7 @@ function addListenersToTooltip(tooltip_id, text){
 
 addListenersToTooltip('tooltip_searchbar', `Search terms are not case sensitive.<br />
 Use quotation marks to search for exact phrases.<br />
-<span style="color:gray;">Example: "electronic address"</span><br /><br />
-
+<span style="color:gray;">Example: "electronic address"</span><br /><br/>
 Boolean operators:<br />
 <b>AND</b>: openEHR AND summary<br />
 <b>OR</b>: composition OR section<br />
