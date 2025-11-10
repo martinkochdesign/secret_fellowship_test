@@ -594,9 +594,9 @@ function updateLists() {
     .filter(li => li.style.display !== 'none');
   const filteredCount = visibleLis.length;
   document.getElementById('N_of_N_found').innerHTML =
-    `${filteredCount} / ${allNodes.length - 1}`
+    `${filteredCount} / ${allNodes.length}`
   document.getElementById('N_of_N_found_sidebar').innerHTML =
-    `${filteredCount} / ${allNodes.length - 1}`
+    `${filteredCount} / ${allNodes.length}`
 
   //create a list of all classes
   if (selectedListItem) {
@@ -3365,7 +3365,7 @@ function show_splash_page() {
   wdw_splash.style.display = 'inline';
   wdw_splash.style.position = 'absolute';
   wdw_splash.style.left = 'calc(50% - 300px)';
-  wdw_splash.style.top = 'calc(50% - 210px)';
+  wdw_splash.style.top = 'calc(50% - 250px)';
   wdw_splash.style.width = '600px';
   wdw_splash.style.height = '500px';
   wdw_splash.style.border = '1px solid black';
