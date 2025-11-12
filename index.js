@@ -1,5 +1,5 @@
 //INITIATE CONSTANTS and GLOBAL VARIABLES *****************************************************************************************
-const version = '0.53.0-beta';
+const version = '0.54.0-beta';
 
 let newNodes = []
 
@@ -659,6 +659,42 @@ function updateLists() {
     document.getElementById('add_to_collection_button_info').style.display = 'none';
     document.getElementById('add_to_collection_sidebar_button').style.display = 'none';
   }
+  //are there collection items? if not, don't show the hide/show button
+  const hasCollection = Array.from(archetypeListItems).some(item => item.classList.contains('collection')&&item.classList.contains('existing'));
+  if (!hasCollection){
+    document.getElementById('hide_collection_button').style.display = 'none';
+    document.getElementById('show_collection_button').style.display = 'none';
+    document.getElementById('hide_collection_sidebar_button').style.display = 'none';
+    document.getElementById('show_collection_sidebar_button').style.display = 'none';
+  }
+  else{
+    if(show_collection_items){
+    document.getElementById('hide_collection_button').style.display = 'inline';
+    document.getElementById('show_collection_button').style.display = 'none';
+    document.getElementById('hide_collection_sidebar_button').style.display = 'inline';
+    document.getElementById('show_collection_sidebar_button').style.display = 'none';
+  }
+  else{
+    document.getElementById('hide_collection_button').style.display = 'none';
+    document.getElementById('show_collection_button').style.display = 'inline';
+    document.getElementById('hide_collection_sidebar_button').style.display = 'none';
+    document.getElementById('show_collection_sidebar_button').style.display = 'inline';
+  }
+}
+
+// if the selecte item is not an existing archetype, put the hide/show higher, so there is no gap between icons
+if (selectedListItem) {
+  if (selectedListItem.classList.contains('new')) {
+    document.getElementById('hide_collection_sidebar_button').style.top = '75px';
+    document.getElementById('show_collection_sidebar_button').style.top = '75px';
+  }
+  else{
+    document.getElementById('hide_collection_sidebar_button').style.top = '125px';
+    document.getElementById('show_collection_sidebar_button').style.top = '125px';
+  }
+}
+
+
 
   let combinedFilterText = '';
   for (key in filterSet) {
@@ -932,6 +968,22 @@ function filterList(ul) {
   }
 }
 
+
+function link_expand_structure_button(){
+  //expand archetype structure
+  const btn = document.getElementById('toggle-all-btn');
+  let expanded = false; // Start with all open
+  btn.addEventListener('click', function() {
+    const details = document.querySelectorAll('details');
+    expanded = !expanded;
+    details.forEach(d => d.open = expanded);
+    btn.textContent = expanded ? 'Collapse All' : 'Expand All';
+  });
+  // Optional: Set initial state (all open)
+  //document.querySelectorAll('details').forEach(d => d.open = true);
+}
+
+
 //This formats existing node information for HTML
 function formatNodeItemAsHTML(item) {
   // Helper to format arrays of objects
@@ -940,10 +992,9 @@ function formatNodeItemAsHTML(item) {
       return '<em>None</em>';
     return '<ul>' + arr.map(obj =>
       `<li class="notselectable">
+      ${obj.occurrence ? '<span style="border-radius:5px; background: darkgray; color: white; font-size:12px; font-weight:bold; padding-left:3px; padding-right:3px;">' + obj.occurrence + '</span>' : ''}
       ${obj.code} <strong>${obj.label}</strong> <small>${obj.type}</small>
-
       ${obj.description ? '<br><span style="font-size:10pt; color: darkblue; font-weight: 500;">' + obj.description + '</span>' : ''}
-
     </li>`).join('') + '</ul>';
   }
 
@@ -1006,6 +1057,13 @@ function formatNodeItemAsHTML(item) {
   </div>
   <div id="info_additional">
   <hr>
+  <h3>Archetype Structure</h3>
+ <button id="toggle-all-btn" style="margin-bottom:1em;">Expand All</button>
+
+  ${formatString(item.structure)}
+
+
+  <hr>
   <h3>Inclusion statements</h3>
   ${formatInclusionArray(item.include)}
   <hr>
@@ -1013,7 +1071,7 @@ function formatNodeItemAsHTML(item) {
   ${formatInclusionArray(item.exclude)}
   <hr>
   <br>
-
+  
   <h3>Recommended similar archetypes <small>(10 max.)</small></h3>
   ${formatRecommendationArray(item.similar)}
 
@@ -1050,6 +1108,7 @@ function loadExistingArchetypeData(item) {
   const list = document.getElementById('archetype_info');
   list.innerText = '';
   list.innerHTML = formatNodeItemAsHTML(item);
+  link_expand_structure_button();
 }
 
 
@@ -4391,7 +4450,7 @@ function renderTree(node, parent) {
   // Render controls based on mode
   if (node.mode === "archetype") {
     html += `
-      <input type="text" value="${node.name}" placeholder="Archetype name" onchange="updateTreeNodeName('${node.node_uid}', this.value)">
+      <input type="text" class="template_planner_text_input" value="${node.name}" placeholder="Archetype name" onchange="updateTreeNodeName('${node.node_uid}', this.value)">
       <select onchange="updateTreeNodeID('${node.node_uid}', this.value)">
         <option value=""></option>
         ${archetype_collection_data.map(item => `<option value="${item.id}"${node.id === item.id ? ' selected' : ''}>${item.archetype_id}</option>`).join('')}
