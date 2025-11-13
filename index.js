@@ -1,5 +1,5 @@
 //INITIATE CONSTANTS and GLOBAL VARIABLES *****************************************************************************************
-const version = '0.54.0-beta';
+const version = '0.55.0-beta';
 
 let newNodes = []
 
@@ -3507,6 +3507,13 @@ function show_new_archetype_editor() {
   wdw_new_archetype_editor.style.zIndex = reset_dragabbles_z_index();
 }
 
+//change the visualization type
+function change_visualisation_type(vis_type){
+  const visualization_selector = document.getElementById('select_vis_view');
+  visualization_selector.value = vis_type;
+  //provoke onchange in this element
+  visualization_selector.dispatchEvent(new Event('change'));
+}
 
 
 //move windows to preconfigured position
@@ -3521,7 +3528,6 @@ function set_window_configuration_1() {
   checklist_editor_view_button.style.border = 'none';
   search_view_button.style.border = 'none';
   tree_view_button.style.border = 'none';
-
 
   const wdw_archetype_list = document.getElementById("wdw_archetype_list");
   wdw_archetype_list.style.position = 'absolute'; // or 'relative', 'fixed', etc., depending on your layout needs
@@ -3590,8 +3596,11 @@ function set_window_configuration_1() {
   wdw_template_planner.style.display = 'none';
 
   show_button_bar();
+
+  change_visualisation_type('ARCHETYPE');
 };
 
+// checklist editor layout
 function set_window_configuration_2() {
   const standard_view_button = document.getElementById("standard_view_button");
   const checklist_editor_view_button = document.getElementById("checklist_editor_view_button");
@@ -3671,8 +3680,10 @@ function set_window_configuration_2() {
   wdw_template_planner.style.display = 'none';
 
   show_button_bar();
+  change_visualisation_type('PROJECT');
 };
 
+//search layout
 function set_window_configuration_3() {
   const standard_view_button = document.getElementById("standard_view_button");
   const checklist_editor_view_button = document.getElementById("checklist_editor_view_button");
@@ -3746,6 +3757,7 @@ function set_window_configuration_3() {
   wdw_template_planner.style.display = 'none';
 
   show_button_bar();
+  change_visualisation_type('ARCHETYPE');
 };
 
 //template tree standard view
@@ -3824,7 +3836,7 @@ function set_window_configuration_6() {
 
 
   show_button_bar();
-
+  change_visualisation_type('TREEPLANNER');
 };
 
 
@@ -4851,10 +4863,10 @@ function addListenersToTooltip(tooltip_id, text) {
 addListenersToTooltip('tooltip_searchbar', `Search terms are not case sensitive.<br />
 Use quotation marks to search for exact phrases.<br />
 <span style="color:gray;">Example: "electronic address"</span><br /><br/>
-Boolean operators:<br />
+Examples for the use of boolean operators:<br />
 <b>AND</b>: openEHR AND summary<br />
 <b>OR</b>: composition OR section<br />
 <b>NOT</b>: composition AND NOT v0<br />
-<b>Parentheses</b>: location AND (anatomical OR geo)<br />`)
+<b>Parentheses</b>: location AND ( anatomical OR geo )<br />`)
 
 //addListenersToTooltip('tooltip_topbar', 'HELLO SQUIRREL FRIENDS!')
