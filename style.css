@@ -997,7 +997,7 @@ summary {
     font-size: 15px;
 }
 
-#toggle-all-btn {
+#toggle-all-btn, .toggleSectionBtn, #toggleAllSectionsBtn  {
     display: inline-block;
     width: 170px;
     padding: 5px;
@@ -1012,8 +1012,16 @@ summary {
    
   }
   
-  #toggle-all-btn:active {
+  #toggle-all-btn:active, .toggleSectionBtn:active , #toggleAllSectionsBtn:active{
     background: linear-gradient(90deg, #1a3a5d 0%, #235390 100%);
     transform: translateY(1px) scale(0.98);
     box-shadow: 0 2px 6px rgba(35, 83, 144, 0.18);
+  }
+
+  .toggleSectionBtn {
+    width:100px;
+  }
+
+  #toggleAllSectionsBtn {
+    width:125px;
   }

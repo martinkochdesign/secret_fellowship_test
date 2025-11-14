@@ -1,5 +1,5 @@
 //INITIATE CONSTANTS and GLOBAL VARIABLES *****************************************************************************************
-const version = '0.55.0-beta';
+const version = '0.56.0-beta';
 
 let newNodes = []
 
@@ -51,9 +51,7 @@ let CLEDITORWIDTH = '750px';
 let EXTSEARCHWIDTH = '600px';
 let TEMPLATEPLANNERWIDTH = '900px';
 
-//open page with standard window configuration
-set_window_configuration_1();
-loadFilterData();
+
 
 const visualization_element = document.getElementById("visualization");
 
@@ -112,6 +110,15 @@ let simulation = d3.forceSimulation(nodes)
 
 let myZoom = d3.zoom()
   .on('zoom', handleZoom);
+
+
+//open page with standard window configuration
+set_window_configuration_1();
+loadFilterData();
+
+function updateVisAtTypeChange(){
+  
+}
 
 
 // FUNCTIONS  **************************************************************************************************
@@ -1411,7 +1418,7 @@ function updateElement(sectionIndex, elementIndex, key, value) {
   }
 }
 
-function updateSectionName(sectionIndex, value) {
+function updateSectionName(sectionIndex, value, thissection) {
   checkList[sectionIndex].name = value;
   renderViewer();
 }
@@ -1428,28 +1435,41 @@ function moveSection(index, direction) {
 
 
 function renderEditor() {
+
   const container = document.getElementById('checklistSections');
   container.innerHTML = '';
   checkList.forEach((section, i) => {
     const secDiv = document.createElement('section');
     secDiv.innerHTML = `
-<div draggable="true" style="margin-bottom:5px;display:flex; align-items:center; gap:5px;">
+<div class="section-header" draggable="false" style="margin-bottom:5px;display:flex; align-items:center; gap:5px;">
   
 <img src="images/up.png" alt="Section up" height="10" width="8" onclick="moveSection(${i}, 'up')" style="cursor: pointer;" title="Move section up">
 
 <img src="images/down.png" alt="Section down" height="10" width="8" onclick="moveSection(${i}, 'down')" style="cursor: pointer;" title="Move section down">
 
-<input type="text" class="checklisttextinput_section" value="${section.name}" onchange="updateSectionName(${i}, this.value)" style="font-size:16px; flex:1 1 auto; min-width:0;"/>
+<input type="text" class="checklisttextinput_section" value="${section.name}" onchange="updateSectionName(${i}, this.value, this.closest('section').querySelector('.section-content'))" style="font-size:16px; flex:1 1 auto; min-width:0;"/>
 
 <img src="images/remove.png" alt="Delete section" height="14" onclick="deleteSection(${i})" style="cursor: pointer;" title="Delete section">
 </div>
 
-<div>
+<div style="display: flex; justify-content: flex-end; width: 100%;">
+  <button class="toggleSectionBtn" onclick="toggleSection(this, ${i})">
+    ${section.contentDisplay === 'none' ? 'Expand' : 'Collapse'}
+  </button>
+</div>
+
+    `;
+
+  const sectionContentDiv = document.createElement('div');
+  sectionContentDiv.className = 'section-content';
+  sectionContentDiv.style.display = section.contentDisplay;
+  sectionContentDiv.innerHTML = `
+  <div>
 <span style="display:flex;align-items: center;">
 <img src="images/add.png" alt="Add" height="14" title="Add element" onclick="addElement(${i})"style="cursor:pointer;" >&nbsp;Add element
 </span>
-</div>
-    `;
+</div>`
+
     section.elements.forEach((el, j) => {
       const div = document.createElement('div');
       div.className = 'element';
@@ -1492,8 +1512,9 @@ function renderEditor() {
           </div>
       </div>
       `;
-      secDiv.appendChild(div);
+      sectionContentDiv.appendChild(div);
     });
+    secDiv.appendChild(sectionContentDiv);
     container.appendChild(secDiv);
   });
   updateArchetypeSelect();
@@ -2396,8 +2417,10 @@ function resetZoom() {
     .transition()
     .duration(500)
     .call(myZoom.transform, d3.zoomIdentity);
-
-  focusNode(selectedListItem.id);
+  
+  if (selectedListItem){
+   focusNode(selectedListItem.id);
+  }
 }
 
 
@@ -4870,3 +4893,38 @@ Examples for the use of boolean operators:<br />
 <b>Parentheses</b>: location AND ( anatomical OR geo )<br />`)
 
 //addListenersToTooltip('tooltip_topbar', 'HELLO SQUIRREL FRIENDS!')
+
+
+
+// EXPERIMENTAL ******************************
+
+// Track collapsed state for all
+let allCollapsed = false;
+function toggleAllSections() {
+  const sections = document.querySelectorAll('#checklistSections section');
+  allCollapsed = !allCollapsed;
+  sections.forEach(section => {
+    const content = section.querySelector('.section-content');
+    const btn = section.querySelector('.toggleSectionBtn');
+    if (allCollapsed) {
+      content.style.display = 'none';
+      btn.textContent = 'Expand';
+    } else {
+      content.style.display = '';
+      btn.textContent = 'Collapse';
+    }
+    checkList.forEach(section => {section.contentDisplay = content.style.display;});
+  });
+  document.getElementById('toggleAllSectionsBtn').textContent = allCollapsed ? 'Expand All' : 'Collapse All';
+}
+function toggleSection(btn, sectionIndex) {
+  const content = btn.closest('section').querySelector('.section-content');
+  if (content.style.display === 'none') {
+    content.style.display = '';
+    btn.textContent = 'Collapse';
+  } else {
+    content.style.display = 'none';
+    btn.textContent = 'Expand';
+  }
+  checkList[sectionIndex].contentDisplay = content.style.display;
+}
