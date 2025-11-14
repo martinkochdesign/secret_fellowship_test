@@ -1456,7 +1456,7 @@ function renderEditor() {
 
 <img src="images/down.png" alt="Section down" height="10" width="8" onclick="moveSection(${i}, 'down')" style="cursor: pointer;" title="Move section down">
 
-<input type="text" class="checklisttextinput_section" value="${section.name}" onchange="updateSectionName(${i}, this.value, this.closest('section').querySelector('.section-content'))" style="font-size:16px; flex:1 1 auto; min-width:0;"/>
+<input type="text" class="checklisttextinput_section" value="${section.name}" onchange="this.value = this.value.trim();updateSectionName(${i}, this.value, this.closest('section').querySelector('.section-content'))" style="font-size:16px; flex:1 1 auto; min-width:0;"/>
 
 <img src="images/remove.png" alt="Delete section" height="14" onclick="deleteSection(${i})" style="cursor: pointer;" title="Delete section">
 </div>
@@ -1494,7 +1494,7 @@ function renderEditor() {
           <div>
             <div style="display:flex; align-items:center; gap:0px;marign-left:5px;">
 
-              <input style="width-min:100px;padding-left:3px;" type="text" class="checklisttextinput_element" value="${el.name}" onchange="updateElement(${i}, ${j}, 'name', this.value)" autocomplete="off"/>
+              <input style="width-min:100px;padding-left:3px;" type="text" class="checklisttextinput_element" value="${el.name}" onchange="this.value = this.value.trim();updateElement(${i}, ${j}, 'name', this.value)" autocomplete="off"/>
               
               <select onchange="updateElement(${i}, ${j}, 'archetype', this.value); updateElement(${i}, ${j}, 'archetype_id', this.options[this.selectedIndex].text);" class="mySelect">
                 <option value="">Select archetype from collection</option>
