@@ -933,12 +933,35 @@ label {
 }
 
 
-.mySelect {
+.mySelect, .choices{
     width: 350px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
 }
+/*
+/* Change the background and border */
+.choices__inner {
+    background: #fff;
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    width: 350px;
+  }
+  
+  /* Change the font and padding */
+  .choices__item {
+    width: 350px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  
+  /* Highlight selected option */
+  .choices__item--selectable.is-highlighted {
+    background: #e6f0ff;
+  }
+  */
+
 
 .tree_node_comment {
     display: none;

@@ -1317,6 +1317,7 @@ function updateArchetypeSelect() {
   // use archetypeListItems
   const selectFields = document.getElementsByClassName('mySelect');
 
+
   Array.from(selectFields)
     .forEach(select => {
       const selectValue = select.value;
@@ -1346,6 +1347,14 @@ function updateArchetypeSelect() {
         select.dispatchEvent(new Event('change'));
       }
     })
+
+    /*
+    Array.from(selectFields).forEach(element => {
+      new Choices(element, {
+        searchEnabled: true
+      });
+    });
+    */
 }
 
 //FUNCTIONS FOR THE CHECKLIST EDITOR
@@ -1407,7 +1416,7 @@ function moveElement(sectionIndex, elementIndex, direction) {
 }
 
 function updateElement(sectionIndex, elementIndex, key, value) {
-  checkList[sectionIndex].elements[elementIndex][key] = value;
+  checkList[sectionIndex].elements[elementIndex][key] = value.trim();
   renderViewer();
 
   if (selectedListItem) {
@@ -1419,7 +1428,7 @@ function updateElement(sectionIndex, elementIndex, key, value) {
 }
 
 function updateSectionName(sectionIndex, value, thissection) {
-  checkList[sectionIndex].name = value;
+  checkList[sectionIndex].name = value.trim();
   renderViewer();
 }
 
