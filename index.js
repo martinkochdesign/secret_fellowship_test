@@ -1,5 +1,5 @@
 //INITIATE CONSTANTS and GLOBAL VARIABLES *****************************************************************************************
-const version = '0.56.1-beta';
+const version = '0.56.2-beta';
 
 let newNodes = []
 
@@ -1637,11 +1637,13 @@ function loadFromExcel(event) {
       section.elements.push({
         name: row.Name || '',
         archetype: row.Archetype || '',
+        archetype_id: row.Archetype || '',
         approved: row.Approved || false,
         review: row.NeedsReview || false,
         description: row.Description || ''
       });
     });
+    console.log(checkList)
     renderEditor();
     renderViewer();
   };
