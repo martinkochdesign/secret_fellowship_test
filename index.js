@@ -1,5 +1,5 @@
 //INITIATE CONSTANTS and GLOBAL VARIABLES *****************************************************************************************
-const version = '0.56.2b-beta';
+const version = '0.56.2c-beta';
 
 let newNodes = []
 
@@ -1416,7 +1416,12 @@ function moveElement(sectionIndex, elementIndex, direction) {
 }
 
 function updateElement(sectionIndex, elementIndex, key, value) {
-  checkList[sectionIndex].elements[elementIndex][key] = value.trim();
+  if (typeof(checkList[sectionIndex].elements[elementIndex][key]) == 'string'){
+    checkList[sectionIndex].elements[elementIndex][key] = value.trim();
+  }
+  else{
+    checkList[sectionIndex].elements[elementIndex][key] = value;
+  }
   renderViewer();
 
   if (selectedListItem) {
