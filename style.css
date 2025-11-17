@@ -433,16 +433,18 @@ section {
     box-sizing: border-box
 }
 
+/*
 .checklisttextinput_section {
     border: none;
-    /*border-bottom: 2px solid #333; */
     outline: none;
     padding: 0px 0;
     background: rgba(255, 255, 255, 0.75);
     font-size: 20px;
     font-weight: 600;
 }
+*/
 
+/*
 .checklisttextinput_element {
     border: none;
     outline: none;
@@ -450,6 +452,7 @@ section {
     background: rgba(255, 255, 255, 1);
     width: 100%;
 }
+    */
 
 .element {
     width: 100%;
@@ -867,19 +870,32 @@ label {
     padding-bottom: 7px;
 }
 
-.node-controls input[type="text"] {
+.node-controls input[type="text"], .checklisttextinput_element, .checklisttextinput_section {
     width: 180px;
     padding: 4px;
     border-radius: 7px;
     border: 1px solid darkgray;
 }
 
-.node-controls select {
+.checklisttextinput_section {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.node-controls select, .mySelect {
     min-width: 90px;
     padding: 4px;
     border-radius: 7px;
     border: 1px solid darkgray;
 }
+
+.mySelect{
+    width: 350px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
 
 
 .icon-btn {
@@ -932,35 +948,14 @@ label {
     overflow: auto;
 }
 
-
-.mySelect, .choices{
+/*
+.mySelect{
     width: 350px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
 }
-/*
-/* Change the background and border */
-.choices__inner {
-    background: #fff;
-    border: 1px solid #007bff;
-    border-radius: 4px;
-    width: 350px;
-  }
-  
-  /* Change the font and padding */
-  .choices__item {
-    width: 350px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-  }
-  
-  /* Highlight selected option */
-  .choices__item--selectable.is-highlighted {
-    background: #e6f0ff;
-  }
-  */
+*/
 
 
 .tree_node_comment {
@@ -1020,7 +1015,7 @@ summary {
     font-size: 15px;
 }
 
-#toggle-all-btn, .toggleSectionBtn, #toggleAllSectionsBtn  {
+#toggle-all-btn, .toggleSectionBtn, #toggleAllSectionsBtn, .toggleNodesBtn, #toggleAllBtn  {
     display: inline-block;
     width: 170px;
     padding: 5px;
@@ -1028,14 +1023,14 @@ summary {
     font-weight: 600;
     color: white;
     background: #235390;
-    border: none;
+    border: solid 3px white;
     border-radius: 0.5em;
     box-shadow: 0 4px 14px rgba(79, 140, 255, 0.15), 0 1.5px 4px rgba(35, 83, 144, 0.08);
     cursor: pointer;
    
   }
   
-  #toggle-all-btn:active, .toggleSectionBtn:active , #toggleAllSectionsBtn:active{
+  #toggle-all-btn:active, .toggleSectionBtn:active , #toggleAllSectionsBtn:active, .toggleNodesBtn:active, #toggleAllBtn:active {
     background: linear-gradient(90deg, #1a3a5d 0%, #235390 100%);
     transform: translateY(1px) scale(0.98);
     box-shadow: 0 2px 6px rgba(35, 83, 144, 0.18);
@@ -1047,4 +1042,8 @@ summary {
 
   #toggleAllSectionsBtn {
     width:125px;
+  }
+
+  .toggleNodesBtn{
+
   }
