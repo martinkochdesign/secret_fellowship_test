@@ -440,7 +440,7 @@
 
 
                     <input type="text" id="searchInput" placeholder="Filter existing archetypes..."
-                        autocomplete="off" />
+                        autocomplete="off" onchange="this.value=this.value.trim();"/>
 
                     <div class="tooltip" id="tooltip_searchbar"><strong>?</strong></div>
 
@@ -457,7 +457,7 @@
                     <label id="checkBoxID" class="checkboxLabel"><input type="checkbox" id="includeID"
                             checked />ID</label>
                     <label id="checkBoxName" class="checkboxLabel"><input type="checkbox"
-                            id="includeName" />Name</label>
+                            id="includeName" checked />Name</label>
                     <label id="checkBoxPurpose" class="checkboxLabel"><input type="checkbox"
                             id="includePurpose" />Purpose</label>
                     <label id="checkBoxUse" class="checkboxLabel"><input type="checkbox" id="includeUse" />Use</label>
@@ -526,11 +526,11 @@
 
                 <div id="new_archetype_parameters">
                     <label><strong>Concept name:</strong></label><br>
-                    <input type="text" id="new_archetype_concept_name" onchange="setNewNodeData()"
+                    <input type="text" id="new_archetype_concept_name" onchange="this.value=this.value.trim();setNewNodeData()"
                         autocomplete="off" /><br>
 
                     <label><strong>Archetype ID:</strong></label><br>
-                    <input type="text" id="new_archetype_id" onchange="setNewNodeData()" autocomplete="off" /><br>
+                    <input type="text" id="new_archetype_id" onchange="this.value=this.value.trim();setNewNodeData()" autocomplete="off" /><br>
 
                     <label><strong>UUID: </strong></label><span id="new_archetype_uuid"></span><br>
 
@@ -548,10 +548,10 @@
                     </select><br>
 
                     <label><strong>Purpose:</strong></label><br>
-                    <textarea id="new_archetype_purpose" oninput="" onchange="setNewNodeData() "></textarea><br>
+                    <textarea id="new_archetype_purpose" oninput="" onchange="this.value=this.value.trim();setNewNodeData() "></textarea><br>
 
                     <label><strong>Keywords:</strong></label><br>
-                    <input type="text" id="new_archetype_keywords" onchange="setNewNodeData()" autocomplete="off" /><br>
+                    <input type="text" id="new_archetype_keywords" onchange="this.value=this.value.trim();setNewNodeData()" autocomplete="off" /><br>
                     <hr>
                     <label><strong>Assigned elements:</strong></label>
                     <div id="assigned_elements_container">
@@ -624,20 +624,20 @@
 
 
                 <label><strong>Project name: </strong></label><span style="color:red;">*</span><br>
-                <input type="text" id="project_name" autocomplete="off" /><br>
+                <input type="text" id="project_name" autocomplete="off" onchange="this.value=this.value.trim();"/><br>
 
                 <label><strong>Description:</strong></label><br>
                 <textarea id="project_description" placeholder="Type your description here..."></textarea><br>
 
                 <label><strong>Author: </strong></label><br>
-                <input type="text" id="project_author" autocomplete="off" /><br>
+                <input type="text" id="project_author" autocomplete="off" onchange="this.value=this.value.trim();"/><br>
 
                 <label><strong>Author contact: </strong></label><br>
-                <input type="text" id="project_contact" autocomplete="off" /><br>
+                <input type="text" id="project_contact" autocomplete="off" onchange="this.value=this.value.trim();"/><br>
 
 
                 <label><strong>Copyright: </strong></label><br>
-                <input type="text" id="project_copyright" autocomplete="off" /><br>
+                <input type="text" id="project_copyright" autocomplete="off" onchange="this.value=this.value.trim();"/><br>
 
                 <div style="display: flex; justify-content: left; margin-top: 10px;">
                     <label style="display: flex; align-items: left;">
@@ -988,7 +988,7 @@
         <div class="glossary_container" id="glossaryContainer">
             <div class="glossary_sidebar">
                 <div class="glossary_search_bar">
-                    <input type="text" id="glossary_searchInput" placeholder="Search classes..." autocomplete="off">
+                    <input type="text" id="glossary_searchInput" placeholder="Search classes..." autocomplete="off" onchange="this.value=this.value.trim();">
                     <div class="search-options">
                         <small style="color:black;">
                             <span>Include:</span><br>

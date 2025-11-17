@@ -1,5 +1,5 @@
 //INITIATE CONSTANTS and GLOBAL VARIABLES *****************************************************************************************
-const version = '0.56.0-beta';
+const version = '0.56.1-beta';
 
 let newNodes = []
 
@@ -4494,7 +4494,7 @@ function renderTree(node, parent) {
   // Render controls based on mode
   if (node.mode === "archetype") {
     html += `
-      <input type="text" class="template_planner_text_input" value="${node.name}" placeholder="Archetype name" onchange="updateTreeNodeName('${node.node_uid}', this.value)">
+      <input type="text" class="template_planner_text_input" value="${node.name}" placeholder="Archetype name" onchange="this.value=this.value.trim();updateTreeNodeName('${node.node_uid}', this.value)">
       <select onchange="updateTreeNodeID('${node.node_uid}', this.value)">
         <option value=""></option>
         ${archetype_collection_data.map(item => `<option value="${item.id}"${node.id === item.id ? ' selected' : ''}>${item.archetype_id}</option>`).join('')}
@@ -4532,12 +4532,12 @@ function renderTree(node, parent) {
       `;
       // Show free text input if "Other..." is selected or value is not in assignedElements
       if (assignedElements.indexOf(node.element_value) === -1 || node.element_value === "") {
-        html += `<input type="text" placeholder="Element name" value="${node.element_value}" onchange="updateNodeElementValue('${node.node_uid}', this.value)">`;
+        html += `<input type="text" placeholder="Element name" value="${node.element_value}" onchange="this.value=this.value.trim();updateNodeElementValue('${node.node_uid}', this.value)">`;
       }
 
     } else {
       // No assigned elements, just free text
-      html += `<input type="text" placeholder="Element name" value="${node.element_value || ''}" onchange="updateNodeElementValue('${node.node_uid}', this.value)">`;
+      html += `<input type="text" placeholder="Element name" value="${node.element_value || ''}" onchange="this.value=this.value.trim();updateNodeElementValue('${node.node_uid}', this.value)">`;
     }
 
     //if the current atcode item is not in teh atcodeItems, delete it for this node
@@ -4559,7 +4559,7 @@ function renderTree(node, parent) {
 
   } else if (node.mode === "element") {
     // No parent or parent has no archetype, just free text
-    html += `<input type="text" placeholder="Element name" value="${node.element_value || ''}" onchange="updateNodeElementValue('${node.node_uid}', this.value)">`;
+    html += `<input type="text" placeholder="Element name" value="${node.element_value || ''}" onchange="this.value=this.value.trim();updateNodeElementValue('${node.node_uid}', this.value)">`;
   }
 
   html += `
