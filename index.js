@@ -4454,8 +4454,21 @@ function addTreeBranch(uid) {
 
 // Delete node and its branch
 function deleteTreeNode(uid) {
-  if (archetypeTree.node_uid === uid) return; // Don't delete root
   const result = findNodeByUID(archetypeTree, uid);
+  let message = 'Are you sure you want to delete this node?';
+  if (result) {
+    nodeName = result.node.name;
+    if (nodeName != ''){
+      message = 'Are you sure you want to delete the "' + nodeName +  '" node?'
+    }
+  }
+  const confirmed = confirm(message);
+  if (!confirmed) {
+    event.preventDefault(); // Prevents the deletion if user cancels
+    return;
+  }
+  if (archetypeTree.node_uid === uid) return; // Don't delete root
+  //const result = findNodeByUID(archetypeTree, uid);
   if (result && result.parent) {
     result.parent.children = result.parent.children.filter(child => child.node_uid !== uid);
     updateTreeView();
@@ -4487,7 +4500,7 @@ function class_compatibility_check(node, parent) {
 
 // Render the archetypeTree recursively
 function renderTree(node, parent) {
-  let html = `<div class="archetypeTree-node${node.mode === "element" ? " element-mode" : ""}" id="${node.node_uid}"  draggable="true">
+  let html = `<div class="archetypeTree-node${node.mode === "element" ? " element-mode" : ""}" id="${node.node_uid}"  draggable="true" style="display:${node.display}">
   
    
   <div class="node-controls">
@@ -4592,7 +4605,15 @@ function renderTree(node, parent) {
       ${!node.comment ? '<img src="images/show_comment.png" alt="show comment" height="14" style="cursor: pointer;" title="Add comment" >'
       : '<img src="images/show_comment_full.png" alt="show comment" height="14" style="cursor: pointer;" title="Show comment" >'}
       </button>
-     
+       `;
+ if (node.mode === "archetype" && node.children && node.children.length > 0){
+  html += `
+      <button class="toggleNodesBtn" style="width:25px;" onclick="toggleArchetypeNode('${node.node_uid}', this);">
+          ${node.expanded ? 'E' : 'C'} 
+      </button>
+       `;}
+
+html += `
     </div>
      <textarea placeholder="Add your comment here..." class="tree_node_comment" style="display:${node.comment_display || 'none'};border-radius:3px;resize:vertical;width:calc(100% - 25px);margin-left:15px;" name="comment" rows="5" cols="33" onchange="updateNodeComment('${node.node_uid}', this.value, )"  id="node_comment_${node.node_uid}">${node.comment || ''}</textarea>
   `;
@@ -4603,6 +4624,72 @@ function renderTree(node, parent) {
   }
   html += `</div>`;
   return html;
+}
+
+function toggleArchetypeNode(nodeId, btn) {
+  
+  // Find the node div by ID
+  const node = document.getElementById(nodeId);
+  if (!node) return;
+
+  // Find all direct child nodes (archetypeTree-node) inside this node
+  // Only collapse/expand children, not the node itself
+  const childNodes = Array.from(node.querySelectorAll(':scope > .archetypeTree-node, :scope > .archetypeTree-node:not([style*="display: none"])'));
+
+  // If any child is visible, collapse; else, expand
+  let anyVisible = false;
+  childNodes.forEach(child => {
+    //set the child.id visible in the archetypeTree variable
+    if (child.style.display !== 'none') anyVisible = true;
+  });
+
+  childNodes.forEach(child => {
+    child.style.display = anyVisible ? 'none' : '';
+    const result = findNodeByUID(archetypeTree, child.id);
+    if (result) {
+      result.node.display = child.style.display;
+    }
+  });
+
+  //save if parent is expanded or not
+  const result = findNodeByUID(archetypeTree, nodeId);
+    if (result) {
+      result.node.expanded = anyVisible;
+    }
+
+  // Optionally, change button text/icon
+  if (btn) btn.textContent = anyVisible ? 'E' : 'C';
+}
+
+
+function areAnyNodesExpanded() {
+  // Check if any archetype node has visible children
+  return Array.from(document.querySelectorAll('.archetypeTree-node:not(.element-mode)')).some(node => {
+    return Array.from(node.children).some(child =>
+      child.classList && child.classList.contains('archetypeTree-node') && child.style.display !== 'none'
+    );
+  });
+}
+
+function toggleAllArchetypeNodes() {
+  const btn = document.getElementById('toggleAllBtn');
+  const shouldCollapse = areAnyNodesExpanded();
+
+  document.querySelectorAll('.archetypeTree-node:not(.element-mode)').forEach(node => {
+    node.querySelectorAll('.archetypeTree-node').forEach(child => {
+      child.style.display = shouldCollapse ? 'none' : '';
+      const result = findNodeByUID(archetypeTree, child.id);
+      if (result) {
+        result.node.display = child.style.display;
+      }
+    });
+    // Optionally update the toggle button text/icon for each node
+    let nodeBtn = node.querySelector('.toggleNodesBtn');
+    if (nodeBtn) nodeBtn.textContent = shouldCollapse ? 'E' : 'C';
+  });
+
+  // Update the main toggle button text
+  btn.textContent = shouldCollapse ? 'Expand All' : 'Collapse All';
 }
 
 
@@ -4918,6 +5005,7 @@ Examples for the use of boolean operators:<br />
 
 // Track collapsed state for all
 let allCollapsed = false;
+
 function toggleAllSections() {
   const sections = document.querySelectorAll('#checklistSections section');
   allCollapsed = !allCollapsed;
@@ -4935,6 +5023,7 @@ function toggleAllSections() {
   });
   document.getElementById('toggleAllSectionsBtn').textContent = allCollapsed ? 'Expand All' : 'Collapse All';
 }
+
 function toggleSection(btn, sectionIndex) {
   const content = btn.closest('section').querySelector('.section-content');
   if (content.style.display === 'none') {
