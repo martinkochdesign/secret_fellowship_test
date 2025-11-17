@@ -1,5 +1,5 @@
 //INITIATE CONSTANTS and GLOBAL VARIABLES *****************************************************************************************
-const version = '0.56.2-beta';
+const version = '0.56.2b-beta';
 
 let newNodes = []
 
@@ -1582,7 +1582,9 @@ function downloadExcel() {
       flatList.push({
         Section: section.name,
         Name: el.name,
+        ID: el.id,
         Archetype: el.archetype,
+        Archetype_name: el.archetype_id,       
         Approved: el.approved,
         NeedsReview: el.review,
         Description: el.description
@@ -1637,13 +1639,13 @@ function loadFromExcel(event) {
       section.elements.push({
         name: row.Name || '',
         archetype: row.Archetype || '',
-        archetype_id: row.Archetype || '',
+        archetype_id: row.Archetype_name || '',
         approved: row.Approved || false,
         review: row.NeedsReview || false,
         description: row.Description || ''
       });
     });
-    console.log(checkList)
+   
     renderEditor();
     renderViewer();
   };
