@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Archetype Companion</title>
     <link rel="icon" type="image/x-icon" href="images/icon.png">
-    <link rel="stylesheet" href="style.css">
+    
     <!-- BoxIcons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <!--Excel library-->
@@ -14,11 +14,25 @@
     <!--D3 library-->
     <!--<script src="https://unpkg.com/d3@7.9.0/dist/d3.min.js"></script>-->
     <script src="https://unpkg.com/d3@7.9.0/dist/d3.min.js"></script>
-    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>-->
+    
+    <!-- Choices.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+    <!-- Choices.js JS -->
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+    
+
+    <div id="loading_page" aria-busy="true" aria-label="Loading">
+        <div class="loader"></div>
+        <span class="loading-text">Loading, please wait...</span>
+    </div>
+
+
+
     <div id="top">
         <div id="top_container">
             <div id="logo"><img src="images/logo.png" alt="logo" height="45"></div>
@@ -43,6 +57,7 @@
                     title="Template planner view" id="tree_view_button">
             </div>
 
+            <div></div> <!-- spacer div -->
 
             <div style="display: flex; align-items: center;">
                 <img src="images/23F3_color.png" alt="History" height="27" onclick="show_search_history_page()"
@@ -1065,6 +1080,9 @@
     <script src="index.js"></script>
     <script src="glossary_data.js"></script>
     <script src="glossary_functions.js"></script>
+
+
+
 
 
 </body>

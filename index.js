@@ -1,5 +1,8 @@
 //INITIATE CONSTANTS and GLOBAL VARIABLES *****************************************************************************************
-const version = '0.58-beta';
+const version = '0.59-beta';
+
+let myTreePlannerChoices;
+let myChecklistChoices;
 
 let newNodes = []
 
@@ -739,6 +742,8 @@ if (selectedListItem) {
   var myDiv = document.getElementById('archetype_info');
   myDiv.scrollTop = 0;
 
+
+
 }
 
 
@@ -1465,7 +1470,8 @@ function renderEditor() {
   const container = document.getElementById('checklistSections');
   container.innerHTML = '';
   checkList.forEach((section, i) => {
-    const secDiv = document.createElement('section');
+    const secDiv = document.createElement('div');
+    secDiv.className = 'section';
     secDiv.innerHTML = `
 <div class="section-header" draggable="false" style="margin-bottom:5px;display:flex; align-items:center; gap:5px;">
   
@@ -1501,35 +1507,41 @@ function renderEditor() {
       div.className = 'element';
       div.innerHTML = `
 
-      <div style="display:grid;grid-template-columns: 30px auto 15px;text-align: center;width:100%;background-color:rgb(250,245,250);border:1px solid lightgray;border-radius:5px;padding:5px;margin:3px;">
+      <div class="element_container">
 
           <div>  
             <img src="images/up.png" alt="Element up" height="10" width="8"  onclick="moveElement(${i}, ${j}, 'up')" style="cursor: pointer;" title="Move element up">
             <img src="images/down.png" alt="Element down" height="10" width="8"  onclick="moveElement(${i}, ${j}, 'down')" style="cursor: pointer;" title="Move element down">
           </div>
 
-          <div>
-            <div style="display:flex; align-items:center; gap:0px;marign-left:5px;">
+          <div class="element_input_description_container">
+            <div class="element_input_container">
+              <div>
+              <input style="width-min:100px;width: calc(100% - 15px);padding-left:3px;" type="text" class="checklisttextinput_element" value="${el.name}" onchange="this.value = this.value.trim();updateElement(${i}, ${j}, 'name', this.value)" autocomplete="off"/>
+              </div>
 
-              <input style="width-min:100px;padding-left:3px;" type="text" class="checklisttextinput_element" value="${el.name}" onchange="this.value = this.value.trim();updateElement(${i}, ${j}, 'name', this.value)" autocomplete="off"/>
-              
+              <div>
               <select onchange="updateElement(${i}, ${j}, 'archetype', this.value); updateElement(${i}, ${j}, 'archetype_id', this.options[this.selectedIndex].text);" class="mySelect">
                 <option value="">Select archetype from collection</option>
                 <option value="${el.archetype}" selected>${el.archetype_id}</option>
               </select>
-              
+              </div>
+
+              <div style="display:grid; grid-template-columns: auto auto;">
               <input type="checkbox" ${el.approved ? 'checked' : ''} onchange="updateElement(${i}, ${j}, 'approved', this.checked)" />
-              <img src="images/2714_color.png" alt="Approved" height="14"   title="Element approved" style="margin-left:-3px;">
-              
+              <img src="images/2714_color.png" alt="Approved" height="20"   title="Element approved" style="margin-left:-3px;">
+              </div>
+
+              <div style="display:grid; grid-template-columns: auto auto;">
               <input class="checklistbox" type="checkbox" ${el.review ? 'checked' : ''} onchange="updateElement(${i}, ${j}, 'review', this.checked)"/>
-              <img src="images/26A0_color.png" alt="Need review" height="14"   title="Element needs review" style="margin-left:-3px;margin-right:5px;">
-              
-              <div style="width:10px;"></div> <!-- spacer div -->
-              
+              <img src="images/26A0_color.png" alt="Need review" height="20"   title="Element needs review" style="margin-left:-3px;margin-right:5px;">
+              </div>
+
+                            
             </div>
             
             <div>
-              <textarea placeholder="Add description..." style="border-radius:3px;margin-top:3px;width:calc(100% - 10px);resize: vertical;" onchange="updateElement(${i}, ${j}, 'description', this.value);">${el.description ? el.description : ''}</textarea>
+              <textarea placeholder="Add description..." class="element_description" onchange="updateElement(${i}, ${j}, 'description', this.value);">${el.description ? el.description : ''}</textarea>
             </div>
           </div>
 
@@ -1545,6 +1557,18 @@ function renderEditor() {
   });
   updateArchetypeSelect();
   populateNewNodeInclSelection();
+
+  // Initialize Choices.js for all select elements in class 'node-controls"
+  if (myChecklistChoices) myChecklistChoices.destroy();
+
+  document.querySelectorAll('.mySelect').forEach(function(select) {
+    myChecklistChoices = new Choices(select, {
+      searchEnabled: true,
+      shouldSort: false, // Keeps your original order
+      itemSelectText: '', // No extra text on selection
+      removeItemButton: false // Single select, so no remove button
+    });
+  });
 }
 
 function renderViewer() {
@@ -4907,6 +4931,19 @@ function updateTreeView() {
   document.getElementById('template_planner').innerHTML = renderTree(archetypeTree, null);
   addTreeDnDListeners();
   updateLists();
+      
+  // Initialize Choices.js for all select elements in class 'node-controls"
+  if (myTreePlannerChoices) myTreePlannerChoices.destroy();
+  
+    document.querySelectorAll('.node-controls select').forEach(function(select) {
+      myTreePlannerChoices = new Choices(select, {
+        searchEnabled: true,
+        shouldSort: false, // Keeps your original order
+        itemSelectText: '', // No extra text on selection
+        removeItemButton: false // Single select, so no remove button
+      });
+    });
+
 }
 
 function archetypeTreeToHTML(node) {
@@ -5038,7 +5075,7 @@ Examples for the use of boolean operators:<br />
 let allCollapsed = false;
 
 function toggleAllSections() {
-  const sections = document.querySelectorAll('#checklistSections section');
+  const sections = document.querySelectorAll('#checklistSections .section');
   allCollapsed = !allCollapsed;
   sections.forEach(section => {
     const content = section.querySelector('.section-content');
@@ -5056,7 +5093,7 @@ function toggleAllSections() {
 }
 
 function toggleSection(btn, sectionIndex) {
-  const content = btn.closest('section').querySelector('.section-content');
+  const content = btn.closest('.section').querySelector('.section-content');
   if (content.style.display === 'none') {
     content.style.display = '';
     btn.textContent = 'Collapse';
@@ -5066,3 +5103,13 @@ function toggleSection(btn, sectionIndex) {
   }
   checkList[sectionIndex].contentDisplay = content.style.display;
 }
+
+
+
+
+
+
+//after loading everything, make the loading signal invisible
+document.getElementById('loading_page').style.display='none';
+
+
