@@ -1,5 +1,5 @@
 //INITIATE CONSTANTS and GLOBAL VARIABLES *****************************************************************************************
-const version = '0.57-beta';
+const version = '0.58-beta';
 
 let newNodes = []
 
@@ -90,6 +90,7 @@ let circles = svg
     focusNode(d.id);
   });
 
+
 let text = svg
   .selectAll('text')
   .data(nodes)
@@ -99,6 +100,17 @@ let text = svg
   .attr('alignment-baseline', 'middle')
   .style('pointer-events', 'none')
   .text((node) => node.archetype_id);
+
+let secondary_text = svg.selectAll('text2')
+  .data(nodes)
+  .enter()
+  .append('text')
+  .attr('text-anchor', 'middle')
+  .attr('alignment-baseline', 'middle')
+  .style('pointer-events', 'none')
+  .text((node) => node.secondary_text);
+
+
 
 //Simulation, circles, links, text
 let simulation = d3.forceSimulation(nodes)
@@ -2517,6 +2529,19 @@ function redraw() {
     .style('pointer-events', 'none')
     .text((node) => node.archetype_id);
 
+  secondary_text = svg.selectAll('text2')
+    .data(nodes)
+    .enter()
+    .append('text')
+    .attr('font-size', '8')
+    .attr('text-anchor', 'middle')
+    .attr('alignment-baseline', 'middle')
+    .style('pointer-events', 'none')
+    .style('fill', 'darkgray')
+    .style('font-style', 'italic')
+    .text((node) => node.secondary_text);
+
+  
   // Update simulation nodes and links
   simulation.nodes(nodes);
   simulation.force('link', d3.forceLink(links).id(function (d) {
@@ -3084,7 +3109,7 @@ function focusNode(nodeId) {
       links = [];
       let verticalCounter = 0;
       let childCounter = 0;
-      const verticalincrement = 40;
+      const verticalincrement = 50;
       const horizontalincrement = 150;
 
       function collectNodes(node, nodes = []) {
@@ -3103,14 +3128,19 @@ function focusNode(nodeId) {
         // Add the current node (you can customize which properties to include)
         let tempcolor = 'green'; // element color
         let tempname = node.element_value;
+        let tempsecondname = '';
         if (node.mode == 'archetype') {
           tempcolor = 'blue'; //archetype color
           tempname = node.name;
+          tempsecondname = node.archetype_id;
         }
+
+
 
         nodes.push({
           id: node.node_uid,
           archetype_id: tempname,
+          secondary_text: tempsecondname,
           type: node.type,
           mode: node.mode,
           element_value: node.element_value,
@@ -3169,6 +3199,7 @@ simulation.on('tick', () => {
     .attr('cy', (node) => node.y);
 
   text.attr('x', (node) => node.x).attr('y', (node) => node.y - 18);
+  secondary_text.attr('x', (node) => node.x).attr('y', (node) => node.y - 30);
 
   lines
     .attr('x1', (link) => link.source.x)
