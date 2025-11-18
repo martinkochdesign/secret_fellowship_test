@@ -907,7 +907,7 @@ label {
     font-weight: 600;
 }
 
-/*
+
 .node-controls select, .mySelect {
     min-width: 90px;
     padding: 4px;
@@ -921,7 +921,7 @@ label {
     white-space: nowrap;
     overflow: hidden;
 }
-*/
+
 
 
 .icon-btn {
@@ -1088,7 +1088,7 @@ summary {
 .choices__inner {
     padding: 0px 0px 0px 0px;
     margin:0px;
-    font-size: 12px;
+    
     width: 350px;
     max-width: 350px;
     height:20px;

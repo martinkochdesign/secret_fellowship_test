@@ -1,5 +1,5 @@
 //INITIATE CONSTANTS and GLOBAL VARIABLES *****************************************************************************************
-const version = '0.59-beta';
+const version = '0.59.1-beta';
 
 let myTreePlannerChoices;
 let myChecklistChoices;
@@ -1559,6 +1559,7 @@ function renderEditor() {
   populateNewNodeInclSelection();
 
   // Initialize Choices.js for all select elements in class 'node-controls"
+  /*
   if (myChecklistChoices) myChecklistChoices.destroy();
 
   document.querySelectorAll('.mySelect').forEach(function(select) {
@@ -1569,6 +1570,7 @@ function renderEditor() {
       removeItemButton: false // Single select, so no remove button
     });
   });
+  */
 }
 
 function renderViewer() {
@@ -4933,6 +4935,7 @@ function updateTreeView() {
   updateLists();
       
   // Initialize Choices.js for all select elements in class 'node-controls"
+  /*
   if (myTreePlannerChoices) myTreePlannerChoices.destroy();
   
     document.querySelectorAll('.node-controls select').forEach(function(select) {
@@ -4943,6 +4946,7 @@ function updateTreeView() {
         removeItemButton: false // Single select, so no remove button
       });
     });
+    */
 
 }
 
