@@ -1,5 +1,5 @@
 //INITIATE CONSTANTS and GLOBAL VARIABLES *****************************************************************************************
-const version = '0.60-beta';
+const version = '0.60.1-beta';
 
 let newNodes = []
 
@@ -1540,11 +1540,14 @@ function renderEditor() {
   sectionContentDiv.className = 'section-content';
   sectionContentDiv.style.display = section.contentDisplay;
   sectionContentDiv.innerHTML = `
+  <!--
   <div>
 <span style="display:flex;align-items: center;">
 <img src="images/add.png" alt="Add" height="14" title="Add element" onclick="addElement(${i})"style="cursor:pointer;" >&nbsp;Add element
 </span>
-</div>`
+</div>
+-->
+`
 
     section.elements.forEach((el, j) => {
       const div = document.createElement('div');
@@ -1601,9 +1604,27 @@ function renderEditor() {
       `;
       sectionContentDiv.appendChild(div);
     });
+
+    //add the "Add element" button after the elements
+    const addButtonDiv = document.createElement('div');
+    addButtonDiv.innerHTML = `
+    <span style="cursor:pointer;" onclick="addElement(${i})" >
+    <img src="images/add.png" alt="Add" height="14" title="Add element" >&nbsp;Add element
+    </span>
+    `
+
+    sectionContentDiv.appendChild(addButtonDiv);
     secDiv.appendChild(sectionContentDiv);
     container.appendChild(secDiv);
   });
+  const addSectionButtonDiv = document.createElement('div');
+  addSectionButtonDiv.innerHTML = 
+  `
+  <span style="cursor:pointer; " onclick="addSection()">
+    <img src="images/add.png" alt="Add" height="14" title="Add section" >&nbsp;Add section
+  </span>
+  `
+  container.appendChild(addSectionButtonDiv);
   //updateArchetypeSelect();
   //populateNewNodeInclSelection();
 
@@ -3211,13 +3232,12 @@ function focusNode(nodeId) {
         let tempcolor = 'green'; // element color
         let tempname = node.element_value;
         let tempsecondname = '';
+        if (node.equivalent != '') tempsecondname = node.equivalent;
         if (node.mode == 'archetype') {
           tempcolor = 'blue'; //archetype color
           tempname = node.name;
           tempsecondname = node.archetype_id;
         }
-
-
 
         nodes.push({
           id: node.node_uid,
@@ -3752,6 +3772,7 @@ function set_window_configuration_1() {
   show_button_bar();
 
   change_visualisation_type('ARCHETYPE');
+  updateLists();
 };
 
 // checklist editor layout
@@ -3835,6 +3856,7 @@ function set_window_configuration_2() {
 
   show_button_bar();
   change_visualisation_type('PROJECT');
+  updateLists();
 };
 
 //search layout
@@ -3912,6 +3934,7 @@ function set_window_configuration_3() {
 
   show_button_bar();
   change_visualisation_type('ARCHETYPE');
+  updateLists();
 };
 
 //template tree standard view
@@ -3991,6 +4014,7 @@ function set_window_configuration_6() {
 
   show_button_bar();
   change_visualisation_type('TREEPLANNER');
+  updateLists();
 };
 
 
