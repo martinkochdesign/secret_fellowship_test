@@ -914,15 +914,22 @@ label {
 }
 
 
-.node-controls select, .mySelect, .mySelectTeePlan {
+.node-controls select, .mySelect, .mySelectTeePlan, .mySelectTeePlanAtcode {
     min-width: 90px;
     padding: 4px;
     border-radius: 7px;
     border: 1px solid darkgray;
 }
 
-.mySelect, .mySelectTeePlan{
+.mySelect, .mySelectTeePlan {
     width: 340px;
+    /*text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;*/
+}
+
+.mySelectTeePlanAtcode {
+    width: 180px;
     /*text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;*/

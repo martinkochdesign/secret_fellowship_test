@@ -1,5 +1,5 @@
 //INITIATE CONSTANTS and GLOBAL VARIABLES *****************************************************************************************
-const version = '0.59.2-beta';
+const version = '0.60-beta';
 
 let newNodes = []
 
@@ -1413,12 +1413,22 @@ function addElement(sectionIndex) {
 }
 
 function deleteSection(index) {
+  const confirmed = confirm('Are you sure you want to delete this section?');
+  if (!confirmed) {
+    event.preventDefault(); // Prevents the deletion if user cancels
+    return;
+  }
   checkList.splice(index, 1);
   renderEditor();
   renderViewer();
 }
 
 function deleteElement(sectionIndex, elementIndex) {
+  const confirmed = confirm('Are you sure you want to delete this element?');
+  if (!confirmed) {
+    event.preventDefault(); // Prevents the deletion if user cancels
+    return;
+  }
   checkList[sectionIndex].elements.splice(elementIndex, 1);
   renderEditor();
   renderViewer();
@@ -1513,7 +1523,7 @@ function renderEditor() {
 
 <img src="images/down.png" alt="Section down" height="10" width="8" onclick="moveSection(${i}, 'down')" style="cursor: pointer;" title="Move section down">
 
-<input type="text" class="checklisttextinput_section" value="${section.name}" onchange="this.value = this.value.trim();updateSectionName(${i}, this.value, this.closest('section').querySelector('.section-content'))" style="font-size:16px; flex:1 1 auto; min-width:0;"/>
+<input type="text" class="checklisttextinput_section" value="${section.name}" onchange="this.value = this.value.trim();updateSectionName(${i}, this.value, this.closest('.section').querySelector('.section-content'))" style="font-size:16px; flex:1 1 auto; min-width:0;"/>
 
 <img src="images/remove.png" alt="Delete section" height="14" onclick="deleteSection(${i})" style="cursor: pointer;" title="Delete section">
 </div>
@@ -2715,7 +2725,9 @@ function getConnectedNodes(nodeId) {
         tempNode.color = 'lightgray';
         tempNode.size = 13;
         tempNode.stroke = 'transparent';
+        
         dummyNodes.push(tempNode);
+
       } else {
         tempNode.color = 'black';
         tempNode.size = 7;
@@ -2826,7 +2838,16 @@ function getConnectedNodes(nodeId) {
   if (sel_view === 'ARCHETYPE' || sel_view === 'SIMILAR' || sel_view === 'COMBINATION') {
     //add all connectedID nodes
     nodes = allNodes.filter(node => connectedIds.has(node.id));
-    nodes = nodes.concat(dummyNodes);
+    const uniqueNodes = [];
+    const ids = new Set();
+    for (const node of dummyNodes) {
+      if (!ids.has(node.id)) {
+        ids.add(node.id);
+        uniqueNodes.push(node);
+      }
+    }
+    nodes = nodes.concat(uniqueNodes);
+    //nodes = nodes.concat(dummyNodes);
     //add active node
     tempActiveNode = allNodes.find(n => n.id === nodeId);
     //format active node
@@ -4645,7 +4666,7 @@ function renderTree(node, parent) {
 
       html += `
 
-      <input id="node_atcodes_${node.node_uid}" type="search" class="mySelectTeePlan" list="datalist_atcodes_${node.node_uid}" value="${node.equivalent? node.equivalent : '' }" autocomplete="off" placeholder="-- Select atcode --" onchange="updateNodeElementEquivalentValue('${node.node_uid}', this.value)" />
+      <input id="node_atcodes_${node.node_uid}" type="search" class="mySelectTeePlanAtcode" list="datalist_atcodes_${node.node_uid}" value="${node.equivalent? node.equivalent : '' }" autocomplete="off" placeholder="-- Select atcode --" onchange="updateNodeElementEquivalentValue('${node.node_uid}', this.value)" />
 
       <datalist id="datalist_atcodes_${node.node_uid}">
             ${atcodeItems.map(el => `<option value="${el}"${node.equivalent === el ? ' selected' : ''}>${el}</option>`).join('')}
@@ -4700,7 +4721,7 @@ function renderTree(node, parent) {
 
     html += `
 
-      <input id="node_atcodes_${node.node_uid}" type="search" class="mySelectTeePlan" list="datalist_atcodes_${node.node_uid}" value="${node.equivalent? node.equivalent : '' }" autocomplete="off" placeholder="-- Select atcode --" onchange="updateNodeElementEquivalentValue('${node.node_uid}', this.value)" />
+      <input id="node_atcodes_${node.node_uid}" type="search" class="mySelectTeePlanAtcode" list="datalist_atcodes_${node.node_uid}" value="${node.equivalent? node.equivalent : '' }" autocomplete="off" placeholder="-- Select atcode --" onchange="updateNodeElementEquivalentValue('${node.node_uid}', this.value)" />
 
       <datalist id="datalist_atcodes_${node.node_uid}">
             ${atcodeItems.map(el => `<option value="${el}"${node.equivalent === el ? ' selected' : ''}>${el}</option>`).join('')}
