@@ -562,14 +562,19 @@ label {
 
 #new_archetype_concept_name,
 #new_archetype_keywords,
-#new_archetype_id,
+#new_archetype_id{
+    width: calc(100% - 35px);
+    margin-left: 10px;
+}
+
+
 #new_archetype_class {
-    width: calc(100% - 80px);
+    width: calc(100% - 30px);
     margin-left: 10px;
 }
 
 #new_archetype_purpose {
-    width: calc(100% - 75px);
+    width: calc(100% - 30px);
     height: 120px;
     margin-left: 10px;
     resize: none;
@@ -579,7 +584,7 @@ label {
 
 #assigned_elements_container,
 #new_archetype_inclusions_container {
-    width: calc(100% - 75px);
+    margin-right: 20px;
     border-radius: 5px;
     margin-left: 10px;
     background-color: white;
@@ -602,12 +607,13 @@ label {
 
 #new_archetype_listArchetypes {
     max-width: calc(100% - 90px);
+    width: 380px;
 
 }
 
 #new_archetype_inclusions {
     margin-left: 10px;
-    width: calc(100% - 75px);
+    margin-right: 20px;
     border-radius: 5px;
     border: 1px solid lightgrey;
     background-color: white;
@@ -908,18 +914,18 @@ label {
 }
 
 
-.node-controls select, .mySelect {
+.node-controls select, .mySelect, .mySelectTeePlan {
     min-width: 90px;
     padding: 4px;
     border-radius: 7px;
     border: 1px solid darkgray;
 }
 
-.mySelect{
-    width: 350px;
-    text-overflow: ellipsis;
+.mySelect, .mySelectTeePlan{
+    width: 340px;
+    /*text-overflow: ellipsis;
     white-space: nowrap;
-    overflow: hidden;
+    overflow: hidden;*/
 }
 
 
@@ -1068,94 +1074,6 @@ summary {
 
   #toggleAllSectionsBtn {
     width:125px;
-  }
-
-
-/* Match the select box appearance */
-
-.choices {
-    padding: 0px 0px 0px 0px;
-    margin:0px;
-    border-radius: 7px !important;
-    border: 1px solid gray !important;
-    background: white;
-    height:24px;
-    max-height:24px;
-    min-height: unset;
-    max-width: 350px;
-}
-
-.choices__inner {
-    padding: 0px 0px 0px 0px;
-    margin:0px;
-    
-    width: 350px;
-    max-width: 350px;
-    height:20px;
-    max-height:20px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    min-height: unset;
-    background: white;
-    border: none;
-}
-
-/* Dropdown options styling */
-.choices__list--dropdown, .choices__list[aria-expanded] {
-    border-radius: 7px;
-    padding: 0px 0px 0px 0px;
-    border: 1px solid darkgray;
-    /*box-shadow: 0 2px 8px rgba(0,0,0,0.08);*/
-}
-
-/* Option items */
-.choices__item--choice {
-    /*padding: 4px 8px;*/
-    padding: 0px 0px 0px 0px;
-    margin:0px;
-    border: 1px solid darkgray;
-    border-radius: 4px;   
-}
-
-.choices__item--selectable {
-    min-height: 16px;
-    /* white-space: nowrap;*/
-    text-align: left;
-    background: white;
-    border: none;
-}
-
-/* Highlighted option */
-.choices__item--choice.is-highlighted {
-    background: #f0f0f0;
-    
-    padding: 0px 0px 0px 0px;
-    margin:0px;
-    background: white;
-    border: none;
-}
-
-/* Remove the default Choices.js blue border on focus */
-.choices.is-focused .choices__inner, .choices__inner:focus {
-    border-color: #888 !important;
-    
-    box-shadow: none !important;
-    padding: 0px 0px 0px 0px;
-}
-
-/* Style the dropdown arrow of the choices*/
-.choices[data-type*="select-one"] .choices__inner::after {
-    content: "";
-    display: inline-block;
-    height: 25px;
-    width: 28px;
-    position: absolute;
-    right:0px;
-    pointer-events: none;
-    background-color: #eef;
-    background: white;
-    border: none;
   }
 
 

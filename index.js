@@ -1,8 +1,5 @@
 //INITIATE CONSTANTS and GLOBAL VARIABLES *****************************************************************************************
-const version = '0.59.1-beta';
-
-let myTreePlannerChoices;
-let myChecklistChoices;
+const version = '0.59.2-beta';
 
 let newNodes = []
 
@@ -742,7 +739,7 @@ if (selectedListItem) {
   var myDiv = document.getElementById('archetype_info');
   myDiv.scrollTop = 0;
 
-
+  updateArchetypeSelect();
 
 }
 
@@ -796,7 +793,7 @@ function clearSearchFilter() {
   renderViewer();
 }
 
-
+/*
 function populateNewNodeInclSelection() {
   //get the selector
   const options = document.getElementById("new_archetype_listArchetypes");
@@ -813,6 +810,7 @@ function populateNewNodeInclSelection() {
       }
     });
 }
+    */
 
 //sorting a ul list in alphabetical order
 function sortList(ul) {
@@ -1330,11 +1328,35 @@ function removeArchetypeFromCollection() {
 
 // CHECKLIST **************************************************************************************************
 // CHECKLIST - FUNCTIONS **************************************************************************************
+
+function createDataLists(){
+  //data list of collection archetypes
+  if(document.getElementById('myArchetypeCollectionOptions')){
+    document.getElementById('myArchetypeCollectionOptions')?.remove();
+  }
+  let collectionDatalist = document.createElement('datalist');
+  collectionDatalist.id = 'myArchetypeCollectionOptions';
+  collectionDatalist.innerHTML = ''; // Clear previous options
+  archetypeListItems.forEach(item => {
+    if (item.classList.contains('collection')) {
+      const option = document.createElement('option');
+      option.code = item.id;
+      option.value = item.id;
+      option.textContent = item.textContent;
+      collectionDatalist.appendChild(option);
+    }
+  });
+  document.body.append(collectionDatalist);
+
+}
+
 function updateArchetypeSelect() {
   // use archetypeListItems
   const selectFields = document.getElementsByClassName('mySelect');
 
+  createDataLists();
 
+  /*
   Array.from(selectFields)
     .forEach(select => {
       const selectValue = select.value;
@@ -1364,14 +1386,8 @@ function updateArchetypeSelect() {
         select.dispatchEvent(new Event('change'));
       }
     })
+  */
 
-    /*
-    Array.from(selectFields).forEach(element => {
-      new Choices(element, {
-        searchEnabled: true
-      });
-    });
-    */
 }
 
 //FUNCTIONS FOR THE CHECKLIST EDITOR
@@ -1464,6 +1480,24 @@ function moveSection(index, direction) {
   renderViewer();
 }
 
+function onArchetypeChange(input, i, j) {
+  const value = input.value; // This is the label shown in the input
+  const datalist = document.getElementById('myArchetypeCollectionOptions');
+  let archetype_id = '';
+  let archetype = value;
+  // Find the matching option in the datalist
+  for (const option of datalist.options) {
+    if (option.value === value) {
+      archetype_id = option.textContent || '';
+      break;
+    }
+  }
+
+  // Call your update functions
+  updateElement(i, j, 'archetype', archetype);
+  updateElement(i, j, 'archetype_id', archetype_id);
+  input.value = archetype_id;
+}
 
 function renderEditor() {
 
@@ -1521,10 +1555,15 @@ function renderEditor() {
               </div>
 
               <div>
+
+              <input type="search" list="myArchetypeCollectionOptions" id="myInput${i}_${j}" name="myInput${i}_${j}" class="checklisttextinput_element mySelect" placeholder="Select archetype from collection" value="${el.archetype_id || ''}" onchange="onArchetypeChange(this, ${i}, ${j})" autocomplete="off"/> 
+
+              <!--
               <select onchange="updateElement(${i}, ${j}, 'archetype', this.value); updateElement(${i}, ${j}, 'archetype_id', this.options[this.selectedIndex].text);" class="mySelect">
                 <option value="">Select archetype from collection</option>
                 <option value="${el.archetype}" selected>${el.archetype_id}</option>
               </select>
+              -->
               </div>
 
               <div style="display:grid; grid-template-columns: auto auto;">
@@ -1555,22 +1594,9 @@ function renderEditor() {
     secDiv.appendChild(sectionContentDiv);
     container.appendChild(secDiv);
   });
-  updateArchetypeSelect();
-  populateNewNodeInclSelection();
+  //updateArchetypeSelect();
+  //populateNewNodeInclSelection();
 
-  // Initialize Choices.js for all select elements in class 'node-controls"
-  /*
-  if (myChecklistChoices) myChecklistChoices.destroy();
-
-  document.querySelectorAll('.mySelect').forEach(function(select) {
-    myChecklistChoices = new Choices(select, {
-      searchEnabled: true,
-      shouldSort: false, // Keeps your original order
-      itemSelectText: '', // No extra text on selection
-      removeItemButton: false // Single select, so no remove button
-    });
-  });
-  */
 }
 
 function renderViewer() {
@@ -1714,10 +1740,10 @@ function clearchecklist(event) {
 // NEW ARCHETYPES *********************************************************************************************
 // NEW ARCHETYPES - FUNCTIONS *********************************************************************************
 function addNewArchetypesListItems() {
+
   //delete all new archetype items from the archetypeListItems array
-
   archetypeListItems = archetypeListItems.filter(item => !item.classList.contains('new'));
-
+  
   newNodes
     .forEach(item => {
       //create  a new list item
@@ -1726,25 +1752,25 @@ function addNewArchetypesListItems() {
       li.textContent = item.archetype_id;
       li.classList.add('collection'); //shows inwhich list this should go
       li.classList.add('new'); //important when we are using new archetypes
-      archetypeListItems.push(li);
-      if (selectedListItem)
-        selectedListItem.classList.remove('selected');
+      li.onclick = () => {
+          if (selectedListItem) selectedListItem.classList.remove('selected');
+          li.classList.add('selected');
+          selectedListItem = li;
+          //take selected list item id and load the data from the newNodes array
+          getNewNodeData();
+          updateLists();
+          renderEditor();
+          renderViewer();
+        };
+        archetypeListItems.push(li);
+
+      /*
+      if (selectedListItem)selectedListItem.classList.remove('selected');
       li.classList.add('selected');
       selectedListItem = li;
-      li.onclick = () => {
-
-        if (selectedListItem)
-          selectedListItem.classList.remove('selected');
-        li.classList.add('selected');
-        selectedListItem = li;
-        //take selected list item id and load the data from the newNodes array
-        getNewNodeData();
-        updateLists();
-        renderEditor();
-        renderViewer();
-
-      };
+      */
     });
+    
 }
 
 function createNewArchetypeObject() {
@@ -2000,8 +2026,8 @@ function setNewNodeData() {
  
   addNewArchetypesListItems();
   updateLists();
-  updateArchetypeSelect();
-  populateNewNodeInclSelection();
+  //updateArchetypeSelect();
+  //populateNewNodeInclSelection();
 }
 
 // NEW ARCHETYPES - EVENT LISTENERS ***************************************************************************
@@ -2011,8 +2037,15 @@ function addArchetypeToNewArchetypeInclusionList() {
 
   const select = document.getElementById('new_archetype_listArchetypes');
   const listItemID = select.value;
-  const listItemText = select.options[select.selectedIndex].text;
-
+  const datalist = document.getElementById('myArchetypeCollectionOptions');
+  let listItemText = '';
+  // Find the matching option in the datalist
+  for (const option of datalist.options) {
+    if (option.value === listItemID) {
+      listItemText = option.textContent || '';
+      break;
+    }
+  }
   const my_ul = document.getElementById('new_archetype_inclusions_ul');
   //if already exists in list, do not add
   const currentListItems = Array.from(my_ul.getElementsByTagName("li"));
@@ -2020,11 +2053,13 @@ function addArchetypeToNewArchetypeInclusionList() {
   // Check if item already exists
   const alreadyExists = currentListItems.some(li => li.textContent === listItemText);
   if (alreadyExists) {
+    select.value = '';
     return; // Do not add duplicate
   }
 
   //Check if item is the same as the current archetype. Do not permit addind itself.
   if (selectedListItem.id === listItemID) {
+    select.value = '';
     return; // Do not add duplicate
   }
 
@@ -2035,17 +2070,17 @@ function addArchetypeToNewArchetypeInclusionList() {
   li.classList.add('notselectable');
   my_ul.appendChild(li);
   setNewNodeData();
-  document.getElementById('new_archetype_listArchetypes').value = '';
+  select.value = '';
 
 }
 
 function removeArchetypeToNewArchetypeInclusionList() {
-  const listItem = document.getElementById('new_archetype_listArchetypes').value;
+  const listItemID = document.getElementById('new_archetype_listArchetypes').value;
   const my_ul = document.getElementById('new_archetype_inclusions_ul');
   // Get current list items
   const currentListItems = Array.from(my_ul.getElementsByTagName("li"));
   // Find and remove the matching item
-  const itemToRemove = currentListItems.find(li => li.id === listItem);
+  const itemToRemove = currentListItems.find(li => li.id === listItemID);
   if (itemToRemove) {
     my_ul.removeChild(itemToRemove);
   }
@@ -4443,7 +4478,7 @@ function updateTreeNodeID(uid, value) {
   if (result) {
     if (value !== "") {
       result.node.id = value;
-      const item = archetype_collection_data.find(obj => obj.id === value);
+      const item = archetype_collection_data.find(obj => obj.archetype_id === value);
       result.node.archetype_id = item ? item.archetype_id : "";
       result.node.type = item ? item.archetype_class : "";
       result.node.name = item ? item.name : "";
@@ -4555,6 +4590,24 @@ function class_compatibility_check(node, parent) {
   return '';
 }
 
+
+function lookup_datalist_text_by_value(input, datalist_id='myArchetypeCollectionOptions') {
+  const value = input.value; // This is the label shown in the input
+  const datalist = document.getElementById(datalist_id);
+  let archetype_id = '';
+
+  // Find the matching option in the datalist
+  for (const option of datalist.options) {
+    if (option.value === value) {
+      archetype_id = option.textContent || '';
+      break;
+    }
+  }
+  // Call your update functions
+  input.value = archetype_id;
+}
+
+
 // Render the archetypeTree recursively
 function renderTree(node, parent) {
   let html = `<div class="archetypeTree-node${node.mode === "element" ? " element-mode" : ""}" id="${node.node_uid}"  draggable="true" style="display:${node.display}">
@@ -4574,21 +4627,37 @@ function renderTree(node, parent) {
   if (node.mode === "archetype") {
     html += `
       <input type="text" class="template_planner_text_input" value="${node.name}" placeholder="Archetype name" onchange="this.value=this.value.trim();updateTreeNodeName('${node.node_uid}', this.value)">
+      
+      <input id="node_${node.node_uid}" type="search" class="mySelectTeePlan" list="myArchetypeCollectionOptions" value="${node.id}" autocomplete="off" placeholder="-- Select archetype --" onchange="lookup_datalist_text_by_value(this); updateTreeNodeID('${node.node_uid}', this.value); " />
+
+      <!--
       <select onchange="updateTreeNodeID('${node.node_uid}', this.value)">
         <option value=""></option>
         ${archetype_collection_data.map(item => `<option value="${item.id}"${node.id === item.id ? ' selected' : ''}>${item.archetype_id}</option>`).join('')}
       </select>
+      -->
+
     `;
 
     if (parent && parent.id) {
       const parentArchetype = archetype_collection_data.find(a => a.id === parent.id);
       const atcodeItems = parentArchetype ? parentArchetype.atcode_items : [];
+
       html += `
+
+      <input id="node_atcodes_${node.node_uid}" type="search" class="mySelectTeePlan" list="datalist_atcodes_${node.node_uid}" value="${node.equivalent? node.equivalent : '' }" autocomplete="off" placeholder="-- Select atcode --" onchange="updateNodeElementEquivalentValue('${node.node_uid}', this.value)" />
+
+      <datalist id="datalist_atcodes_${node.node_uid}">
+            ${atcodeItems.map(el => `<option value="${el}"${node.equivalent === el ? ' selected' : ''}>${el}</option>`).join('')}
+      </datalist>
+
+      <!--
       <select onchange="updateNodeElementEquivalentValue('${node.node_uid}', this.value)">
       <option value="">-- Link parent atcode --</option>
         ${atcodeItems.map(el => `<option value="${el}"${node.equivalent === el ? ' selected' : ''}>${el}</option>`).join('')}
       </select>
-      `;
+      -->
+      `;      
 
 
     }
@@ -4630,10 +4699,19 @@ function renderTree(node, parent) {
     `
 
     html += `
+
+      <input id="node_atcodes_${node.node_uid}" type="search" class="mySelectTeePlan" list="datalist_atcodes_${node.node_uid}" value="${node.equivalent? node.equivalent : '' }" autocomplete="off" placeholder="-- Select atcode --" onchange="updateNodeElementEquivalentValue('${node.node_uid}', this.value)" />
+
+      <datalist id="datalist_atcodes_${node.node_uid}">
+            ${atcodeItems.map(el => `<option value="${el}"${node.equivalent === el ? ' selected' : ''}>${el}</option>`).join('')}
+      </datalist>
+
+      <!--
       <select onchange="updateNodeElementEquivalentValue('${node.node_uid}', this.value)">
       <option value="">-- Link parent atcode --</option>
         ${atcodeItems.map(el => `<option value="${el}"${node.equivalent === el ? ' selected' : ''}>${el}</option>`).join('')}
       </select>
+      -->
       `;
 
   } else if (node.mode === "element") {
