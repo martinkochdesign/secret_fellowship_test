@@ -1,5 +1,5 @@
 //INITIATE CONSTANTS and GLOBAL VARIABLES *****************************************************************************************
-const version = '0.61-beta';
+const version = '0.61.1-beta';
 
 let newNodes = []
 
@@ -4744,21 +4744,35 @@ function renderTree(node, parent) {
     const atcodeItems = parentArchetype ? parentArchetype.atcode_items : [];
     if (assignedElements.length > 0) {
       html += `
+
+      <input id="node_assigned_${node.node_uid}" type="search" class="mySelectTeePlanAtcode" list="datalist_assigned_${node.node_uid}" value="${node.element_value? node.element_value : '' }" autocomplete="off" placeholder="-- Select assigned --" onchange="updateNodeElementValue('${node.node_uid}', this.value)" />
+
+            <datalist id="datalist_assigned_${node.node_uid}">
+                  ${assignedElements.map(el => `<option value="${el}"${node.element_value === el ? ' selected' : ''}>${el}</option>`).join('')}
+            </datalist>
+
+
+
+      <!--
         <select onchange="updateNodeElementValue('${node.node_uid}', this.value)">
           <option value="">-- Select assigned element --</option>
           ${assignedElements.map(el => `<option value="${el}"${node.element_value === el ? ' selected' : ''}>${el}</option>`).join('')}
           <option value=" "${assignedElements.indexOf(node.element_value) === -1 && node.element_value ? ' selected' : ''}>Other...</option>
         </select>
+        -->
       `;
       // Show free text input if "Other..." is selected or value is not in assignedElements
+      /*
       if (assignedElements.indexOf(node.element_value) === -1 || node.element_value === "") {
         html += `<input type="text" placeholder="Element name" value="${node.element_value}" onchange="this.value=this.value.trim();updateNodeElementValue('${node.node_uid}', this.value)">`;
       }
+      */
 
     } else {
       // No assigned elements, just free text
       html += `<input type="text" placeholder="Element name" value="${node.element_value || ''}" onchange="this.value=this.value.trim();updateNodeElementValue('${node.node_uid}', this.value)">`;
     }
+      
 
     //if the current atcode item is not in teh atcodeItems, delete it for this node
     if (!Array.from(atcodeItems).includes(node.equivalent)) {
