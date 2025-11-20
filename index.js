@@ -1,5 +1,5 @@
 //INITIATE CONSTANTS and GLOBAL VARIABLES *****************************************************************************************
-const version = '0.60.1-beta';
+const version = '0.61-beta';
 
 let newNodes = []
 
@@ -4653,6 +4653,33 @@ function lookup_datalist_text_by_value(input, datalist_id='myArchetypeCollection
 }
 
 
+function cloneTreeBranch(uid) {
+  // Get the branch from archetypeTree variable
+  const result = findNodeByUID(archetypeTree, uid);
+  if (!result || !result.node) return;
+
+  //Clone the node 
+  let clonedNode;
+  clonedNode = JSON.parse(JSON.stringify(result.node));
+  clonedNode.name = '(COPY) ' + clonedNode.name
+
+  //Recursively replace node_uuid
+  function replaceUUIDs(node) {
+    node.node_uid = uuidv4();
+    if (Array.isArray(node.children)) {
+      node.children.forEach(child => replaceUUIDs(child));
+    }
+  }
+  replaceUUIDs(clonedNode);
+
+  //add the cloned node in the parent node
+  result.parent.children.push(clonedNode);
+  console.log(archetypeTree)
+  updateTreeView();
+
+}
+
+
 // Render the archetypeTree recursively
 function renderTree(node, parent) {
   let html = `<div class="archetypeTree-node${node.mode === "element" ? " element-mode" : ""}" id="${node.node_uid}"  draggable="true" style="display:${node.display}">
@@ -4771,6 +4798,15 @@ function renderTree(node, parent) {
       <button class="icon-btn" title="Move down" onclick="moveTreeNode('${node.node_uid}', 1)" ${!parent ? 'hidden' : ''}>
       <img src="images/down.png" alt="Element down" height="10" width="8" style="cursor: pointer;" title="Move element down">   
       </button>
+
+
+
+      <button class="icon-btn" title="Clone branch" onclick="cloneTreeBranch('${node.node_uid}')" ${(node.mode == 'element') || !parent ? 'hidden' : ''}>
+      <img src="images/clone.png" alt="Clone branch" height="20" style="cursor: pointer;" title="Clone branch">   
+      </button>
+
+
+
       <button class="icon-btn" title="Add branch" onclick="addTreeBranch('${node.node_uid}')" ${node.mode == 'element' ? 'hidden' : ''}>
       <img src="images/add.png" alt="Add" height="14" title="Add branch" style="cursor:pointer;" >
       </button>
