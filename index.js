@@ -1,5 +1,5 @@
 //INITIATE CONSTANTS and GLOBAL VARIABLES *****************************************************************************************
-const version = '0.61.2-beta';
+const version = '0.61.4-beta';
 
 let newNodes = []
 
@@ -128,7 +128,7 @@ let myZoom = d3.zoom()
 set_window_configuration_1();
 loadFilterData();
 
-function updateVisAtTypeChange(){ 
+function updateVisAtTypeChange() {
 }
 
 
@@ -678,39 +678,39 @@ function updateLists() {
     document.getElementById('add_to_collection_sidebar_button').style.display = 'none';
   }
   //are there collection items? if not, don't show the hide/show button
-  const hasCollection = Array.from(archetypeListItems).some(item => item.classList.contains('collection')&&item.classList.contains('existing'));
-  if (!hasCollection){
+  const hasCollection = Array.from(archetypeListItems).some(item => item.classList.contains('collection') && item.classList.contains('existing'));
+  if (!hasCollection) {
     document.getElementById('hide_collection_button').style.display = 'none';
     document.getElementById('show_collection_button').style.display = 'none';
     document.getElementById('hide_collection_sidebar_button').style.display = 'none';
     document.getElementById('show_collection_sidebar_button').style.display = 'none';
   }
-  else{
-    if(show_collection_items){
-    document.getElementById('hide_collection_button').style.display = 'inline';
-    document.getElementById('show_collection_button').style.display = 'none';
-    document.getElementById('hide_collection_sidebar_button').style.display = 'inline';
-    document.getElementById('show_collection_sidebar_button').style.display = 'none';
+  else {
+    if (show_collection_items) {
+      document.getElementById('hide_collection_button').style.display = 'inline';
+      document.getElementById('show_collection_button').style.display = 'none';
+      document.getElementById('hide_collection_sidebar_button').style.display = 'inline';
+      document.getElementById('show_collection_sidebar_button').style.display = 'none';
+    }
+    else {
+      document.getElementById('hide_collection_button').style.display = 'none';
+      document.getElementById('show_collection_button').style.display = 'inline';
+      document.getElementById('hide_collection_sidebar_button').style.display = 'none';
+      document.getElementById('show_collection_sidebar_button').style.display = 'inline';
+    }
   }
-  else{
-    document.getElementById('hide_collection_button').style.display = 'none';
-    document.getElementById('show_collection_button').style.display = 'inline';
-    document.getElementById('hide_collection_sidebar_button').style.display = 'none';
-    document.getElementById('show_collection_sidebar_button').style.display = 'inline';
-  }
-}
 
-// if the selecte item is not an existing archetype, put the hide/show higher, so there is no gap between icons
-if (selectedListItem) {
-  if (selectedListItem.classList.contains('new')) {
-    document.getElementById('hide_collection_sidebar_button').style.top = '75px';
-    document.getElementById('show_collection_sidebar_button').style.top = '75px';
+  // if the selecte item is not an existing archetype, put the hide/show higher, so there is no gap between icons
+  if (selectedListItem) {
+    if (selectedListItem.classList.contains('new')) {
+      document.getElementById('hide_collection_sidebar_button').style.top = '75px';
+      document.getElementById('show_collection_sidebar_button').style.top = '75px';
+    }
+    else {
+      document.getElementById('hide_collection_sidebar_button').style.top = '125px';
+      document.getElementById('show_collection_sidebar_button').style.top = '125px';
+    }
   }
-  else{
-    document.getElementById('hide_collection_sidebar_button').style.top = '125px';
-    document.getElementById('show_collection_sidebar_button').style.top = '125px';
-  }
-}
 
 
 
@@ -967,7 +967,7 @@ function filterList(ul) {
         }
 
       }
-      
+
       let className = '';
 
       if (filterClass != '') {
@@ -990,11 +990,11 @@ function filterList(ul) {
 }
 
 
-function link_expand_structure_button(){
+function link_expand_structure_button() {
   //expand archetype structure
   const btn = document.getElementById('toggle-all-btn');
   let expanded = false; // Start with all open
-  btn.addEventListener('click', function() {
+  btn.addEventListener('click', function () {
     const details = document.querySelectorAll('details');
     expanded = !expanded;
     details.forEach(d => d.open = expanded);
@@ -1211,7 +1211,7 @@ function highlightArchetypeText() {
   function escapeRegex(str) {
     return str.replace(/[-\/\\^$+?.()|[\]{}]/g, '\\$&').replace(/\*/g, '.*');
   }
- 
+
   function generateLightColors(count) {
     const colors = [];
     for (let i = 0; i < count; i++) {
@@ -1329,9 +1329,9 @@ function removeArchetypeFromCollection() {
 // CHECKLIST **************************************************************************************************
 // CHECKLIST - FUNCTIONS **************************************************************************************
 
-function createDataLists(){
+function createDataLists() {
   //data list of collection archetypes
-  if(document.getElementById('myArchetypeCollectionOptions')){
+  if (document.getElementById('myArchetypeCollectionOptions')) {
     document.getElementById('myArchetypeCollectionOptions')?.remove();
   }
   let collectionDatalist = document.createElement('datalist');
@@ -1459,10 +1459,10 @@ function moveElement(sectionIndex, elementIndex, direction) {
 }
 
 function updateElement(sectionIndex, elementIndex, key, value) {
-  if (typeof(checkList[sectionIndex].elements[elementIndex][key]) == 'string'){
+  if (typeof (checkList[sectionIndex].elements[elementIndex][key]) == 'string') {
     checkList[sectionIndex].elements[elementIndex][key] = value.trim();
   }
-  else{
+  else {
     checkList[sectionIndex].elements[elementIndex][key] = value;
   }
   renderViewer();
@@ -1536,10 +1536,10 @@ function renderEditor() {
 
     `;
 
-  const sectionContentDiv = document.createElement('div');
-  sectionContentDiv.className = 'section-content';
-  sectionContentDiv.style.display = section.contentDisplay;
-  sectionContentDiv.innerHTML = `
+    const sectionContentDiv = document.createElement('div');
+    sectionContentDiv.className = 'section-content';
+    sectionContentDiv.style.display = section.contentDisplay;
+    sectionContentDiv.innerHTML = `
   <!--
   <div>
 <span style="display:flex;align-items: center;">
@@ -1618,8 +1618,8 @@ function renderEditor() {
     container.appendChild(secDiv);
   });
   const addSectionButtonDiv = document.createElement('div');
-  addSectionButtonDiv.innerHTML = 
-  `
+  addSectionButtonDiv.innerHTML =
+    `
   <span style="cursor:pointer; " onclick="addSection()">
     <img src="images/add.png" alt="Add" height="14" title="Add section" >&nbsp;Add section
   </span>
@@ -1684,7 +1684,7 @@ function downloadExcel() {
         Name: el.name,
         ID: el.id,
         Archetype: el.archetype,
-        Archetype_name: el.archetype_id,       
+        Archetype_name: el.archetype_id,
         Approved: el.approved,
         NeedsReview: el.review,
         Description: el.description
@@ -1745,7 +1745,7 @@ function loadFromExcel(event) {
         description: row.Description || ''
       });
     });
-   
+
     renderEditor();
     renderViewer();
   };
@@ -1774,7 +1774,7 @@ function addNewArchetypesListItems() {
 
   //delete all new archetype items from the archetypeListItems array
   archetypeListItems = archetypeListItems.filter(item => !item.classList.contains('new'));
-  
+
   newNodes
     .forEach(item => {
       //create  a new list item
@@ -1784,16 +1784,16 @@ function addNewArchetypesListItems() {
       li.classList.add('collection'); //shows inwhich list this should go
       li.classList.add('new'); //important when we are using new archetypes
       li.onclick = () => {
-          if (selectedListItem) selectedListItem.classList.remove('selected');
-          li.classList.add('selected');
-          selectedListItem = li;
-          //take selected list item id and load the data from the newNodes array
-          getNewNodeData();
-          updateLists();
-          renderEditor();
-          renderViewer();
-        };
-        archetypeListItems.push(li);
+        if (selectedListItem) selectedListItem.classList.remove('selected');
+        li.classList.add('selected');
+        selectedListItem = li;
+        //take selected list item id and load the data from the newNodes array
+        getNewNodeData();
+        updateLists();
+        renderEditor();
+        renderViewer();
+      };
+      archetypeListItems.push(li);
 
       /*
       if (selectedListItem)selectedListItem.classList.remove('selected');
@@ -1801,7 +1801,7 @@ function addNewArchetypesListItems() {
       selectedListItem = li;
       */
     });
-    
+
 }
 
 function createNewArchetypeObject() {
@@ -2054,7 +2054,7 @@ function setNewNodeData() {
       }
     });
   });
- 
+
   addNewArchetypesListItems();
   updateLists();
   //updateArchetypeSelect();
@@ -2233,7 +2233,7 @@ function createProjectFile() {
 }
 
 function triggerNoSplashCheckSync() {
- 
+
   document.getElementById('dont_show_splash').checked = document.getElementById('dont_show_splash2').checked;
   createProjectFile();
 }
@@ -2539,9 +2539,9 @@ function resetZoom() {
     .transition()
     .duration(500)
     .call(myZoom.transform, d3.zoomIdentity);
-  
-  if (selectedListItem){
-   focusNode(selectedListItem.id);
+
+  if (selectedListItem) {
+    focusNode(selectedListItem.id);
   }
 }
 
@@ -2633,7 +2633,7 @@ function redraw() {
     .style('font-style', 'italic')
     .text((node) => node.secondary_text);
 
-  
+
   // Update simulation nodes and links
   simulation.nodes(nodes);
   simulation.force('link', d3.forceLink(links).id(function (d) {
@@ -2746,7 +2746,7 @@ function getConnectedNodes(nodeId) {
         tempNode.color = 'lightgray';
         tempNode.size = 13;
         tempNode.stroke = 'transparent';
-        
+
         dummyNodes.push(tempNode);
 
       } else {
@@ -3681,7 +3681,7 @@ function show_new_archetype_editor() {
 }
 
 //change the visualization type
-function change_visualisation_type(vis_type){
+function change_visualisation_type(vis_type) {
   const visualization_selector = document.getElementById('select_vis_view');
   visualization_selector.value = vis_type;
   //provoke onchange in this element
@@ -4512,7 +4512,7 @@ function updateTreeNodeName(uid, value) {
   const result = findNodeByUID(archetypeTree, uid);
   if (result) {
     result.node.name = value;
-    updateTreeView();
+    //updateTreeView();
   }
 }
 
@@ -4544,7 +4544,7 @@ function updateNodeElementValue(uid, value) {
   const result = findNodeByUID(archetypeTree, uid);
   if (result) {
     result.node.element_value = value;
-    updateTreeView();
+    //updateTreeView();
   }
 }
 
@@ -4555,7 +4555,7 @@ function updateNodeComment(uid, value) {
   if (result) {
     result.node.comment = value;
   }
-  updateTreeView();
+  //updateTreeView();
 }
 
 // Update element equivalent
@@ -4566,7 +4566,7 @@ function updateNodeElementEquivalentValue(uid, value) {
   const result = findNodeByUID(archetypeTree, uid);
   if (result) {
     result.node.equivalent = value;
-    updateTreeView();
+    //updateTreeView();
   }
 }
 
@@ -4594,8 +4594,8 @@ function deleteTreeNode(uid) {
   let message = 'Are you sure you want to delete this node?';
   if (result) {
     nodeName = result.node.name;
-    if (nodeName != ''){
-      message = 'Are you sure you want to delete the "' + nodeName +  '" node?'
+    if (nodeName != '') {
+      message = 'Are you sure you want to delete the "' + nodeName + '" node?'
     }
   }
   const confirmed = confirm(message);
@@ -4634,8 +4634,7 @@ function class_compatibility_check(node, parent) {
   return '';
 }
 
-
-function lookup_datalist_text_by_value(input, datalist_id='myArchetypeCollectionOptions') {
+function lookup_datalist_text_by_value(input, datalist_id = 'myArchetypeCollectionOptions') {
   const value = input.value; // This is the label shown in the input
   const datalist = document.getElementById(datalist_id);
   let archetype_id = '';
@@ -4650,7 +4649,6 @@ function lookup_datalist_text_by_value(input, datalist_id='myArchetypeCollection
   // Call your update functions
   input.value = archetype_id;
 }
-
 
 function cloneTreeBranch(uid) {
   // Get the branch from archetypeTree variable
@@ -4678,12 +4676,19 @@ function cloneTreeBranch(uid) {
 
 }
 
-
 // Render the archetypeTree recursively
 function renderTree(node, parent) {
-  let html = `<div class="archetypeTree-node${node.mode === "element" ? " element-mode" : ""}" id="${node.node_uid}"  draggable="true" style="display:${node.display}">
-  
-   
+  let parentArchetype
+  let atcode_items
+  let assignedElements
+  if (parent && parent.id) {
+    parentArchetype = archetype_collection_data.find(a => a.id === parent.id);
+    atcodeItems = parentArchetype ? parentArchetype.atcode_items : [];
+    assignedElements = parentArchetype ? parentArchetype.assigned_elements : [];
+  }
+  const html = [];
+   html.push(`<div class="archetypeTree-node${node.mode === "element" ? " element-mode" : ""}" id="${node.node_uid}"  draggable="true" style="display:${node.display}">
+     
   <div class="node-controls">
     <div class="drag-handle"  style="cursor: grab; min-width:15px; border-radius: 5px 0px 0px 5px; fill: url(#circles-2) #fff;">
 
@@ -4692,119 +4697,74 @@ function renderTree(node, parent) {
     </div>
 
       <button class="icon-btn" title="Switch type" onclick="toggleNodeMode('${node.node_uid}')" ${!parent ? 'disabled' : ''}>${node.mode == 'archetype' ? '<strong style="color:blue;">A</strong>' : '<strong style="color:darkgreen;">E</strong>'}</button>
-  `;
+  `);
 
   // Render controls based on mode
   if (node.mode === "archetype") {
-    html += `
+    html.push( `
       <input type="text" class="template_planner_text_input" value="${node.name}" placeholder="Archetype name" onchange="this.value=this.value.trim();updateTreeNodeName('${node.node_uid}', this.value)">
       
       <input id="node_${node.node_uid}" type="search" class="mySelectTeePlan" list="myArchetypeCollectionOptions" value="${node.id}" autocomplete="off" placeholder="-- Select archetype --" onchange="lookup_datalist_text_by_value(this); updateTreeNodeID('${node.node_uid}', this.value); " />
-
-      <!--
-      <select onchange="updateTreeNodeID('${node.node_uid}', this.value)">
-        <option value=""></option>
-        ${archetype_collection_data.map(item => `<option value="${item.id}"${node.id === item.id ? ' selected' : ''}>${item.archetype_id}</option>`).join('')}
-      </select>
-      -->
-
-    `;
+    `);
 
     if (parent && parent.id) {
-      const parentArchetype = archetype_collection_data.find(a => a.id === parent.id);
-      const atcodeItems = parentArchetype ? parentArchetype.atcode_items : [];
+      //const parentArchetype = archetype_collection_data.find(a => a.id === parent.id);
+      //const atcodeItems = parentArchetype ? parentArchetype.atcode_items : [];
 
-      html += `
+      html.push(`
 
-      <input id="node_atcodes_${node.node_uid}" type="search" class="mySelectTeePlanAtcode" list="datalist_atcodes_${node.node_uid}" value="${node.equivalent? node.equivalent : '' }" autocomplete="off" placeholder="-- Select atcode --" onchange="updateNodeElementEquivalentValue('${node.node_uid}', this.value)" />
+      <input id="node_atcodes_${node.node_uid}" type="search" class="mySelectTeePlanAtcode" list="datalist_atcodes_${node.node_uid}" value="${node.equivalent ? node.equivalent : ''}" autocomplete="off" placeholder="-- Select atcode --" onchange="updateNodeElementEquivalentValue('${node.node_uid}', this.value)" />
 
       <datalist id="datalist_atcodes_${node.node_uid}">
             ${atcodeItems.map(el => `<option value="${el}"${node.equivalent === el ? ' selected' : ''}>${el}</option>`).join('')}
       </datalist>
 
-      <!--
-      <select onchange="updateNodeElementEquivalentValue('${node.node_uid}', this.value)">
-      <option value="">-- Link parent atcode --</option>
-        ${atcodeItems.map(el => `<option value="${el}"${node.equivalent === el ? ' selected' : ''}>${el}</option>`).join('')}
-      </select>
-      -->
-      `;      
+      `);
 
 
     }
-    html += `
+    html.push(`
     <button class="icon-btn" title="Focus" onclick="focusNode('${node.id}');updateLists();"><img src="images/25C9_color.png" alt="Focus" height="20" title="Focus archetype" style="cursor:pointer;" ${node.id == '' ? 'hidden' : ''}></button>
-    `
+    `);
 
   } else if (node.mode === "element" && parent && parent.id) {
     // Get assigned elements from parent archetype
-    const parentArchetype = archetype_collection_data.find(a => a.id === parent.id);
-    const assignedElements = parentArchetype ? parentArchetype.assigned_elements : [];
-    const atcodeItems = parentArchetype ? parentArchetype.atcode_items : [];
+    //const parentArchetype = archetype_collection_data.find(a => a.id === parent.id);
+    //const assignedElements = parentArchetype ? parentArchetype.assigned_elements : [];
+    //const atcodeItems = parentArchetype ? parentArchetype.atcode_items : [];
     if (assignedElements.length > 0) {
-      html += `
+      html.push( `
 
-      <input id="node_assigned_${node.node_uid}" type="search" class="mySelectTeePlanAtcode" list="datalist_assigned_${node.node_uid}" value="${node.element_value? node.element_value : '' }" autocomplete="off" placeholder="-- Select assigned --" onchange="updateNodeElementValue('${node.node_uid}', this.value)" />
+      <input id="node_assigned_${node.node_uid}" type="search" class="mySelectTeePlan" list="datalist_assigned_${node.node_uid}" value="${node.element_value ? node.element_value : ''}" autocomplete="off" placeholder="-- Select assigned --" onchange="updateNodeElementValue('${node.node_uid}', this.value)" />
 
             <datalist id="datalist_assigned_${node.node_uid}">
                   ${assignedElements.map(el => `<option value="${el}"${node.element_value === el ? ' selected' : ''}>${el}</option>`).join('')}
             </datalist>
-
-
-
-      <!--
-        <select onchange="updateNodeElementValue('${node.node_uid}', this.value)">
-          <option value="">-- Select assigned element --</option>
-          ${assignedElements.map(el => `<option value="${el}"${node.element_value === el ? ' selected' : ''}>${el}</option>`).join('')}
-          <option value=" "${assignedElements.indexOf(node.element_value) === -1 && node.element_value ? ' selected' : ''}>Other...</option>
-        </select>
-        -->
-      `;
-      // Show free text input if "Other..." is selected or value is not in assignedElements
-      /*
-      if (assignedElements.indexOf(node.element_value) === -1 || node.element_value === "") {
-        html += `<input type="text" placeholder="Element name" value="${node.element_value}" onchange="this.value=this.value.trim();updateNodeElementValue('${node.node_uid}', this.value)">`;
-      }
-      */
-
+      `);
     } else {
       // No assigned elements, just free text
       html += `<input type="text" placeholder="Element name" value="${node.element_value || ''}" onchange="this.value=this.value.trim();updateNodeElementValue('${node.node_uid}', this.value)">`;
     }
-      
-
     //if the current atcode item is not in teh atcodeItems, delete it for this node
     if (!Array.from(atcodeItems).includes(node.equivalent)) {
       node.equivalent = '';
     }
 
-    //add parent atcode items as a selection
-    html += `
-    <img src="images/1F517_color.png" alt="link" width="20" style="transform: rotate(45deg);"> 
-    `
+    html.push(`
 
-    html += `
-
-      <input id="node_atcodes_${node.node_uid}" type="search" class="mySelectTeePlanAtcode" list="datalist_atcodes_${node.node_uid}" value="${node.equivalent? node.equivalent : '' }" autocomplete="off" placeholder="-- Select atcode --" onchange="updateNodeElementEquivalentValue('${node.node_uid}', this.value)" />
+      <input id="node_atcodes_${node.node_uid}" type="search" class="mySelectTeePlanAtcode" list="datalist_atcodes_${node.node_uid}" value="${node.equivalent ? node.equivalent : ''}" autocomplete="off" placeholder="-- Select atcode --" onchange="updateNodeElementEquivalentValue('${node.node_uid}', this.value)" />
 
       <datalist id="datalist_atcodes_${node.node_uid}">
             ${atcodeItems.map(el => `<option value="${el}"${node.equivalent === el ? ' selected' : ''}>${el}</option>`).join('')}
       </datalist>
-
-      <!--
-      <select onchange="updateNodeElementEquivalentValue('${node.node_uid}', this.value)">
-      <option value="">-- Link parent atcode --</option>
-        ${atcodeItems.map(el => `<option value="${el}"${node.equivalent === el ? ' selected' : ''}>${el}</option>`).join('')}
-      </select>
-      -->
-      `;
+      `);
 
   } else if (node.mode === "element") {
     // No parent or parent has no archetype, just free text
-    html += `<input type="text" placeholder="Element name" value="${node.element_value || ''}" onchange="this.value=this.value.trim();updateNodeElementValue('${node.node_uid}', this.value)">`;
+    html.push(`<input type="text" placeholder="Element name" value="${node.element_value || ''}" onchange="this.value=this.value.trim();updateNodeElementValue('${node.node_uid}', this.value)">`);
   }
 
-  html += `
+  html.push(`
       <button class="icon-btn" title="Move up" onclick="moveTreeNode('${node.node_uid}', -1)" ${!parent ? 'hidden' : ''}>
       <img src="images/up.png" alt="Element up" height="10" width="8" style="cursor: pointer;" title="Move element up"> 
       </button>
@@ -4812,12 +4772,9 @@ function renderTree(node, parent) {
       <img src="images/down.png" alt="Element down" height="10" width="8" style="cursor: pointer;" title="Move element down">   
       </button>
 
-
-
       <button class="icon-btn" title="Clone branch" onclick="cloneTreeBranch('${node.node_uid}')" ${(node.mode == 'element') || !parent ? 'hidden' : ''}>
       <img src="images/clone.png" alt="Clone branch" height="20" style="cursor: pointer;" title="Clone branch">   
       </button>
-
 
 
       <button class="icon-btn" title="Add branch" onclick="addTreeBranch('${node.node_uid}')" ${node.mode == 'element' ? 'hidden' : ''}>
@@ -4834,34 +4791,49 @@ function renderTree(node, parent) {
       ${!node.comment ? '<img src="images/show_comment.png" alt="show comment" height="14" style="cursor: pointer;" title="Add comment" >'
       : '<img src="images/show_comment_full.png" alt="show comment" height="14" style="cursor: pointer;" title="Show comment" >'}
       </button>
-       `;
- if (node.mode === "archetype" && node.children && node.children.length > 0){
-  html += `
+       `);
+  if (node.mode === "archetype" && node.children && node.children.length > 0) {
+    html.push(`
       <button class="toggleNodesBtn" style="width:25px;" onclick="toggleArchetypeNode('${node.node_uid}', this);">
           ${node.expanded ? 'E' : 'C'} 
       </button>
-       `;}
+       `);
+  }
 
-html += `
+ html.push(`
     </div>
      <textarea placeholder="Add your comment here..." class="tree_node_comment" style="display:${node.comment_display || 'none'};border-radius:3px;resize:vertical;width:calc(100% - 25px);margin-left:15px;" name="comment" rows="5" cols="33" onchange="updateNodeComment('${node.node_uid}', this.value, )"  id="node_comment_${node.node_uid}">${node.comment || ''}</textarea>
-  `;
+  `);
   if (node.children && node.children.length > 0) {
     node.children.forEach(child => {
-      html += renderTree(child, node);
+      html.push(renderTree(child, node));
     });
   }
-  html += `</div>`;
-  return html;
+  html.push( `</div>`);
+  
+  return html.join('');
 }
 
 function toggleArchetypeNode(nodeId, btn) {
-  
+
   // Find the node div by ID
   const node = document.getElementById(nodeId);
   if (!node) return;
 
-  // Find all direct child nodes (archetypeTree-node) inside this node
+  //save that the button has expanded
+  const result = findNodeByUID(archetypeTree, nodeId);
+  if (result) {
+    result.node.expanded = !result.node.expanded;
+    //change the button style
+    if (result.node.expanded) {
+      btn.textContent = 'E';
+    }
+    else {
+      btn.textContent = 'C';
+    }
+  }
+
+  //change the children
   // Only collapse/expand children, not the node itself
   const childNodes = Array.from(node.querySelectorAll(':scope > .archetypeTree-node, :scope > .archetypeTree-node:not([style*="display: none"])'));
 
@@ -4880,16 +4852,7 @@ function toggleArchetypeNode(nodeId, btn) {
     }
   });
 
-  //save if parent is expanded or not
-  const result = findNodeByUID(archetypeTree, nodeId);
-    if (result) {
-      result.node.expanded = anyVisible;
-    }
-
-  // Optionally, change button text/icon
-  if (btn) btn.textContent = anyVisible ? 'E' : 'C';
 }
-
 
 function areAnyNodesExpanded() {
   // Check if any archetype node has visible children
@@ -4912,13 +4875,16 @@ function toggleAllArchetypeNodes() {
         result.node.display = child.style.display;
       }
     });
-    // Optionally update the toggle button text/icon for each node
-    let nodeBtn = node.querySelector('.toggleNodesBtn');
-    if (nodeBtn) nodeBtn.textContent = shouldCollapse ? 'E' : 'C';
+    const result = findNodeByUID(archetypeTree, node.id);
+    if (result) {
+      result.node.expanded = shouldCollapse;
+    }
   });
 
   // Update the main toggle button text
   btn.textContent = shouldCollapse ? 'Expand All' : 'Collapse All';
+
+  updateTreeView();
 }
 
 
@@ -4945,7 +4911,6 @@ function showNodeComment(commentID, uid) {
 
 
 // Drag & drop logic
-
 
 function addTreeDnDListeners() {
   let draggedNodeId = null;
@@ -5103,22 +5068,9 @@ function moveNodeAsChild(nodeId, newParentId) {
 // Render the planner
 function updateTreeView() {
   document.getElementById('template_planner').innerHTML = renderTree(archetypeTree, null);
+  //document.getElementById('result').innerHTML = JSON.stringify(archetypeTree, null, 2);
   addTreeDnDListeners();
   updateLists();
-      
-  // Initialize Choices.js for all select elements in class 'node-controls"
-  /*
-  if (myTreePlannerChoices) myTreePlannerChoices.destroy();
-  
-    document.querySelectorAll('.node-controls select').forEach(function(select) {
-      myTreePlannerChoices = new Choices(select, {
-        searchEnabled: true,
-        shouldSort: false, // Keeps your original order
-        itemSelectText: '', // No extra text on selection
-        removeItemButton: false // Single select, so no remove button
-      });
-    });
-    */
 
 }
 
@@ -5263,7 +5215,7 @@ function toggleAllSections() {
       content.style.display = '';
       btn.textContent = 'Collapse';
     }
-    checkList.forEach(section => {section.contentDisplay = content.style.display;});
+    checkList.forEach(section => { section.contentDisplay = content.style.display; });
   });
   document.getElementById('toggleAllSectionsBtn').textContent = allCollapsed ? 'Expand All' : 'Collapse All';
 }
@@ -5286,6 +5238,6 @@ function toggleSection(btn, sectionIndex) {
 
 
 //after loading everything, make the loading signal invisible
-document.getElementById('loading_page').style.display='none';
+document.getElementById('loading_page').style.display = 'none';
 
 
