@@ -1,5 +1,5 @@
 //INITIATE CONSTANTS and GLOBAL VARIABLES *****************************************************************************************
-const version = '0.61.1-beta';
+const version = '0.61.2-beta';
 
 let newNodes = []
 
@@ -128,8 +128,7 @@ let myZoom = d3.zoom()
 set_window_configuration_1();
 loadFilterData();
 
-function updateVisAtTypeChange(){
-  
+function updateVisAtTypeChange(){ 
 }
 
 
@@ -1035,6 +1034,7 @@ function formatNodeItemAsHTML(item) {
       return '<em>None</em>';
     }
     else {
+      value = value.replace(/  /g, "<br>");
       return value
     }
   }
@@ -1067,8 +1067,8 @@ function formatNodeItemAsHTML(item) {
       <p><strong>Keywords:</strong> ${formatString(item.keywords.join(', '))}</p>
       <p><strong>Parent:</strong> ${formatString(item.parent)}</p>
       <p><strong>Children:</strong> ${formatRecommendationArray(item.children)}</p>
-      <p style="border-radius: 5px; background-color: #E7FEE9;"><strong>Use:</strong> ${formatString(item.use)}</p>
-      <p style="border-radius: 5px; background-color: #FEEBE7;"><strong>Misuse:</strong> ${formatString(item.misuse)}</p>
+       <p style="border-radius: 10px; border-left: 2px solid #50C878; border-right: 2px solid #50C878; padding: 5px; margin-right:5px;"><strong>Use:</strong> ${formatString(item.use)}</p>
+      <p style="border-radius: 10px; border-left: 2px solid red;border-right: 2px solid red; padding: 5px; margin-right:5px;"><strong>Misuse:</strong> ${formatString(item.misuse)}</p>
     </div>
     <div id="info_body_right">
       <strong>Items</strong>
@@ -3620,11 +3620,10 @@ function show_warning_page(warningHTML) {
   wdw_warning.style.backgroundColor = 'white';
   wdw_warning.style.boxShadow = '0 2px 16px rgba(0,0,0,0.2)';
   wdw_warning.style.zIndex = reset_dragabbles_z_index();
-
   // Update the warning-content element
   document.getElementById("warning-content").innerHTML = `<div
   style="
-  margin: 5px 60px 0px 0px;
+  margin: 5px;
   padding: 5px;
   border-radius: 5px;
   background-color: rgb(235,190,180);

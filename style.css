@@ -501,9 +501,11 @@ label {
 }
 
 #project_name {
-    width: calc(100% - 70px);
+    width: calc(100% - 75px);
     font-size: 16px;
     margin-left: 10px;
+    border-radius:7px;
+    padding:5px;
 }
 
 #project_description {
@@ -513,13 +515,17 @@ label {
     resize: none;
     box-sizing: border-box;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    border-radius:7px;
+    padding:5px;
 }
 
 #project_author,
 #project_contact,
 #project_copyright {
-    width: calc(100% - 70px);
+    width: calc(100% - 75px);
     margin-left: 10px;
+    border-radius:7px;
+    padding:5px;
 }
 
 #main_view_project_name {
@@ -565,12 +571,16 @@ label {
 #new_archetype_id{
     width: calc(100% - 35px);
     margin-left: 10px;
+    border-radius:7px;
+    padding: 5px;
 }
 
 
 #new_archetype_class {
     width: calc(100% - 30px);
     margin-left: 10px;
+    border-radius:7px;
+    padding: 5px;
 }
 
 #new_archetype_purpose {
@@ -580,6 +590,8 @@ label {
     resize: none;
     box-sizing: border-box;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    border-radius:7px;
+    padding: 5px;
 }
 
 #assigned_elements_container,
@@ -608,24 +620,29 @@ label {
 #new_archetype_listArchetypes {
     max-width: calc(100% - 90px);
     width: 380px;
+    border-radius:7px;
+    padding: 5px;
 
 }
 
 #new_archetype_inclusions {
     margin-left: 10px;
     margin-right: 20px;
-    border-radius: 5px;
+    border-radius: 7px;
     border: 1px solid lightgrey;
     background-color: white;
 
 }
 
 #new_archetype_inclusions_ul {
-    width: 100%;
+    width: calc(100% - 10px);
+    border-radius:7px;
+    padding: 5px;
 }
 
 #new_archetype_inclusions_ul li {
     font-size: 12px;
+
 }
 
 #existing_sidebar_list {
