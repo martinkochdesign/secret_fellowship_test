@@ -5177,6 +5177,7 @@ function initArchetypeTree(archetypeTree) {
     node_uid: uuidv4(),
     name: "-- Start here --",
     id: "",
+    archetype_id: "",
     type: "",
     mode: "archetype",
     element_value: "",
