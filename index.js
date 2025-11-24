@@ -1,5 +1,5 @@
 //INITIATE CONSTANTS and GLOBAL VARIABLES *****************************************************************************************
-const version = '0.62-beta';
+const version = '0.62.1-beta';
 
 let newNodes = []
 
@@ -4554,6 +4554,7 @@ function updateTreeNodeName(uid, value) {
   const result = findNodeByUID(archetypeTree, uid);
   if (result) {
     result.node.name = value;
+    updateLists();
     //updateTreeView();
   }
 }
@@ -4591,6 +4592,7 @@ function updateNodeElementValue(uid, value) {
   if (result) {
     result.node.element_value = value;
     //updateTreeView();
+    updateLists();
   }
 }
 
@@ -4602,6 +4604,7 @@ function updateNodeComment(uid, value) {
     result.node.comment = value;
   }
   //updateTreeView();
+  updateLists();
 }
 
 // Update element equivalent
@@ -4612,6 +4615,7 @@ function updateNodeElementEquivalentValue(uid, value) {
   const result = findNodeByUID(archetypeTree, uid);
   if (result) {
     result.node.equivalent = value;
+    updateLists();
     //updateTreeView();
   }
 }
