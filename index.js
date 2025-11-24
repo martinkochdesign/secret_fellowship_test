@@ -1,5 +1,5 @@
 //INITIATE CONSTANTS and GLOBAL VARIABLES *****************************************************************************************
-const version = '0.61.4-beta';
+const version = '0.62-beta';
 
 let newNodes = []
 
@@ -1313,15 +1313,50 @@ function addArchetypeToCollection() {
   }
 }
 
+function removeArchetypeFromChecklist(identifier, name){
+  checkList.forEach(section => {
+    section.elements.forEach(element => {
+      if(element.archetype==identifier){
+        element.archetype = '';
+        element.archetype_id = '';
+      }
+    });
+  });
+}
+
+function removeArchetypeFromTree(identifier, name){
+  function parseTree(node){
+    
+    if (node.id == identifier){
+      node.id = '';
+      node.archetype_id = '';
+    }
+    if (node.children && node.children.length > 0) {
+      node.children.forEach(child => {
+        parseTree(child);
+      });
+    }
+  }
+  parseTree(archetypeTree);
+}
+
+
+
 //listen to delete from collection
 function removeArchetypeFromCollection() {
   if (selectedListItem) {
     if (selectedListItem.classList.contains('existing')) {
       selectedListItem.classList.add('available');
       selectedListItem.classList.remove('collection');
+      //remove from checklist
+      const name = selectedListItem.textContent;
+      const identifier = selectedListItem.id;
+      removeArchetypeFromChecklist(identifier, name);
+      removeArchetypeFromTree(identifier, name);
       updateLists();
       renderEditor();
       renderViewer();
+      updateTreeView();
     }
   }
 }
@@ -1347,12 +1382,13 @@ function createDataLists() {
     }
   });
   document.body.append(collectionDatalist);
+  //console.log(collectionDatalist)
 
 }
 
 function updateArchetypeSelect() {
   // use archetypeListItems
-  const selectFields = document.getElementsByClassName('mySelect');
+  //const selectFields = document.getElementsByClassName('mySelect');
 
   createDataLists();
 
@@ -2166,12 +2202,18 @@ function deleteNewArchetype(event) {
   //remove the deleted id from the lasIds list
   lastIds = lastIds.filter(item => item !== selectedListItem.id);
 
+  const name = selectedListItem.textContent;
+  const identifier = selectedListItem.id;
+  removeArchetypeFromChecklist(identifier, name);
+  removeArchetypeFromTree(identifier, name);
+
   // Clear selection
   selectedListItem = null;
 
   updateLists();
   renderEditor();
   renderViewer();
+  updateTreeView();
 }
 
 // PROJECT *********************************************************************************************
@@ -4518,14 +4560,18 @@ function updateTreeNodeName(uid, value) {
 
 // Update node type (archetype selection)
 function updateTreeNodeID(uid, value) {
+  //console.log(value)
   const result = findNodeByUID(archetypeTree, uid);
   if (result) {
     if (value !== "") {
       result.node.id = value;
-      const item = archetype_collection_data.find(obj => obj.archetype_id === value);
+      //console.log(value)
+      //const item = archetype_collection_data.find(obj => obj.archetype_id === value);
+      const item = archetype_collection_data.find(obj => obj.id === value);
       result.node.archetype_id = item ? item.archetype_id : "";
       result.node.type = item ? item.archetype_class : "";
       result.node.name = item ? item.name : "";
+      result.node.id = item ? item.id : "";
     } else {
       result.node.id = "";
       result.node.type = "";
@@ -4579,6 +4625,7 @@ function addTreeBranch(uid) {
       node_uid: uuidv4(),
       name: "",
       id: "",
+      archetype_id: "",
       type: "",
       mode: "archetype",
       element_value: "",
@@ -4647,7 +4694,8 @@ function lookup_datalist_text_by_value(input, datalist_id = 'myArchetypeCollecti
     }
   }
   // Call your update functions
-  input.value = archetype_id;
+  if (archetype_id){input.value = archetype_id;}
+  else{input.value = ''}
 }
 
 function cloneTreeBranch(uid) {
@@ -4671,7 +4719,7 @@ function cloneTreeBranch(uid) {
 
   //add the cloned node in the parent node
   result.parent.children.push(clonedNode);
-  console.log(archetypeTree)
+  
   updateTreeView();
 
 }
@@ -4703,8 +4751,13 @@ function renderTree(node, parent) {
   if (node.mode === "archetype") {
     html.push( `
       <input type="text" class="template_planner_text_input" value="${node.name}" placeholder="Archetype name" onchange="this.value=this.value.trim();updateTreeNodeName('${node.node_uid}', this.value)">
-      
+     
+      <input id="node_${node.node_uid}" type="search" class="mySelectTeePlan" list="myArchetypeCollectionOptions" value="${node.archetype_id}" autocomplete="off" placeholder="-- Select archetype --" onchange=" updateTreeNodeID('${node.node_uid}', this.value); lookup_datalist_text_by_value(this); " />
+
+
+      <!--
       <input id="node_${node.node_uid}" type="search" class="mySelectTeePlan" list="myArchetypeCollectionOptions" value="${node.id}" autocomplete="off" placeholder="-- Select archetype --" onchange="lookup_datalist_text_by_value(this); updateTreeNodeID('${node.node_uid}', this.value); " />
+      -->
     `);
 
     if (parent && parent.id) {
@@ -4743,7 +4796,7 @@ function renderTree(node, parent) {
       `);
     } else {
       // No assigned elements, just free text
-      html += `<input type="text" placeholder="Element name" value="${node.element_value || ''}" onchange="this.value=this.value.trim();updateNodeElementValue('${node.node_uid}', this.value)">`;
+      html.push( `<input type="text" placeholder="Element name" value="${node.element_value || ''}" onchange="this.value=this.value.trim();updateNodeElementValue('${node.node_uid}', this.value)">`);
     }
     //if the current atcode item is not in teh atcodeItems, delete it for this node
     if (!Array.from(atcodeItems).includes(node.equivalent)) {
