@@ -1,5 +1,5 @@
 //INITIATE CONSTANTS and GLOBAL VARIABLES *****************************************************************************************
-const version = '0.62.1-beta';
+const version = '0.63-beta';
 
 let newNodes = []
 
@@ -1063,6 +1063,7 @@ function formatNodeItemAsHTML(item) {
       <p><strong>Purpose:</strong> ${formatString(item.purpose)}</p>
       <p><strong>Description:</strong> ${formatString(item.concept_description)}</p>
       <p><strong>State:</strong> ${formatString(item.lifecycle_state)}</p>
+      <p><strong>Revision:</strong> ${formatString(item.revision)}</p>
       <p><strong>Date:</strong> ${formatString(item.date)}</p>
       <p><strong>Keywords:</strong> ${formatString(item.keywords.join(', '))}</p>
       <p><strong>Parent:</strong> ${formatString(item.parent)}</p>
