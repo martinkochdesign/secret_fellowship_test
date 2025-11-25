@@ -220,7 +220,7 @@
 				<br>
 				<em><strong>Copyright:</strong> 2025, CatSalut. Servei Català de la Salut</em>
 				<br>
-				<em><strong>Version:</strong> 0.7.1 (Last updated: 2025-11-21)</em>
+				<em><strong>Version:</strong> 0.8 (Last updated: 2025-11-25)</em>
 			</p>
 
 			<p style="text-align: center; line-height: 250%;">
@@ -535,7 +535,7 @@
 			<p>Project options are accessible from the main view of the application via the "Project options" button.
 			</p>
 			<div style="text-align: center;">
-				<img src="images/tut_pro_options_button.png" width="300">
+				<img src="images/tut_pro_options_button.png" width="150">
 				<br>
 				<small>
 					Access the project options.
@@ -1049,6 +1049,58 @@
 				the <a href="https://ckm.openehr.org/" target="_blank">Clinical Knowledge Manager (CKM)</a>.
 			</div>
 
+			<h3>Archetype information</h3>
+
+			<p>
+				<strong>Disclaimer:</strong>
+				The information about openEHR archetypes presented in this tool has been extracted automatically from external sources (such as CKM) and is provided for convenience only. We do not guarantee the accuracy, completeness, or correctness of the extracted data, nor do we claim that it is up to date. This tool does not assert or imply any copyright ownership over the archetypes themselves. For authoritative information regarding authorship, copyright, and licensing, users are strongly advised to consult the original archetype source as stated within the tool.
+			</p>
+
+			<p>
+				The Archetype Information view displays all data extracted from the archetypes found in the source repository.			
+			</p>
+			
+			<div style="text-align: center;">
+				<img src="images/tut_arc_information_view.png" width="700">
+				<br>
+				<small>
+					The archetype information view.
+				</small>
+			</div>
+
+			<p>	
+			This includes:
+				<ul>
+				  <li>Archetype name</li>
+				  <li>Archetype ID</li>
+				  <li>A warning if the archetype is not published</li>
+				  <li>Purpose</li>
+				  <li>Description</li>
+				  <li>State</li>
+				  <li>Date of authorship</li>
+				  <li>Keywords</li>
+				  <li>Parent archetype</li>
+				  <li>Child archetypes</li>
+				  <li>Use</li>
+				  <li>Misuse</li>
+				  <li>Data elements by at-code</li>
+				  <li>Inclusion statements</li>
+				  <li>Exclusion statements</li>
+				  <li>Recommended archetypes</li>
+				</ul>
+			  </p>
+			  <p>
+				As a special feature, you can view a collapsible representation of the archetype structure. Use the "Expand All" or "Collapse All" buttons to show or hide the entire structure at once. To expand or collapse individual elements, simply click on the desired element.
+			  </p>
+
+			<div style="text-align: center;">
+				<img src="images/tut_arc_info_structure.png" width="400">
+				<br>
+				<small>
+					The collapsible archetype structure view.
+				</small>
+			</div>
+			
 
 
 			<h3>History</h3>
@@ -1336,6 +1388,22 @@
 				</small>
 			</div>
 
+			
+
+			<p>
+				<strong>Collapsing/Expanding Branches</strong>: Working on the checklist can be challenging. To help you focus on the section you are working on, you can collapse or expand sections as needed. Use the "Collapse All" button at the top to close all sections, or the "Expand All" button to open them.  
+				Each section also has a button on its right, labeled "Collapse" or "Expand", depending on its current state. Clicking this button will collapse or expand that specific section.
+			  </p>
+
+			  <div style="text-align: center;">
+				<img src="images/tut_che_collapse_list.png" width="600">
+				<br>
+				<small>
+					Collapsing the checklist items in the editor.
+				</small>
+			</div>
+
+
 			<p>
 				<strong>Move Sections or Elements:</strong> If a section or element is not in the desired position, use
 				the arrow icons in front of the name to move it up or down.
@@ -1483,6 +1551,18 @@
 				</small>
 			</div>
 
+			<h3>Cloning a Branch</h3>
+			<p>
+				If you need to model structures with similar sub-structures, you can easily duplicate an entire branch—including its archetype and element hierarchy—by clicking the "Clone branch" button on the relevant archetype node.
+			  </p>
+			<div style="text-align: center;">
+				<img src="images/tut_tree_clone_branch.png" width="550">
+				<br>
+				<small>
+					Cloning a branch node of the tree.
+				</small>
+			</div>
+
 			<h3>Deleting a Node or a Branch</h3>
 			<p>
 				To delete a node from the tree, click the "-" icon to the right of the node. This will remove the node,
@@ -1495,6 +1575,23 @@
 					Deleting a node from the tree.
 				</small>
 			</div>
+
+			<h3>Collapsing/Expanding Branches</h3>
+
+			<p>
+				Navigating complex tree-like structures can be challenging, and it’s easy to lose track of the overall layout. To help you manage these structures more efficiently, you can collapse or expand branches as needed. Use the "Collapse All" button at the top to close all branches, or the "Expand All" button to open them.  
+				Each archetype node with sub-branches also has a button on its right, labeled "C" (for collapse) or "E" (for expand), depending on its current state. Clicking this button will collapse or expand that specific branch.
+			  </p>
+
+			  <div style="text-align: center;">
+				<img src="images/tut_tree_collapse_branch.png" width="600">
+				<br>
+				<small>
+					Collapsing a node from the tree.
+				</small>
+			</div>
+
+			
 
 			<h3>Moving Nodes and Branches Around</h3>
 			<p>
