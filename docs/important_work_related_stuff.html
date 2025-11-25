@@ -276,6 +276,7 @@
             if (!obs.slowApplied) {
               char.slowTimer = 60; // 1 second slow
               obs.slowApplied = true;
+              score -= 100;
             }
           }
         } else if (obs.type === 'fossil') {
@@ -288,7 +289,7 @@
             char.y < obs.y + obs.height
           ) {
             obs.collected = true;
-            score += 150;
+            score += 200;
             // Optional: play sound or show effect
           }
         }
@@ -438,7 +439,7 @@
         ctx.font = '28px Orbitron, sans-serif';
         ctx.shadowBlur = 0;
         ctx.fillStyle = '#fff';
-        ctx.fillText('Press Space to Restart', canvas.width/2,  canvas.height/2 + 30);
+        ctx.fillText('Press Button to Restart', canvas.width/2,  canvas.height/2 + 30);
         ctx.restore();
       }
     }

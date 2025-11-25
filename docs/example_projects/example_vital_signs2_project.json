@@ -1,52 +1,89 @@
 {
   "project": {
-    "title": "Example project - Generic lab test result",
-    "description": "Based on:\nhttps://ckm.openehr.org/ckm/templates/1013.26.408\n\nThis example project is loosely based on existing openEHR templates. It is provided for illustrative and educational purposes only. The content does not claim any copyright ownership over the original openEHR templates or materials. This example may be incomplete, simplified, or adapted, and should not be considered an authoritative or comprehensive representation of the original template. For official and complete versions, please refer to the original openEHR resources.",
+    "title": "Example - vital_signs2",
+    "description": "Based on:\nhttps://ckm.openehr.org/ckm/templates/1013.26.380\n\nThis example project is loosely based on existing openEHR templates. It is provided for illustrative and educational purposes only. The content does not claim any copyright ownership over the original openEHR templates or materials. This example may be incomplete, simplified, or adapted, and should not be considered an authoritative or comprehensive representation of the original template. For official and complete versions, please refer to the original openEHR resources.",
     "author": "Martin A. Koch",
     "copyright": "2025, CatSalut",
-    "contact": "martinandreaskoch@catsalut.com"
+    "contact": "martinandreaskoch@catsalut.cat"
   },
-  "software_version": "0.55.0-beta",
-  "db_source": "CKM International (ckm.openehr.org)",
-  "db_update": "2025-11-13 14:35:44",
+  "software_version": "0.62.1-beta",
+  "db_source": "ckm.openehr.org",
+  "db_update": "2025-11-24 03:56:14",
   "checklist": [
     {
-      "name": "Lab test result",
+      "name": "Vital Signs",
       "elements": [
         {
-          "approved": true,
-          "name": "Test name",
-          "archetype": "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
+          "approved": false,
+          "name": "Temperature",
+          "archetype": "openEHR-EHR-OBSERVATION.body_temperature.v2",
           "review": false,
-          "archetype_id": "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
-          "id": "Lab test resultTest name",
-          "description": "The name of the test."
+          "archetype_id": "openEHR-EHR-OBSERVATION.body_temperature.v2"
         },
         {
-          "approved": true,
-          "name": "Analyte name",
-          "archetype": "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
+          "approved": false,
+          "name": "Systolic Pressure",
+          "archetype": "openEHR-EHR-OBSERVATION.blood_pressure.v2",
           "review": false,
-          "archetype_id": "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
-          "id": "Lab test resultAnalyte name",
-          "description": "The name of the analyte."
+          "archetype_id": "openEHR-EHR-OBSERVATION.blood_pressure.v2"
         },
         {
-          "approved": true,
-          "name": "Analyte result",
-          "archetype": "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
+          "approved": false,
+          "name": "Diastolic pressure",
+          "archetype": "openEHR-EHR-OBSERVATION.blood_pressure.v2",
           "review": false,
-          "archetype_id": "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
-          "id": "Lab test resultAnalyte result",
-          "description": "The result of thea nalysis."
+          "archetype_id": "openEHR-EHR-OBSERVATION.blood_pressure.v2"
+        },
+        {
+          "approved": false,
+          "name": "BMI",
+          "archetype": "openEHR-EHR-OBSERVATION.body_mass_index.v2",
+          "review": false,
+          "archetype_id": "openEHR-EHR-OBSERVATION.body_mass_index.v2"
+        },
+        {
+          "approved": false,
+          "name": "Height",
+          "archetype": "openEHR-EHR-OBSERVATION.height.v2",
+          "review": false,
+          "archetype_id": "openEHR-EHR-OBSERVATION.height.v2"
+        },
+        {
+          "approved": false,
+          "name": "Weight",
+          "archetype": "openEHR-EHR-OBSERVATION.body_weight.v2",
+          "review": false,
+          "archetype_id": "openEHR-EHR-OBSERVATION.body_weight.v2"
+        },
+        {
+          "approved": false,
+          "name": "Pulse",
+          "archetype": "openEHR-EHR-OBSERVATION.pulse.v2",
+          "review": false,
+          "archetype_id": "openEHR-EHR-OBSERVATION.pulse.v2"
+        },
+        {
+          "approved": false,
+          "name": "Respitarion",
+          "archetype": "openEHR-EHR-OBSERVATION.respiration.v2",
+          "review": false,
+          "archetype_id": "openEHR-EHR-OBSERVATION.respiration.v2"
+        },
+        {
+          "approved": false,
+          "name": "Pulse oximetry",
+          "archetype": "openEHR-EHR-OBSERVATION.pulse_oximetry.v1",
+          "review": false,
+          "archetype_id": "openEHR-EHR-OBSERVATION.pulse_oximetry.v1"
         }
       ]
     }
   ],
   "existing_nodes": "",
   "new_nodes": [],
-  "show_splash_on_start": true,
+  "show_splash_on_start": false,
   "color_theme_changes": false,
+  "filterSet": {},
   "list_items": [
     {
       "class": {
@@ -146,8 +183,8 @@
     },
     {
       "class": {
-        "0": "available",
-        "1": "existing"
+        "0": "existing",
+        "1": "collection"
       },
       "id": "openEHR-EHR-OBSERVATION.pulse_oximetry.v1",
       "textContent": "openEHR-EHR-OBSERVATION.pulse_oximetry.v1"
@@ -226,8 +263,8 @@
     },
     {
       "class": {
-        "0": "available",
-        "1": "existing"
+        "0": "existing",
+        "1": "collection"
       },
       "id": "openEHR-EHR-OBSERVATION.blood_pressure.v2",
       "textContent": "openEHR-EHR-OBSERVATION.blood_pressure.v2"
@@ -706,8 +743,8 @@
     },
     {
       "class": {
-        "0": "available",
-        "1": "existing"
+        "0": "existing",
+        "1": "collection"
       },
       "id": "openEHR-EHR-COMPOSITION.encounter.v1",
       "textContent": "openEHR-EHR-COMPOSITION.encounter.v1"
@@ -1443,7 +1480,8 @@
     {
       "class": {
         "0": "available",
-        "1": "existing"
+        "1": "existing",
+        "2": "selected"
       },
       "id": "openEHR-DEMOGRAPHIC-ADDRESS.address-provider.v0",
       "textContent": "openEHR-DEMOGRAPHIC-ADDRESS.address-provider.v0"
@@ -2210,8 +2248,8 @@
     },
     {
       "class": {
-        "0": "available",
-        "1": "existing"
+        "0": "existing",
+        "1": "collection"
       },
       "id": "openEHR-EHR-OBSERVATION.respiration.v2",
       "textContent": "openEHR-EHR-OBSERVATION.respiration.v2"
@@ -2658,8 +2696,8 @@
     },
     {
       "class": {
-        "0": "available",
-        "1": "existing"
+        "0": "existing",
+        "1": "collection"
       },
       "id": "openEHR-EHR-OBSERVATION.pulse.v2",
       "textContent": "openEHR-EHR-OBSERVATION.pulse.v2"
@@ -3058,8 +3096,8 @@
     },
     {
       "class": {
-        "0": "available",
-        "1": "existing"
+        "0": "existing",
+        "1": "collection"
       },
       "id": "openEHR-EHR-OBSERVATION.body_temperature.v2",
       "textContent": "openEHR-EHR-OBSERVATION.body_temperature.v2"
@@ -4450,8 +4488,8 @@
     },
     {
       "class": {
-        "0": "existing",
-        "1": "collection"
+        "0": "available",
+        "1": "existing"
       },
       "id": "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
       "textContent": "openEHR-EHR-OBSERVATION.laboratory_test_result.v1"
@@ -4482,8 +4520,8 @@
     },
     {
       "class": {
-        "0": "available",
-        "1": "existing"
+        "0": "existing",
+        "1": "collection"
       },
       "id": "openEHR-EHR-OBSERVATION.height.v2",
       "textContent": "openEHR-EHR-OBSERVATION.height.v2"
@@ -5986,8 +6024,8 @@
     },
     {
       "class": {
-        "0": "available",
-        "1": "existing"
+        "0": "existing",
+        "1": "collection"
       },
       "id": "openEHR-EHR-OBSERVATION.body_mass_index.v2",
       "textContent": "openEHR-EHR-OBSERVATION.body_mass_index.v2"
@@ -6378,8 +6416,8 @@
     },
     {
       "class": {
-        "0": "available",
-        "1": "existing"
+        "0": "existing",
+        "1": "collection"
       },
       "id": "openEHR-EHR-OBSERVATION.body_weight.v2",
       "textContent": "openEHR-EHR-OBSERVATION.body_weight.v2"
@@ -7306,9 +7344,8 @@
     },
     {
       "class": {
-        "0": "existing",
-        "1": "collection",
-        "2": "selected"
+        "0": "available",
+        "1": "existing"
       },
       "id": "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
       "textContent": "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1"
@@ -7347,8 +7384,8 @@
     },
     {
       "class": {
-        "0": "existing",
-        "1": "collection"
+        "0": "available",
+        "1": "existing"
       },
       "id": "openEHR-EHR-COMPOSITION.report-result.v1",
       "textContent": "openEHR-EHR-COMPOSITION.report-result.v1"
@@ -7435,74 +7472,235 @@
     }
   ],
   "archetype_tree_data": {
-    "node_uid": "7c83dae9-6fc9-4238-9925-6cb7fae27af3",
-    "name": "Report",
-    "id": "openEHR-EHR-COMPOSITION.report-result.v1",
+    "node_uid": "093e2041-9415-4d21-9f62-726a18d7b4f1",
+    "name": "Encounter",
+    "id": "openEHR-EHR-COMPOSITION.encounter.v1",
+    "archetype_id": "openEHR-EHR-COMPOSITION.encounter.v1",
     "type": "composition",
     "mode": "archetype",
     "element_value": "",
     "children": [
       {
-        "node_uid": "181a5772-cd6c-46a9-ae3f-dc82cfc82efd",
-        "name": "Laboratory test result",
-        "id": "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
+        "node_uid": "c1895961-da3e-4441-8a96-c9a45b8ce778",
+        "name": "Body temperature",
+        "id": "openEHR-EHR-OBSERVATION.body_temperature.v2",
+        "archetype_id": "openEHR-EHR-OBSERVATION.body_temperature.v2",
         "type": "observation",
         "mode": "archetype",
         "element_value": "",
         "children": [
           {
-            "node_uid": "6bda46ee-c200-448e-905a-6fdc5ed69a3c",
+            "node_uid": "aa1e6bc8-5c2f-4672-b577-3e41f3364fa8",
             "name": "Element",
             "id": "",
+            "archetype_id": "",
             "type": "",
             "mode": "element",
-            "element_value": "Lab test result - Test name",
+            "element_value": "Vital Signs - Temperature",
             "children": [],
-            "equivalent": "[at0005] Test name ['DV_ORDINAL']"
-          },
-          {
-            "node_uid": "34f1f5ef-9741-4ad1-a351-2f04a4ec3e18",
-            "name": "Laboratory analyte result",
-            "id": "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
-            "type": "cluster",
-            "mode": "archetype",
-            "element_value": "",
-            "children": [
-              {
-                "node_uid": "0454a67f-d384-40ed-bd67-3508dca00f63",
-                "name": "Element",
-                "id": "",
-                "type": "",
-                "mode": "element",
-                "element_value": "Lab test result - Analyte name",
-                "children": [],
-                "equivalent": "[at0024] Analyte name ['DV_ORDINAL']"
-              },
-              {
-                "node_uid": "0d178e4a-0993-4d98-8a52-f1caec213c3e",
-                "name": "Element",
-                "id": "",
-                "type": "",
-                "mode": "element",
-                "element_value": "Lab test result - Analyte result",
-                "children": [],
-                "equivalent": "[at0001] Analyte result ELEMENT"
-              }
-            ],
-            "archetype_id": "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
-            "equivalent": "[at0097] Test result CLUSTER",
-            "comment_display": "inline",
-            "comment": "To record a single value laboratory analyte result, commonly found in clinical pathology testing such as medical biochemistry, haematology, immunology and transfusion medicine."
+            "equivalent": "[at0004] Temperature ['DV_ORDINAL']",
+            "display": ""
           }
         ],
-        "archetype_id": "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
         "equivalent": "Reference Model",
-        "comment_display": "inline",
-        "comment": "To record the result, including findings and the laboratory's interpretation, of an investigation performed on specimens collected from an individual or related to that individual."
+        "display": "",
+        "expanded": false
+      },
+      {
+        "node_uid": "9ce910f8-9a63-49a9-8a1a-4e1de168b9f9",
+        "name": "Blood pressure",
+        "id": "openEHR-EHR-OBSERVATION.blood_pressure.v2",
+        "archetype_id": "openEHR-EHR-OBSERVATION.blood_pressure.v2",
+        "type": "observation",
+        "mode": "archetype",
+        "element_value": "",
+        "children": [
+          {
+            "node_uid": "dafc5bce-70f4-48f0-8d63-b400811b9b6f",
+            "name": "Element",
+            "id": "",
+            "archetype_id": "",
+            "type": "",
+            "mode": "element",
+            "element_value": "Vital Signs - Systolic Pressure",
+            "children": [],
+            "equivalent": "[at0004] Systolic ['DV_ORDINAL']",
+            "display": ""
+          },
+          {
+            "node_uid": "3b386ce5-6301-4449-94bc-f9dedc5b2ab5",
+            "name": "Element",
+            "id": "",
+            "archetype_id": "",
+            "type": "",
+            "mode": "element",
+            "element_value": "Vital Signs - Diastolic pressure",
+            "children": [],
+            "equivalent": "[at0005] Diastolic ['DV_ORDINAL']",
+            "display": ""
+          }
+        ],
+        "equivalent": "Reference Model",
+        "display": "",
+        "expanded": false
+      },
+      {
+        "node_uid": "0e568337-c1c5-48a2-a46d-543b07546cd2",
+        "name": "Body Mass Index (BMI)",
+        "id": "openEHR-EHR-OBSERVATION.body_mass_index.v2",
+        "archetype_id": "openEHR-EHR-OBSERVATION.body_mass_index.v2",
+        "type": "observation",
+        "mode": "archetype",
+        "element_value": "",
+        "children": [
+          {
+            "node_uid": "d41d75ee-fb80-48ed-a6e5-d6a27836b34d",
+            "name": "Element",
+            "id": "",
+            "archetype_id": "",
+            "type": "",
+            "mode": "element",
+            "element_value": "Vital Signs - BMI",
+            "children": [],
+            "equivalent": "[at0004] Body mass index ['DV_ORDINAL']",
+            "display": ""
+          }
+        ],
+        "equivalent": "Reference Model",
+        "display": "",
+        "expanded": false
+      },
+      {
+        "node_uid": "cff258b1-032a-4c3d-9623-f0aa5639d90f",
+        "name": "Height/Length",
+        "id": "openEHR-EHR-OBSERVATION.height.v2",
+        "archetype_id": "openEHR-EHR-OBSERVATION.height.v2",
+        "type": "observation",
+        "mode": "archetype",
+        "element_value": "",
+        "children": [
+          {
+            "node_uid": "5ce51df8-0ea2-4505-884d-2cf4810e6537",
+            "name": "Element",
+            "id": "",
+            "archetype_id": "",
+            "type": "",
+            "mode": "element",
+            "element_value": "Vital Signs - Height",
+            "children": [],
+            "equivalent": "[at0004] Height/Length ['DV_ORDINAL']",
+            "display": ""
+          }
+        ],
+        "equivalent": "Reference Model",
+        "display": "",
+        "expanded": false
+      },
+      {
+        "node_uid": "0f1ec4b0-5b0e-4cc0-852d-b62d95d27abd",
+        "name": "Body weight",
+        "id": "openEHR-EHR-OBSERVATION.body_weight.v2",
+        "archetype_id": "openEHR-EHR-OBSERVATION.body_weight.v2",
+        "type": "observation",
+        "mode": "archetype",
+        "element_value": "",
+        "children": [
+          {
+            "node_uid": "1c96aed5-62f4-43f0-849a-d2f2584c724f",
+            "name": "Element",
+            "id": "",
+            "archetype_id": "",
+            "type": "",
+            "mode": "element",
+            "element_value": "Vital Signs - Weight",
+            "children": [],
+            "equivalent": "[at0004] Weight ['DV_ORDINAL']",
+            "display": ""
+          }
+        ],
+        "equivalent": "Reference Model",
+        "display": "",
+        "expanded": false
+      },
+      {
+        "node_uid": "03086fab-6c05-435f-a9c8-6a84b115322d",
+        "name": "Pulse/Heart beat",
+        "id": "openEHR-EHR-OBSERVATION.pulse.v2",
+        "archetype_id": "openEHR-EHR-OBSERVATION.pulse.v2",
+        "type": "observation",
+        "mode": "archetype",
+        "element_value": "",
+        "children": [
+          {
+            "node_uid": "7a42ac81-85ed-4f8b-852f-a56dc43f757e",
+            "name": "Element",
+            "id": "",
+            "archetype_id": "",
+            "type": "",
+            "mode": "element",
+            "element_value": "Vital Signs - Pulse",
+            "children": [],
+            "equivalent": "[at0004] Rate ['DV_ORDINAL']",
+            "display": ""
+          }
+        ],
+        "equivalent": "Reference Model",
+        "display": "",
+        "expanded": false
+      },
+      {
+        "node_uid": "31c1ad21-7177-4161-977e-1b190abc3623",
+        "name": "Respiration",
+        "id": "openEHR-EHR-OBSERVATION.respiration.v2",
+        "archetype_id": "openEHR-EHR-OBSERVATION.respiration.v2",
+        "type": "observation",
+        "mode": "archetype",
+        "element_value": "",
+        "children": [
+          {
+            "node_uid": "3962f351-56e2-43f0-89fc-5a4e7d8cee59",
+            "name": "Element",
+            "id": "",
+            "archetype_id": "",
+            "type": "",
+            "mode": "element",
+            "element_value": "Vital Signs - Respitarion",
+            "children": [],
+            "equivalent": "[at0004] Rate ['DV_ORDINAL']",
+            "display": ""
+          }
+        ],
+        "equivalent": "Reference Model",
+        "display": "",
+        "expanded": false
+      },
+      {
+        "node_uid": "35b88c8e-3484-4804-bc67-9908a0db013a",
+        "name": "Pulse oximetry",
+        "id": "openEHR-EHR-OBSERVATION.pulse_oximetry.v1",
+        "archetype_id": "openEHR-EHR-OBSERVATION.pulse_oximetry.v1",
+        "type": "observation",
+        "mode": "archetype",
+        "element_value": "",
+        "children": [
+          {
+            "node_uid": "349d3e69-aa66-4f8e-a718-536fc56607ad",
+            "name": "Element",
+            "id": "",
+            "archetype_id": "",
+            "type": "",
+            "mode": "element",
+            "element_value": "Vital Signs - Pulse oximetry",
+            "children": [],
+            "equivalent": "[at0006] SpO₂ ['DV_ORDINAL']",
+            "display": ""
+          }
+        ],
+        "equivalent": "Reference Model",
+        "display": "",
+        "expanded": false
       }
     ],
-    "archetype_id": "openEHR-EHR-COMPOSITION.report-result.v1",
-    "comment_display": "inline",
-    "comment": "Generic container archetype to carry information about the result of a test or assessment."
+    "expanded": false
   }
 }
