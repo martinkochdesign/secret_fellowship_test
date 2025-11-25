@@ -6,7 +6,7 @@
     "copyright": "2025, CatSalut",
     "contact": "martinandreaskoch@catsalut.cat"
   },
-  "software_version": "0.62-beta",
+  "software_version": "0.62.1-beta",
   "db_source": "CKM International (ckm.openehr.org)",
   "db_update": "2025-11-21 09:38:31",
   "checklist": [
@@ -17,7 +17,7 @@
           "name": "Prescription Id",
           "archetype": "openEHR-EHR-COMPOSITION.prescription.v0",
           "archetype_id": "openEHR-EHR-COMPOSITION.prescription.v0",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": ""
         }
@@ -256,26 +256,7 @@
     }
   ],
   "existing_nodes": "",
-  "new_nodes": [
-    {
-      "id": "f435984c-30b3-41bd-a2f5-b2acdda759b4",
-      "archetype_id": "A New Archetype",
-      "class": "",
-      "lifecycle_state": "",
-      "original_language": "",
-      "translation_languages": [],
-      "purpose": " ",
-      "keywords": [],
-      "include": [],
-      "exclude": [],
-      "concept_name": "A New Archetype",
-      "concept_description": "",
-      "items": [],
-      "parent": "",
-      "children": [],
-      "similar": []
-    }
-  ],
+  "new_nodes": [],
   "show_splash_on_start": false,
   "color_theme_changes": false,
   "filterSet": {},
@@ -7664,14 +7645,6 @@
       },
       "id": "openEHR-EHR-SECTION.vital_signs.v0",
       "textContent": "openEHR-EHR-SECTION.vital_signs.v0"
-    },
-    {
-      "class": {
-        "0": "collection",
-        "1": "new"
-      },
-      "id": "f435984c-30b3-41bd-a2f5-b2acdda759b4",
-      "textContent": "A New Archetype"
     }
   ],
   "archetype_tree_data": {
