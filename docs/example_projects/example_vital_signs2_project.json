@@ -6,75 +6,84 @@
     "copyright": "2025, CatSalut",
     "contact": "martinandreaskoch@catsalut.cat"
   },
-  "software_version": "0.62.1-beta",
+  "software_version": "0.63-beta",
   "db_source": "ckm.openehr.org",
-  "db_update": "2025-11-24 03:56:14",
+  "db_update": "2025-11-27 10:35:39",
   "checklist": [
     {
       "name": "Vital Signs",
       "elements": [
         {
-          "approved": false,
+          "approved": true,
           "name": "Temperature",
           "archetype": "openEHR-EHR-OBSERVATION.body_temperature.v2",
           "review": false,
-          "archetype_id": "openEHR-EHR-OBSERVATION.body_temperature.v2"
+          "archetype_id": "openEHR-EHR-OBSERVATION.body_temperature.v2",
+          "id": "Vital SignsTemperature"
         },
         {
-          "approved": false,
+          "approved": true,
           "name": "Systolic Pressure",
           "archetype": "openEHR-EHR-OBSERVATION.blood_pressure.v2",
           "review": false,
-          "archetype_id": "openEHR-EHR-OBSERVATION.blood_pressure.v2"
+          "archetype_id": "openEHR-EHR-OBSERVATION.blood_pressure.v2",
+          "id": "Vital SignsSystolic Pressure"
         },
         {
-          "approved": false,
+          "approved": true,
           "name": "Diastolic pressure",
           "archetype": "openEHR-EHR-OBSERVATION.blood_pressure.v2",
           "review": false,
-          "archetype_id": "openEHR-EHR-OBSERVATION.blood_pressure.v2"
+          "archetype_id": "openEHR-EHR-OBSERVATION.blood_pressure.v2",
+          "id": "Vital SignsDiastolic pressure"
         },
         {
-          "approved": false,
+          "approved": true,
           "name": "BMI",
           "archetype": "openEHR-EHR-OBSERVATION.body_mass_index.v2",
           "review": false,
-          "archetype_id": "openEHR-EHR-OBSERVATION.body_mass_index.v2"
+          "archetype_id": "openEHR-EHR-OBSERVATION.body_mass_index.v2",
+          "id": "Vital SignsBMI"
         },
         {
-          "approved": false,
+          "approved": true,
           "name": "Height",
           "archetype": "openEHR-EHR-OBSERVATION.height.v2",
           "review": false,
-          "archetype_id": "openEHR-EHR-OBSERVATION.height.v2"
+          "archetype_id": "openEHR-EHR-OBSERVATION.height.v2",
+          "id": "Vital SignsHeight"
         },
         {
-          "approved": false,
+          "approved": true,
           "name": "Weight",
           "archetype": "openEHR-EHR-OBSERVATION.body_weight.v2",
           "review": false,
-          "archetype_id": "openEHR-EHR-OBSERVATION.body_weight.v2"
+          "archetype_id": "openEHR-EHR-OBSERVATION.body_weight.v2",
+          "id": "Vital SignsWeight"
         },
         {
-          "approved": false,
+          "approved": true,
           "name": "Pulse",
           "archetype": "openEHR-EHR-OBSERVATION.pulse.v2",
           "review": false,
-          "archetype_id": "openEHR-EHR-OBSERVATION.pulse.v2"
+          "archetype_id": "openEHR-EHR-OBSERVATION.pulse.v2",
+          "id": "Vital SignsPulse"
         },
         {
-          "approved": false,
+          "approved": true,
           "name": "Respitarion",
           "archetype": "openEHR-EHR-OBSERVATION.respiration.v2",
           "review": false,
-          "archetype_id": "openEHR-EHR-OBSERVATION.respiration.v2"
+          "archetype_id": "openEHR-EHR-OBSERVATION.respiration.v2",
+          "id": "Vital SignsRespitarion"
         },
         {
-          "approved": false,
+          "approved": true,
           "name": "Pulse oximetry",
           "archetype": "openEHR-EHR-OBSERVATION.pulse_oximetry.v1",
           "review": false,
-          "archetype_id": "openEHR-EHR-OBSERVATION.pulse_oximetry.v1"
+          "archetype_id": "openEHR-EHR-OBSERVATION.pulse_oximetry.v1",
+          "id": "Vital SignsPulse oximetry"
         }
       ]
     }
@@ -7498,7 +7507,7 @@
             "mode": "element",
             "element_value": "Vital Signs - Temperature",
             "children": [],
-            "equivalent": "[at0004] Temperature ['DV_ORDINAL']",
+            "equivalent": "[at0004] Temperature ['C_DV_QUANTITY']",
             "display": ""
           }
         ],
@@ -7524,7 +7533,7 @@
             "mode": "element",
             "element_value": "Vital Signs - Systolic Pressure",
             "children": [],
-            "equivalent": "[at0004] Systolic ['DV_ORDINAL']",
+            "equivalent": "[at0004] Systolic ['C_DV_QUANTITY']",
             "display": ""
           },
           {
@@ -7536,7 +7545,7 @@
             "mode": "element",
             "element_value": "Vital Signs - Diastolic pressure",
             "children": [],
-            "equivalent": "[at0005] Diastolic ['DV_ORDINAL']",
+            "equivalent": "[at0005] Diastolic ['C_DV_QUANTITY']",
             "display": ""
           }
         ],
@@ -7562,7 +7571,7 @@
             "mode": "element",
             "element_value": "Vital Signs - BMI",
             "children": [],
-            "equivalent": "[at0004] Body mass index ['DV_ORDINAL']",
+            "equivalent": "[at0004] Body mass index ['C_DV_QUANTITY']",
             "display": ""
           }
         ],
@@ -7588,7 +7597,7 @@
             "mode": "element",
             "element_value": "Vital Signs - Height",
             "children": [],
-            "equivalent": "[at0004] Height/Length ['DV_ORDINAL']",
+            "equivalent": "[at0004] Height/Length ['C_DV_QUANTITY']",
             "display": ""
           }
         ],
@@ -7614,7 +7623,7 @@
             "mode": "element",
             "element_value": "Vital Signs - Weight",
             "children": [],
-            "equivalent": "[at0004] Weight ['DV_ORDINAL']",
+            "equivalent": "[at0004] Weight ['C_DV_QUANTITY']",
             "display": ""
           }
         ],
@@ -7640,7 +7649,7 @@
             "mode": "element",
             "element_value": "Vital Signs - Pulse",
             "children": [],
-            "equivalent": "[at0004] Rate ['DV_ORDINAL']",
+            "equivalent": "[at0004] Rate ['C_DV_QUANTITY']",
             "display": ""
           }
         ],
@@ -7666,7 +7675,7 @@
             "mode": "element",
             "element_value": "Vital Signs - Respitarion",
             "children": [],
-            "equivalent": "[at0004] Rate ['DV_ORDINAL']",
+            "equivalent": "[at0004] Rate ['C_DV_QUANTITY']",
             "display": ""
           }
         ],
@@ -7692,7 +7701,7 @@
             "mode": "element",
             "element_value": "Vital Signs - Pulse oximetry",
             "children": [],
-            "equivalent": "[at0006] SpO₂ ['DV_ORDINAL']",
+            "equivalent": "[at0006] SpO₂ ['DV_PROPORTION']",
             "display": ""
           }
         ],

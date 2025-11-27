@@ -6,9 +6,9 @@
     "copyright": "2025, CatSalut",
     "contact": "martinandreaskoch@catsalut.com"
   },
-  "software_version": "0.55.0-beta",
-  "db_source": "CKM International (ckm.openehr.org)",
-  "db_update": "2025-11-13 14:35:44",
+  "software_version": "0.63-beta",
+  "db_source": "ckm.openehr.org",
+  "db_update": "2025-11-27 10:35:39",
   "checklist": [
     {
       "name": "Lab test result",
@@ -1443,7 +1443,8 @@
     {
       "class": {
         "0": "available",
-        "1": "existing"
+        "1": "existing",
+        "2": "selected"
       },
       "id": "openEHR-DEMOGRAPHIC-ADDRESS.address-provider.v0",
       "textContent": "openEHR-DEMOGRAPHIC-ADDRESS.address-provider.v0"
@@ -7307,8 +7308,7 @@
     {
       "class": {
         "0": "existing",
-        "1": "collection",
-        "2": "selected"
+        "1": "collection"
       },
       "id": "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
       "textContent": "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1"
@@ -7458,7 +7458,7 @@
             "mode": "element",
             "element_value": "Lab test result - Test name",
             "children": [],
-            "equivalent": "[at0005] Test name ['DV_ORDINAL']"
+            "equivalent": "[at0005] Test name ['DV_TEXT']"
           },
           {
             "node_uid": "34f1f5ef-9741-4ad1-a351-2f04a4ec3e18",
@@ -7476,7 +7476,7 @@
                 "mode": "element",
                 "element_value": "Lab test result - Analyte name",
                 "children": [],
-                "equivalent": "[at0024] Analyte name ['DV_ORDINAL']"
+                "equivalent": "[at0024] Analyte name ['DV_TEXT']"
               },
               {
                 "node_uid": "0d178e4a-0993-4d98-8a52-f1caec213c3e",

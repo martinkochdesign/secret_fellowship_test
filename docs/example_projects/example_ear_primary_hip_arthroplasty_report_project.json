@@ -6,9 +6,9 @@
     "copyright": "2025, CatSalut",
     "contact": "martinandreaskoch@catsalut.com"
   },
-  "software_version": "0.61.2-beta",
-  "db_source": "CKM International (ckm.openehr.org)",
-  "db_update": "2025-11-21 09:38:31",
+  "software_version": "0.63-beta",
+  "db_source": "ckm.openehr.org",
+  "db_update": "2025-11-27 10:35:39",
   "checklist": [
     {
       "name": "Patient",
@@ -8135,8 +8135,8 @@
             "mode": "element",
             "element_value": "Patient - Person Identifier",
             "children": [],
-            "equivalent": "[at0001] Person Identifier ['DV_ORDINAL']",
-            "display": "none"
+            "equivalent": "[at0001] Person Identifier ['DV_IDENTIFIER']",
+            "display": ""
           },
           {
             "node_uid": "6463ac4d-b759-4253-8c81-ddf4d8ae2a58",
@@ -8154,8 +8154,8 @@
                 "mode": "element",
                 "element_value": "Patient - Family name",
                 "children": [],
-                "equivalent": "[at0001] Family Name ['DV_ORDINAL']",
-                "display": "none"
+                "equivalent": "[at0001] Family Name ['DV_TEXT']",
+                "display": ""
               },
               {
                 "node_uid": "7020f332-3db5-4211-a73e-684bc52f1e6e",
@@ -8165,13 +8165,14 @@
                 "mode": "element",
                 "element_value": "Patient - Given name",
                 "children": [],
-                "equivalent": "[at0002] Given Name ['DV_ORDINAL']",
-                "display": "none"
+                "equivalent": "[at0002] Given Name ['DV_TEXT']",
+                "display": ""
               }
             ],
             "archetype_id": "openEHR-EHR-CLUSTER.person_name_isa.v1",
             "equivalent": "[at0002] Person Name CLUSTER",
-            "display": "none"
+            "display": "",
+            "expanded": false
           },
           {
             "node_uid": "e2936572-6726-4a5a-864e-5f91b4580777",
@@ -8182,7 +8183,7 @@
             "element_value": "Patient - Date of birth",
             "children": [],
             "equivalent": "[at0004] Birth Address CLUSTER",
-            "display": "none"
+            "display": ""
           },
           {
             "node_uid": "1d27ebda-e980-4023-8a92-5b700869be54",
@@ -8200,8 +8201,8 @@
                 "mode": "element",
                 "element_value": "Patient - Gender",
                 "children": [],
-                "equivalent": "[at0002] Birth Sex ['DV_ORDINAL']",
-                "display": "none"
+                "equivalent": "[at0002] Birth Sex ['DV_CODED_TEXT']",
+                "display": ""
               },
               {
                 "node_uid": "457ff4b2-70c8-4976-aea2-486205441333",
@@ -8211,18 +8212,19 @@
                 "mode": "element",
                 "element_value": "Patient - Age",
                 "children": [],
-                "equivalent": "[at0008] Age ['DV_ORDINAL']",
-                "display": "none"
+                "equivalent": "[at0008] Age ['DV_DURATION']",
+                "display": ""
               }
             ],
             "archetype_id": "openEHR-EHR-CLUSTER.person_anonymised_parent.v0",
             "equivalent": "[at0009] Other details CLUSTER",
-            "display": "none"
+            "display": "",
+            "expanded": false
           }
         ],
         "archetype_id": "openEHR-EHR-CLUSTER.person_identifiable_parent.v1",
         "equivalent": "[at0006] Extension CLUSTER",
-        "expanded": true,
+        "expanded": false,
         "display": ""
       },
       {
@@ -8249,13 +8251,14 @@
                 "mode": "element",
                 "element_value": "Professional - Full name",
                 "children": [],
-                "equivalent": "[at0004] Full Name ['DV_ORDINAL']",
-                "display": "none"
+                "equivalent": "[at0004] Full Name ['DV_TEXT']",
+                "display": ""
               }
             ],
             "archetype_id": "openEHR-EHR-CLUSTER.person_name_isa.v1",
             "expanded": false,
-            "display": "none"
+            "display": "",
+            "equivalent": "[at0001] Professional Name CLUSTER"
           },
           {
             "node_uid": "66cfd243-7cd1-4442-beeb-beb35e8df7a7",
@@ -8265,8 +8268,8 @@
             "mode": "element",
             "element_value": "Professional - Professional identifier",
             "children": [],
-            "equivalent": "[at0002] Professional Identifier ['DV_ORDINAL']",
-            "display": "none"
+            "equivalent": "[at0002] Professional Identifier ['DV_IDENTIFIER']",
+            "display": ""
           },
           {
             "node_uid": "ff353dbc-02b7-46aa-97e4-3f9ce9e5b1c5",
@@ -8284,8 +8287,8 @@
                 "mode": "element",
                 "element_value": "Professional - Department",
                 "children": [],
-                "equivalent": "[at0005] Department name ['DV_ORDINAL']",
-                "display": "none"
+                "equivalent": "[at0005] Department name ['DV_TEXT']",
+                "display": ""
               },
               {
                 "node_uid": "85f41f76-1624-4ce3-92bf-af91c977f551",
@@ -8295,8 +8298,8 @@
                 "mode": "element",
                 "element_value": "Professional - Hospital ID",
                 "children": [],
-                "equivalent": "[at0002] Organisation identifier ['DV_ORDINAL']",
-                "display": "none"
+                "equivalent": "[at0002] Organisation identifier ['DV_IDENTIFIER']",
+                "display": ""
               },
               {
                 "node_uid": "2c234639-f294-4218-becf-441de070be2a",
@@ -8314,8 +8317,8 @@
                     "mode": "element",
                     "element_value": "Professional - City",
                     "children": [],
-                    "equivalent": "[at0006] Post Name (city) ['DV_ORDINAL']",
-                    "display": "none"
+                    "equivalent": "[at0006] Post Name (city) ['DV_TEXT']",
+                    "display": ""
                   },
                   {
                     "node_uid": "3f79a5d8-e692-4584-8e46-63ebde13aabd",
@@ -8325,8 +8328,8 @@
                     "mode": "element",
                     "element_value": "Professional - County/state",
                     "children": [],
-                    "equivalent": "[at0007] Admin Unit 2 (county/region/state) ['DV_ORDINAL']",
-                    "display": "none"
+                    "equivalent": "[at0007] Admin Unit 2 (county/region/state) ['DV_TEXT']",
+                    "display": ""
                   },
                   {
                     "node_uid": "dce665c8-43da-4fc2-8106-444a2d2cc2ee",
@@ -8336,12 +8339,13 @@
                     "mode": "element",
                     "element_value": "Professional - Country",
                     "children": [],
-                    "equivalent": "[at0008] Admin Unit 1 (country) ['DV_ORDINAL']",
-                    "display": "none"
+                    "equivalent": "[at0008] Admin Unit 1 (country) ['DV_TEXT']",
+                    "display": ""
                   }
                 ],
                 "archetype_id": "openEHR-EHR-CLUSTER.address_isa.v1",
-                "display": "none"
+                "display": "",
+                "expanded": false
               },
               {
                 "node_uid": "eec6abea-447c-4120-bb2d-02fc01334624",
@@ -8351,8 +8355,8 @@
                 "mode": "element",
                 "element_value": "Professional - Department ID",
                 "children": [],
-                "equivalent": "[at0006] Department identifier ['DV_ORDINAL']",
-                "display": "none"
+                "equivalent": "[at0006] Department identifier ['DV_IDENTIFIER']",
+                "display": ""
               },
               {
                 "node_uid": "30095306-2545-4897-bae7-c027cedd50b6",
@@ -8362,13 +8366,14 @@
                 "mode": "element",
                 "element_value": "Professional - Contact Details",
                 "children": [],
-                "equivalent": "[at0004] Contact details ['DV_ORDINAL']",
-                "display": "none"
+                "equivalent": "[at0004] Contact details ['DV_TEXT']",
+                "display": ""
               }
             ],
             "archetype_id": "openEHR-EHR-CLUSTER.healthcare_provider_parent.v1",
             "equivalent": "[at0003] Provider Organisation CLUSTER",
-            "display": "none"
+            "display": "",
+            "expanded": false
           }
         ],
         "archetype_id": "openEHR-EHR-CLUSTER.healthcare_professional_parent.v1",
@@ -8401,8 +8406,8 @@
                 "mode": "element",
                 "element_value": "Previous procedures - Previous Procedure",
                 "children": [],
-                "equivalent": "[at0002] Procedure name ['DV_ORDINAL']",
-                "display": "none"
+                "equivalent": "[at0002] Procedure name ['DV_TEXT']",
+                "display": ""
               },
               {
                 "node_uid": "981e1a55-a224-49da-9908-eb16f72d60be",
@@ -8420,8 +8425,8 @@
                     "mode": "element",
                     "element_value": "Previous procedures - Department",
                     "children": [],
-                    "equivalent": "[at0005] Department name ['DV_ORDINAL']",
-                    "display": "none"
+                    "equivalent": "[at0005] Department name ['DV_TEXT']",
+                    "display": ""
                   },
                   {
                     "node_uid": "2fbd5fee-532d-48b0-a695-c0fc5c717c1d",
@@ -8431,8 +8436,8 @@
                     "mode": "element",
                     "element_value": "Previous procedures - Hospital ID",
                     "children": [],
-                    "equivalent": "[at0002] Organisation identifier ['DV_ORDINAL']",
-                    "display": "none"
+                    "equivalent": "[at0002] Organisation identifier ['DV_IDENTIFIER']",
+                    "display": ""
                   },
                   {
                     "node_uid": "5476d08b-f92f-4e41-936a-186bc710b86e",
@@ -8450,8 +8455,8 @@
                         "mode": "element",
                         "element_value": "Previous procedures - City",
                         "children": [],
-                        "equivalent": "[at0006] Post Name (city) ['DV_ORDINAL']",
-                        "display": "none"
+                        "equivalent": "[at0006] Post Name (city) ['DV_TEXT']",
+                        "display": ""
                       },
                       {
                         "node_uid": "e38fea41-437a-4220-bf39-f63286f960fd",
@@ -8461,8 +8466,8 @@
                         "mode": "element",
                         "element_value": "Previous procedures - County/state",
                         "children": [],
-                        "equivalent": "[at0007] Admin Unit 2 (county/region/state) ['DV_ORDINAL']",
-                        "display": "none"
+                        "equivalent": "[at0007] Admin Unit 2 (county/region/state) ['DV_TEXT']",
+                        "display": ""
                       },
                       {
                         "node_uid": "7d07fd5d-246f-4ba7-b7a9-bc5d150a1ca6",
@@ -8472,13 +8477,14 @@
                         "mode": "element",
                         "element_value": "Previous procedures - Country",
                         "children": [],
-                        "equivalent": "[at0008] Admin Unit 1 (country) ['DV_ORDINAL']",
-                        "display": "none"
+                        "equivalent": "[at0008] Admin Unit 1 (country) ['DV_TEXT']",
+                        "display": ""
                       }
                     ],
                     "archetype_id": "openEHR-EHR-CLUSTER.address_isa.v1",
-                    "display": "none",
-                    "expanded": false
+                    "display": "",
+                    "expanded": false,
+                    "equivalent": "[at0003] Organisation Address CLUSTER"
                   },
                   {
                     "node_uid": "12d22d25-c662-4f3b-8174-a9d86d642e80",
@@ -8488,8 +8494,8 @@
                     "mode": "element",
                     "element_value": "Previous procedures - Department ID",
                     "children": [],
-                    "equivalent": "[at0006] Department identifier ['DV_ORDINAL']",
-                    "display": "none"
+                    "equivalent": "[at0006] Department identifier ['DV_IDENTIFIER']",
+                    "display": ""
                   },
                   {
                     "node_uid": "7253806e-e4c3-487a-8688-7362a45e573d",
@@ -8499,20 +8505,20 @@
                     "mode": "element",
                     "element_value": "Previous procedures - Contact Details",
                     "children": [],
-                    "equivalent": "[at0004] Contact details ['DV_ORDINAL']",
-                    "display": "none"
+                    "equivalent": "[at0004] Contact details ['DV_TEXT']",
+                    "display": ""
                   }
                 ],
                 "archetype_id": "openEHR-EHR-CLUSTER.healthcare_provider_parent.v1",
                 "equivalent": "[at0003] Provider Organisation CLUSTER",
-                "display": "none",
+                "display": "",
                 "expanded": false
               }
             ],
             "archetype_id": "openEHR-EHR-ACTION.procedure.v1",
             "equivalent": "Reference Model",
-            "display": "none",
-            "expanded": true
+            "display": "",
+            "expanded": false
           },
           {
             "node_uid": "e9ed0811-645d-4e1c-b4f6-521dc045cac3",
@@ -8530,19 +8536,19 @@
                 "mode": "element",
                 "element_value": "Procedure Exclusion - Exclusion statement",
                 "children": [],
-                "equivalent": "[at0002] Global exclusion statement ['DV_ORDINAL']",
-                "display": "none"
+                "equivalent": "[at0002] Global exclusion statement ['DV_TEXT']",
+                "display": ""
               }
             ],
             "archetype_id": "openEHR-EHR-EVALUATION.exclusion_global.v1",
             "equivalent": "Reference Model",
-            "display": "none",
-            "expanded": true
+            "display": "",
+            "expanded": false
           }
         ],
         "archetype_id": "openEHR-EHR-SECTION.adhoc.v1",
         "equivalent": "Reference Model",
-        "expanded": true,
+        "expanded": false,
         "display": ""
       },
       {
@@ -8569,8 +8575,8 @@
                 "mode": "element",
                 "element_value": "Current procedure - Procedure",
                 "children": [],
-                "equivalent": "[at0002] Procedure name ['DV_ORDINAL']",
-                "display": "none"
+                "equivalent": "[at0002] Procedure name ['DV_TEXT']",
+                "display": ""
               },
               {
                 "node_uid": "08ff0c3a-1499-4043-8b6c-10a6366b326f",
@@ -8580,8 +8586,8 @@
                 "mode": "element",
                 "element_value": "Current procedure - Reason",
                 "children": [],
-                "equivalent": "[at0014] Reason ['DV_ORDINAL']",
-                "display": "none"
+                "equivalent": "[at0014] Reason ['DV_TEXT']",
+                "display": ""
               },
               {
                 "node_uid": "a8b60806-cdd7-4eed-9c2c-58e3306c680f",
@@ -8599,7 +8605,8 @@
                     "mode": "element",
                     "element_value": "Current procedure - Device name",
                     "children": [],
-                    "equivalent": "[at0001] Device name ['DV_ORDINAL']"
+                    "equivalent": "[at0001] Device name ['DV_TEXT']",
+                    "display": ""
                   },
                   {
                     "node_uid": "50445820-ba8a-4a65-9d6e-89fea307ea85",
@@ -8617,8 +8624,8 @@
                         "mode": "element",
                         "element_value": "Hip implant details - Cement name",
                         "children": [],
-                        "equivalent": "[at0002] Cement name ['DV_ORDINAL']",
-                        "display": "none"
+                        "equivalent": "[at0002] Cement name ['DV_TEXT']",
+                        "display": ""
                       },
                       {
                         "node_uid": "df4c0281-4b84-4098-a3a1-7f075d62eb74",
@@ -8628,8 +8635,8 @@
                         "mode": "element",
                         "element_value": "Hip implant details - Fixation type",
                         "children": [],
-                        "equivalent": "[at0012] Fixation type ['DV_ORDINAL']",
-                        "display": "none"
+                        "equivalent": "[at0012] Fixation type ['DV_CODED_TEXT']",
+                        "display": ""
                       },
                       {
                         "node_uid": "e77d6e0c-9c23-4850-b018-f89433d6cb72",
@@ -8639,8 +8646,8 @@
                         "mode": "element",
                         "element_value": "Hip implant details - Fixation sub-type",
                         "children": [],
-                        "equivalent": "[at0013] Fixation sub-type ['DV_ORDINAL']",
-                        "display": "none"
+                        "equivalent": "[at0013] Fixation sub-type ['DV_TEXT']",
+                        "display": ""
                       },
                       {
                         "node_uid": "bc412c92-e5ad-459c-bf8f-52cc347c5035",
@@ -8650,8 +8657,8 @@
                         "mode": "element",
                         "element_value": "Hip implant details - Tesla level",
                         "children": [],
-                        "equivalent": "[at0016] Tesla level ['DV_ORDINAL']",
-                        "display": "none"
+                        "equivalent": "[at0016] Tesla level ['DV_COUNT']",
+                        "display": ""
                       },
                       {
                         "node_uid": "f3e8a859-6eb2-4c14-8c3b-44d55a24b027",
@@ -8661,8 +8668,8 @@
                         "mode": "element",
                         "element_value": "Hip implant details - Potential safety issue",
                         "children": [],
-                        "equivalent": "[at0010] Potential safety issue ['DV_ORDINAL']",
-                        "display": "none"
+                        "equivalent": "[at0010] Potential safety issue ['DV_TEXT']",
+                        "display": ""
                       },
                       {
                         "node_uid": "834ed73a-6a38-487c-af32-eee1ab3c9f92",
@@ -8672,8 +8679,8 @@
                         "mode": "element",
                         "element_value": "Hip implant details - Manufacturer safety information",
                         "children": [],
-                        "equivalent": "[at0011] Manufacturer safety information ['DV_ORDINAL']",
-                        "display": "none"
+                        "equivalent": "[at0011] Manufacturer safety information ['DV_URI']",
+                        "display": ""
                       },
                       {
                         "node_uid": "3b7b60dc-4519-4256-8c82-cc86e3951daa",
@@ -8683,13 +8690,14 @@
                         "mode": "element",
                         "element_value": "Hip implant details - Antibacterial in cement?",
                         "children": [],
-                        "equivalent": "[at0007] Antibacterial in cement? ['DV_ORDINAL']",
-                        "display": "none"
+                        "equivalent": "[at0007] Antibacterial in cement? ['DV_BOOLEAN']",
+                        "display": ""
                       }
                     ],
                     "archetype_id": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
-                    "expanded": true,
-                    "equivalent": "[at0018] Components CLUSTER"
+                    "expanded": false,
+                    "equivalent": "[at0018] Components CLUSTER",
+                    "display": ""
                   },
                   {
                     "node_uid": "f94f2e14-435c-4ad0-bdb9-592211894f4f",
@@ -8707,8 +8715,8 @@
                         "mode": "element",
                         "element_value": "Acetabular component - Device name",
                         "children": [],
-                        "equivalent": "[at0001] Device name ['DV_ORDINAL']",
-                        "display": "none"
+                        "equivalent": "[at0001] Device name ['DV_TEXT']",
+                        "display": ""
                       },
                       {
                         "node_uid": "895226d4-3742-43cd-9e83-6c93d3d7fbe7",
@@ -8718,8 +8726,8 @@
                         "mode": "element",
                         "element_value": "Acetabular component - Type",
                         "children": [],
-                        "equivalent": "[at0003] Type ['DV_ORDINAL']",
-                        "display": "none"
+                        "equivalent": "[at0003] Type ['DV_TEXT']",
+                        "display": ""
                       },
                       {
                         "node_uid": "1d01c307-3b56-464a-b714-c5d0b3eb25bf",
@@ -8737,8 +8745,8 @@
                             "mode": "element",
                             "element_value": "Acetabular component - Cement name",
                             "children": [],
-                            "equivalent": "[at0002] Cement name ['DV_ORDINAL']",
-                            "display": "none"
+                            "equivalent": "[at0002] Cement name ['DV_TEXT']",
+                            "display": ""
                           },
                           {
                             "node_uid": "f2681dd6-c54a-426f-afaf-e92ad5ac8e0f",
@@ -8748,8 +8756,8 @@
                             "mode": "element",
                             "element_value": "Acetabular component - Fixation type",
                             "children": [],
-                            "equivalent": "[at0012] Fixation type ['DV_ORDINAL']",
-                            "display": "none"
+                            "equivalent": "[at0012] Fixation type ['DV_CODED_TEXT']",
+                            "display": ""
                           },
                           {
                             "node_uid": "ae2147f4-bb8c-47b5-becf-b3b3f32a5ae5",
@@ -8759,8 +8767,8 @@
                             "mode": "element",
                             "element_value": "Acetabular component - Fixation sub-type",
                             "children": [],
-                            "equivalent": "[at0013] Fixation sub-type ['DV_ORDINAL']",
-                            "display": "none"
+                            "equivalent": "[at0013] Fixation sub-type ['DV_TEXT']",
+                            "display": ""
                           },
                           {
                             "node_uid": "666c8a15-26ca-41c0-932d-5a5df161a8b1",
@@ -8770,8 +8778,8 @@
                             "mode": "element",
                             "element_value": "Acetabular component - Tesla level",
                             "children": [],
-                            "equivalent": "[at0016] Tesla level ['DV_ORDINAL']",
-                            "display": "none"
+                            "equivalent": "[at0016] Tesla level ['DV_COUNT']",
+                            "display": ""
                           },
                           {
                             "node_uid": "c712fce6-b934-440a-b9da-30a26a3754bb",
@@ -8781,8 +8789,8 @@
                             "mode": "element",
                             "element_value": "Acetabular component - Potential safety issue",
                             "children": [],
-                            "equivalent": "[at0010] Potential safety issue ['DV_ORDINAL']",
-                            "display": "none"
+                            "equivalent": "[at0010] Potential safety issue ['DV_TEXT']",
+                            "display": ""
                           },
                           {
                             "node_uid": "63cf4e51-1d5a-4e76-9c8d-953e8734f498",
@@ -8792,8 +8800,8 @@
                             "mode": "element",
                             "element_value": "Acetabular component - Manufacturer safety information",
                             "children": [],
-                            "equivalent": "[at0011] Manufacturer safety information ['DV_ORDINAL']",
-                            "display": "none"
+                            "equivalent": "[at0011] Manufacturer safety information ['DV_URI']",
+                            "display": ""
                           },
                           {
                             "node_uid": "1274f0c6-be4b-4f06-9bcd-13324f72b36d",
@@ -8803,14 +8811,14 @@
                             "mode": "element",
                             "element_value": "Acetabular component - Antibacterial in cement?",
                             "children": [],
-                            "equivalent": "[at0007] Antibacterial in cement? ['DV_ORDINAL']",
-                            "display": "none"
+                            "equivalent": "[at0007] Antibacterial in cement? ['DV_BOOLEAN']",
+                            "display": ""
                           }
                         ],
                         "archetype_id": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
-                        "expanded": true,
+                        "expanded": false,
                         "equivalent": "[at0018] Components CLUSTER",
-                        "display": "none"
+                        "display": ""
                       },
                       {
                         "node_uid": "abfe182d-c444-4ebb-a633-33d2bf6a5a96",
@@ -8820,13 +8828,14 @@
                         "mode": "element",
                         "element_value": "Acetabular component - Batch number",
                         "children": [],
-                        "equivalent": "[at0006] Batch/Lot number ['DV_ORDINAL']",
-                        "display": "none"
+                        "equivalent": "[at0006] Batch/Lot number ['DV_TEXT']",
+                        "display": ""
                       }
                     ],
                     "archetype_id": "openEHR-EHR-CLUSTER.device.v1",
                     "equivalent": "[at0018] Components CLUSTER",
-                    "expanded": true
+                    "expanded": false,
+                    "display": ""
                   },
                   {
                     "node_uid": "239ec0af-a5fb-4975-8e49-157294ebb22f",
@@ -8844,8 +8853,8 @@
                         "mode": "element",
                         "element_value": "Femoral component - Device name",
                         "children": [],
-                        "equivalent": "[at0001] Device name ['DV_ORDINAL']",
-                        "display": "none"
+                        "equivalent": "[at0001] Device name ['DV_TEXT']",
+                        "display": ""
                       },
                       {
                         "node_uid": "a6c3e31d-70f1-406d-89ca-825462afded2",
@@ -8855,8 +8864,8 @@
                         "mode": "element",
                         "element_value": "Femoral component - Type",
                         "children": [],
-                        "equivalent": "[at0003] Type ['DV_ORDINAL']",
-                        "display": "none"
+                        "equivalent": "[at0003] Type ['DV_TEXT']",
+                        "display": ""
                       },
                       {
                         "node_uid": "6174ee10-c6a4-48d0-bb6f-1c264f8b857b",
@@ -8874,7 +8883,7 @@
                             "mode": "element",
                             "element_value": "Femoral component - Cement name",
                             "children": [],
-                            "equivalent": "[at0002] Cement name ['DV_ORDINAL']",
+                            "equivalent": "[at0002] Cement name ['DV_TEXT']",
                             "display": ""
                           },
                           {
@@ -8885,7 +8894,7 @@
                             "mode": "element",
                             "element_value": "Femoral component - Fixation type",
                             "children": [],
-                            "equivalent": "[at0012] Fixation type ['DV_ORDINAL']",
+                            "equivalent": "[at0012] Fixation type ['DV_CODED_TEXT']",
                             "display": ""
                           },
                           {
@@ -8896,7 +8905,7 @@
                             "mode": "element",
                             "element_value": "Femoral component - Fixation sub-type",
                             "children": [],
-                            "equivalent": "[at0013] Fixation sub-type ['DV_ORDINAL']",
+                            "equivalent": "[at0013] Fixation sub-type ['DV_TEXT']",
                             "display": ""
                           },
                           {
@@ -8907,7 +8916,7 @@
                             "mode": "element",
                             "element_value": "Femoral component - Tesla level",
                             "children": [],
-                            "equivalent": "[at0016] Tesla level ['DV_ORDINAL']",
+                            "equivalent": "[at0016] Tesla level ['DV_COUNT']",
                             "display": ""
                           },
                           {
@@ -8918,7 +8927,7 @@
                             "mode": "element",
                             "element_value": "Femoral component - Potential safety issue",
                             "children": [],
-                            "equivalent": "[at0010] Potential safety issue ['DV_ORDINAL']",
+                            "equivalent": "[at0010] Potential safety issue ['DV_TEXT']",
                             "display": ""
                           },
                           {
@@ -8929,7 +8938,7 @@
                             "mode": "element",
                             "element_value": "Femoral component - Manufacturer safety information",
                             "children": [],
-                            "equivalent": "[at0011] Manufacturer safety information ['DV_ORDINAL']",
+                            "equivalent": "[at0011] Manufacturer safety information ['DV_URI']",
                             "display": ""
                           },
                           {
@@ -8940,14 +8949,14 @@
                             "mode": "element",
                             "element_value": "Femoral component - Antibacterial in cement?",
                             "children": [],
-                            "equivalent": "[at0007] Antibacterial in cement? ['DV_ORDINAL']",
+                            "equivalent": "[at0007] Antibacterial in cement? ['DV_BOOLEAN']",
                             "display": ""
                           }
                         ],
                         "archetype_id": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
                         "expanded": false,
                         "equivalent": "[at0018] Components CLUSTER",
-                        "display": "none"
+                        "display": ""
                       },
                       {
                         "node_uid": "69a61bdd-40b9-448b-885c-2fdf1a9bd9ce",
@@ -8957,13 +8966,14 @@
                         "mode": "element",
                         "element_value": "Femoral component - Batch number",
                         "children": [],
-                        "equivalent": "[at0006] Batch/Lot number ['DV_ORDINAL']",
-                        "display": "none"
+                        "equivalent": "[at0006] Batch/Lot number ['DV_TEXT']",
+                        "display": ""
                       }
                     ],
                     "archetype_id": "openEHR-EHR-CLUSTER.device.v1",
                     "equivalent": "[at0018] Components CLUSTER",
-                    "expanded": true
+                    "expanded": false,
+                    "display": ""
                   },
                   {
                     "node_uid": "bb1de742-d28c-41f7-ae0f-273256a22b8a",
@@ -8981,7 +8991,8 @@
                         "mode": "element",
                         "element_value": "Inlay - Device name",
                         "children": [],
-                        "equivalent": "[at0001] Device name ['DV_ORDINAL']"
+                        "equivalent": "[at0001] Device name ['DV_TEXT']",
+                        "display": ""
                       },
                       {
                         "node_uid": "0930c56c-2455-4008-8365-5054e17b96e9",
@@ -8991,7 +9002,8 @@
                         "mode": "element",
                         "element_value": "Inlay - Type",
                         "children": [],
-                        "equivalent": "[at0003] Type ['DV_ORDINAL']"
+                        "equivalent": "[at0003] Type ['DV_TEXT']",
+                        "display": ""
                       },
                       {
                         "node_uid": "7a11a332-a517-4f10-b501-1f1970acca2a",
@@ -9001,11 +9013,14 @@
                         "mode": "element",
                         "element_value": "Inlay - Batch number",
                         "children": [],
-                        "equivalent": "[at0006] Batch/Lot number ['DV_ORDINAL']"
+                        "equivalent": "[at0006] Batch/Lot number ['DV_TEXT']",
+                        "display": ""
                       }
                     ],
                     "archetype_id": "openEHR-EHR-CLUSTER.device.v1",
-                    "equivalent": "[at0018] Components CLUSTER"
+                    "equivalent": "[at0018] Components CLUSTER",
+                    "display": "",
+                    "expanded": false
                   },
                   {
                     "node_uid": "71aef068-7575-49ac-b0b5-a9ff36c75950",
@@ -9023,7 +9038,8 @@
                         "mode": "element",
                         "element_value": "Head component - Device name",
                         "children": [],
-                        "equivalent": "[at0001] Device name ['DV_ORDINAL']"
+                        "equivalent": "[at0001] Device name ['DV_TEXT']",
+                        "display": ""
                       },
                       {
                         "node_uid": "008a796c-56af-40a5-8f67-e192171ca725",
@@ -9033,7 +9049,8 @@
                         "mode": "element",
                         "element_value": "Head component - Type",
                         "children": [],
-                        "equivalent": "[at0003] Type ['DV_ORDINAL']"
+                        "equivalent": "[at0003] Type ['DV_TEXT']",
+                        "display": ""
                       },
                       {
                         "node_uid": "391c2c37-9a31-4b39-82c8-89d5a3be9e9f",
@@ -9043,15 +9060,20 @@
                         "mode": "element",
                         "element_value": "Head component - Batch number",
                         "children": [],
-                        "equivalent": "[at0006] Batch/Lot number ['DV_ORDINAL']"
+                        "equivalent": "[at0006] Batch/Lot number ['DV_TEXT']",
+                        "display": ""
                       }
                     ],
                     "archetype_id": "openEHR-EHR-CLUSTER.device.v1",
-                    "equivalent": "[at0018] Components CLUSTER"
+                    "equivalent": "[at0018] Components CLUSTER",
+                    "display": "",
+                    "expanded": false
                   }
                 ],
                 "archetype_id": "openEHR-EHR-CLUSTER.device.v1",
-                "equivalent": "[at0003] Procedure detail CLUSTER"
+                "equivalent": "[at0003] Procedure detail CLUSTER",
+                "display": "",
+                "expanded": false
               },
               {
                 "node_uid": "794c64b2-ff68-4ab7-aafe-51f2a384f994",
@@ -9069,8 +9091,8 @@
                     "mode": "element",
                     "element_value": "Current procedure - Body location",
                     "children": [],
-                    "equivalent": "[at0001] Body site name ['DV_ORDINAL']",
-                    "display": "none"
+                    "equivalent": "[at0001] Body site name ['DV_TEXT']",
+                    "display": ""
                   },
                   {
                     "node_uid": "5da1400e-4170-4d25-bb71-049d4f9310f6",
@@ -9080,13 +9102,14 @@
                     "mode": "element",
                     "element_value": "Current procedure - Body side",
                     "children": [],
-                    "equivalent": "[at0002] Laterality ['DV_ORDINAL']",
-                    "display": "none"
+                    "equivalent": "[at0002] Laterality ['DV_CODED_TEXT']",
+                    "display": ""
                   }
                 ],
                 "archetype_id": "openEHR-EHR-CLUSTER.anatomical_location.v1",
-                "expanded": true,
-                "equivalent": "[at0063] Body site ['DV_ORDINAL']"
+                "expanded": false,
+                "equivalent": "[at0063] Body site ['DV_ORDINAL']",
+                "display": ""
               },
               {
                 "node_uid": "99db3188-d00b-4efa-afe5-ddaa615d70dd",
@@ -9104,8 +9127,8 @@
                     "mode": "element",
                     "element_value": "Current procedure - Department",
                     "children": [],
-                    "equivalent": "[at0005] Department name ['DV_ORDINAL']",
-                    "display": "none"
+                    "equivalent": "[at0005] Department name ['DV_TEXT']",
+                    "display": ""
                   },
                   {
                     "node_uid": "7b76ba00-2971-4d22-bed6-3470b7409e3b",
@@ -9115,8 +9138,8 @@
                     "mode": "element",
                     "element_value": "Current procedure - Hospital ID",
                     "children": [],
-                    "equivalent": "[at0002] Organisation identifier ['DV_ORDINAL']",
-                    "display": "none"
+                    "equivalent": "[at0002] Organisation identifier ['DV_IDENTIFIER']",
+                    "display": ""
                   },
                   {
                     "node_uid": "719610fe-36ee-4c80-bfdc-99d02d1e020c",
@@ -9134,7 +9157,7 @@
                         "mode": "element",
                         "element_value": "Current procedure - City",
                         "children": [],
-                        "equivalent": "[at0006] Post Name (city) ['DV_ORDINAL']",
+                        "equivalent": "[at0006] Post Name (city) ['DV_TEXT']",
                         "display": ""
                       },
                       {
@@ -9145,7 +9168,7 @@
                         "mode": "element",
                         "element_value": "Current procedure - County/state",
                         "children": [],
-                        "equivalent": "[at0007] Admin Unit 2 (county/region/state) ['DV_ORDINAL']",
+                        "equivalent": "[at0007] Admin Unit 2 (county/region/state) ['DV_TEXT']",
                         "display": ""
                       },
                       {
@@ -9156,12 +9179,12 @@
                         "mode": "element",
                         "element_value": "Current procedure - Country",
                         "children": [],
-                        "equivalent": "[at0008] Admin Unit 1 (country) ['DV_ORDINAL']",
+                        "equivalent": "[at0008] Admin Unit 1 (country) ['DV_TEXT']",
                         "display": ""
                       }
                     ],
                     "archetype_id": "openEHR-EHR-CLUSTER.address_isa.v1",
-                    "display": "none",
+                    "display": "",
                     "expanded": false,
                     "equivalent": "[at0003] Organisation Address CLUSTER"
                   },
@@ -9173,8 +9196,8 @@
                     "mode": "element",
                     "element_value": "Current procedure - Department ID",
                     "children": [],
-                    "equivalent": "[at0006] Department identifier ['DV_ORDINAL']",
-                    "display": "none"
+                    "equivalent": "[at0006] Department identifier ['DV_IDENTIFIER']",
+                    "display": ""
                   },
                   {
                     "node_uid": "cb78f166-8323-4a3b-ba43-df99c5fd717d",
@@ -9184,20 +9207,20 @@
                     "mode": "element",
                     "element_value": "Current procedure - Contact Details",
                     "children": [],
-                    "equivalent": "[at0004] Contact details ['DV_ORDINAL']",
-                    "display": "none"
+                    "equivalent": "[at0004] Contact details ['DV_TEXT']",
+                    "display": ""
                   }
                 ],
                 "archetype_id": "openEHR-EHR-CLUSTER.healthcare_provider_parent.v1",
                 "equivalent": "[at0003] Provider Organisation CLUSTER",
                 "display": "",
-                "expanded": true
+                "expanded": false
               }
             ],
             "archetype_id": "openEHR-EHR-ACTION.procedure.v1",
             "equivalent": "Reference Model",
             "display": "",
-            "expanded": true
+            "expanded": false
           }
         ],
         "archetype_id": "openEHR-EHR-SECTION.adhoc.v1",
