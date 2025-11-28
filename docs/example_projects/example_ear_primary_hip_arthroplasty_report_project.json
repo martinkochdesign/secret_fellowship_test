@@ -17,7 +17,7 @@
           "name": "Person Identifier",
           "archetype": "openEHR-EHR-CLUSTER.person_identifiable_parent.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.person_identifiable_parent.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "PatientPerson Identifier"
@@ -26,7 +26,7 @@
           "name": "Family name",
           "archetype": "openEHR-EHR-CLUSTER.person_name_isa.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.person_name_isa.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "PatientFamily name"
@@ -35,7 +35,7 @@
           "name": "Given name",
           "archetype": "openEHR-EHR-CLUSTER.person_name_isa.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.person_name_isa.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "PatientGiven name"
@@ -44,7 +44,7 @@
           "name": "Date of birth",
           "archetype": "openEHR-EHR-CLUSTER.person_identifiable_parent.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.person_identifiable_parent.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "PatientDate of birth"
@@ -53,7 +53,7 @@
           "name": "Gender",
           "archetype": "openEHR-EHR-CLUSTER.person_anonymised_parent.v0",
           "archetype_id": "openEHR-EHR-CLUSTER.person_anonymised_parent.v0",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "PatientGender"
@@ -62,7 +62,7 @@
           "name": "Age",
           "archetype": "openEHR-EHR-CLUSTER.person_anonymised_parent.v0",
           "archetype_id": "openEHR-EHR-CLUSTER.person_anonymised_parent.v0",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "PatientAge"
@@ -77,7 +77,7 @@
           "name": "Full name",
           "archetype": "openEHR-EHR-CLUSTER.person_name_isa.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.person_name_isa.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "ProfessionalFull name"
@@ -86,7 +86,7 @@
           "name": "Professional identifier",
           "archetype": "openEHR-EHR-CLUSTER.healthcare_professional_parent.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.healthcare_professional_parent.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "ProfessionalProfessional identifier"
@@ -95,7 +95,7 @@
           "name": "Department",
           "archetype": "openEHR-EHR-CLUSTER.healthcare_provider_parent.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.healthcare_provider_parent.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "ProfessionalDepartment"
@@ -104,7 +104,7 @@
           "name": "Hospital ID",
           "archetype": "openEHR-EHR-CLUSTER.healthcare_provider_parent.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.healthcare_provider_parent.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "ProfessionalHospital ID"
@@ -113,7 +113,7 @@
           "name": "City",
           "archetype": "openEHR-EHR-CLUSTER.address_isa.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.address_isa.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "ProfessionalCity"
@@ -122,7 +122,7 @@
           "name": "County/state",
           "archetype": "openEHR-EHR-CLUSTER.address_isa.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.address_isa.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "ProfessionalCounty/state"
@@ -131,7 +131,7 @@
           "name": "Country",
           "archetype": "openEHR-EHR-CLUSTER.address_isa.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.address_isa.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "ProfessionalCountry"
@@ -140,7 +140,7 @@
           "name": "Department ID",
           "archetype": "openEHR-EHR-CLUSTER.healthcare_provider_parent.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.healthcare_provider_parent.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "ProfessionalDepartment ID"
@@ -149,7 +149,7 @@
           "name": "Contact Details",
           "archetype": "openEHR-EHR-CLUSTER.healthcare_provider_parent.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.healthcare_provider_parent.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "ProfessionalContact Details"
@@ -158,7 +158,7 @@
           "name": "Personal Contact Details",
           "archetype": "openEHR-EHR-CLUSTER.healthcare_professional_parent.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.healthcare_professional_parent.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "ProfessionalPersonal Contact Details"
@@ -173,7 +173,7 @@
           "name": "Previous Procedure",
           "archetype": "openEHR-EHR-ACTION.procedure.v1",
           "archetype_id": "openEHR-EHR-ACTION.procedure.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Previous proceduresPrevious Procedure"
@@ -182,7 +182,7 @@
           "name": "Department",
           "archetype": "openEHR-EHR-CLUSTER.healthcare_provider_parent.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.healthcare_provider_parent.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Previous proceduresDepartment"
@@ -191,7 +191,7 @@
           "name": "Hospital ID",
           "archetype": "openEHR-EHR-CLUSTER.healthcare_provider_parent.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.healthcare_provider_parent.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Previous proceduresHospital ID"
@@ -200,7 +200,7 @@
           "name": "City",
           "archetype": "openEHR-EHR-CLUSTER.address_isa.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.address_isa.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Previous proceduresCity"
@@ -209,7 +209,7 @@
           "name": "County/state",
           "archetype": "openEHR-EHR-CLUSTER.address_isa.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.address_isa.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Previous proceduresCounty/state"
@@ -218,7 +218,7 @@
           "name": "Country",
           "archetype": "openEHR-EHR-CLUSTER.address_isa.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.address_isa.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Previous proceduresCountry"
@@ -227,7 +227,7 @@
           "name": "Department",
           "archetype": "openEHR-EHR-CLUSTER.healthcare_provider_parent.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.healthcare_provider_parent.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Previous proceduresDepartment"
@@ -236,7 +236,7 @@
           "name": "Department ID",
           "archetype": "openEHR-EHR-CLUSTER.healthcare_provider_parent.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.healthcare_provider_parent.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Previous proceduresDepartment ID"
@@ -245,7 +245,7 @@
           "name": "Contact Details",
           "archetype": "openEHR-EHR-CLUSTER.healthcare_provider_parent.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.healthcare_provider_parent.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Previous proceduresContact Details"
@@ -260,7 +260,7 @@
           "name": "Exclusion statement",
           "archetype": "openEHR-EHR-EVALUATION.exclusion_global.v1",
           "archetype_id": "openEHR-EHR-EVALUATION.exclusion_global.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Procedure ExclusionExclusion statement"
@@ -275,7 +275,7 @@
           "name": "Procedure",
           "archetype": "openEHR-EHR-ACTION.procedure.v1",
           "archetype_id": "openEHR-EHR-ACTION.procedure.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Current procedureProcedure"
@@ -284,7 +284,7 @@
           "name": "Reason",
           "archetype": "openEHR-EHR-ACTION.procedure.v1",
           "archetype_id": "openEHR-EHR-ACTION.procedure.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Current procedureReason"
@@ -293,7 +293,7 @@
           "name": "Department",
           "archetype": "openEHR-EHR-CLUSTER.healthcare_provider_parent.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.healthcare_provider_parent.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Current procedureDepartment"
@@ -302,7 +302,7 @@
           "name": "Hospital ID",
           "archetype": "openEHR-EHR-CLUSTER.healthcare_provider_parent.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.healthcare_provider_parent.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Current procedureHospital ID"
@@ -311,7 +311,7 @@
           "name": "City",
           "archetype": "openEHR-EHR-CLUSTER.address_isa.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.address_isa.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Current procedureCity"
@@ -320,7 +320,7 @@
           "name": "County/state",
           "archetype": "openEHR-EHR-CLUSTER.address_isa.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.address_isa.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Current procedureCounty/state"
@@ -329,7 +329,7 @@
           "name": "Country",
           "archetype": "openEHR-EHR-CLUSTER.address_isa.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.address_isa.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Current procedureCountry"
@@ -338,7 +338,7 @@
           "name": "Department ID",
           "archetype": "openEHR-EHR-CLUSTER.healthcare_provider_parent.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.healthcare_provider_parent.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Current procedureDepartment ID"
@@ -347,7 +347,7 @@
           "name": "Contact Details",
           "archetype": "openEHR-EHR-CLUSTER.healthcare_provider_parent.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.healthcare_provider_parent.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Current procedureContact Details"
@@ -356,7 +356,7 @@
           "name": "Body location",
           "archetype": "openEHR-EHR-CLUSTER.anatomical_location.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.anatomical_location.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Current procedureBody location"
@@ -365,7 +365,7 @@
           "name": "Body side",
           "archetype": "openEHR-EHR-CLUSTER.anatomical_location.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.anatomical_location.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Current procedureBody side"
@@ -374,7 +374,7 @@
           "name": "Device name",
           "archetype": "openEHR-EHR-CLUSTER.device.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.device.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Current procedureDevice name"
@@ -389,7 +389,7 @@
           "name": "Cement name",
           "archetype": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
           "archetype_id": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Hip implant detailsCement name"
@@ -398,7 +398,7 @@
           "name": "Fixation type",
           "archetype": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
           "archetype_id": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Hip implant detailsFixation type"
@@ -407,7 +407,7 @@
           "name": "Fixation sub-type",
           "archetype": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
           "archetype_id": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Hip implant detailsFixation sub-type"
@@ -416,7 +416,7 @@
           "name": "Tesla level",
           "archetype": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
           "archetype_id": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Hip implant detailsTesla level"
@@ -425,7 +425,7 @@
           "name": "Potential safety issue",
           "archetype": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
           "archetype_id": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Hip implant detailsPotential safety issue"
@@ -434,7 +434,7 @@
           "name": "Manufacturer safety information",
           "archetype": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
           "archetype_id": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Hip implant detailsManufacturer safety information"
@@ -443,7 +443,7 @@
           "name": "Antibacterial in cement?",
           "archetype": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
           "archetype_id": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Hip implant detailsAntibacterial in cement?"
@@ -458,7 +458,7 @@
           "name": "Device name",
           "archetype": "openEHR-EHR-CLUSTER.device.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.device.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Acetabular componentDevice name"
@@ -467,7 +467,7 @@
           "name": "Type",
           "archetype": "openEHR-EHR-CLUSTER.device.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.device.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Acetabular componentType"
@@ -476,7 +476,7 @@
           "name": "Cement name",
           "archetype": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
           "archetype_id": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Acetabular componentCement name"
@@ -485,7 +485,7 @@
           "name": "Fixation type",
           "archetype": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
           "archetype_id": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Acetabular componentFixation type"
@@ -494,7 +494,7 @@
           "name": "Fixation sub-type",
           "archetype": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
           "archetype_id": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Acetabular componentFixation sub-type"
@@ -503,7 +503,7 @@
           "name": "Tesla level",
           "archetype": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
           "archetype_id": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Acetabular componentTesla level"
@@ -512,7 +512,7 @@
           "name": "Potential safety issue",
           "archetype": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
           "archetype_id": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Acetabular componentPotential safety issue"
@@ -521,7 +521,7 @@
           "name": "Manufacturer safety information",
           "archetype": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
           "archetype_id": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Acetabular componentManufacturer safety information"
@@ -530,7 +530,7 @@
           "name": "Antibacterial in cement?",
           "archetype": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
           "archetype_id": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Acetabular componentAntibacterial in cement?"
@@ -539,7 +539,7 @@
           "name": "Batch number",
           "archetype": "openEHR-EHR-CLUSTER.device.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.device.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Acetabular componentBatch number"
@@ -554,7 +554,7 @@
           "name": "Device name",
           "archetype": "openEHR-EHR-CLUSTER.device.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.device.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Femoral componentDevice name"
@@ -563,7 +563,7 @@
           "name": "Type",
           "archetype": "openEHR-EHR-CLUSTER.device.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.device.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Femoral componentType"
@@ -572,7 +572,7 @@
           "name": "Cement name",
           "archetype": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
           "archetype_id": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Femoral componentCement name"
@@ -581,7 +581,7 @@
           "name": "HA-Coating",
           "archetype": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
           "archetype_id": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Femoral componentHA-Coating"
@@ -590,7 +590,7 @@
           "name": "Fixation type",
           "archetype": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
           "archetype_id": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Femoral componentFixation type"
@@ -599,7 +599,7 @@
           "name": "Fixation sub-type",
           "archetype": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
           "archetype_id": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Femoral componentFixation sub-type"
@@ -608,7 +608,7 @@
           "name": "Tesla level",
           "archetype": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
           "archetype_id": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Femoral componentTesla level"
@@ -617,7 +617,7 @@
           "name": "Potential safety issue",
           "archetype": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
           "archetype_id": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Femoral componentPotential safety issue"
@@ -626,7 +626,7 @@
           "name": "Manufacturer safety information",
           "archetype": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
           "archetype_id": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Femoral componentManufacturer safety information"
@@ -635,7 +635,7 @@
           "name": "Antibacterial in cement?",
           "archetype": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
           "archetype_id": "openEHR-EHR-CLUSTER.hip_arthroplasty_component.v0",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Femoral componentAntibacterial in cement?"
@@ -644,7 +644,7 @@
           "name": "Batch number",
           "archetype": "openEHR-EHR-CLUSTER.device.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.device.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Femoral componentBatch number"
@@ -659,7 +659,7 @@
           "name": "Device name",
           "archetype": "openEHR-EHR-CLUSTER.device.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.device.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "InlayDevice name"
@@ -668,7 +668,7 @@
           "name": "Type",
           "archetype": "openEHR-EHR-CLUSTER.device.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.device.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "InlayType"
@@ -677,7 +677,7 @@
           "name": "Batch number",
           "archetype": "openEHR-EHR-CLUSTER.device.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.device.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "InlayBatch number"
@@ -692,7 +692,7 @@
           "name": "Device name",
           "archetype": "openEHR-EHR-CLUSTER.device.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.device.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Head componentDevice name"
@@ -701,7 +701,7 @@
           "name": "Type",
           "archetype": "openEHR-EHR-CLUSTER.device.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.device.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Head componentType"
@@ -710,7 +710,7 @@
           "name": "Batch number",
           "archetype": "openEHR-EHR-CLUSTER.device.v1",
           "archetype_id": "openEHR-EHR-CLUSTER.device.v1",
-          "approved": false,
+          "approved": true,
           "review": false,
           "description": "",
           "id": "Head componentBatch number"
