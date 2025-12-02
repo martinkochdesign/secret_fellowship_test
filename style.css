@@ -652,12 +652,13 @@ label {
 
 #existing_list {
     display: flex;
-    height: calc(100% - 130px);
-    width: 100%;
+    height: calc(100% - 145px);
+    width: calc(100% - 0px);
     justify-content: center;
     /* This centers content horizontally */
 
     background-color: white;
+    /*border: 4px solid hotpink;*/
 }
 
 #archetype_list {
